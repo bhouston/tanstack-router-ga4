@@ -7,7 +7,7 @@ export const Route = createFileRoute("/lead-gen")({
 });
 
 function LeadGenPage() {
-  const { trackEvent, isReady } = useGoogleAnalytics();
+  const { trackEvent } = useGoogleAnalytics();
 
   const handleGenerateLead = useCallback(() => {
     trackEvent("generate_lead", { currency: "USD", value: 1 });
@@ -26,10 +26,9 @@ function LeadGenPage() {
       <button
         type="button"
         onClick={handleGenerateLead}
-        disabled={!isReady}
-        className="rounded-lg bg-slate-800 px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-lg bg-slate-800 px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-slate-700"
       >
-        {isReady ? "Generate lead" : "GA not ready (client-only)"}
+        Generate lead
       </button>
     </div>
   );

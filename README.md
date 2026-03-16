@@ -31,13 +31,13 @@ function RootLayout() {
 
 // In any component — track custom events
 function SignupForm() {
-  const { trackEvent, isReady } = useGoogleAnalytics();
+  const { trackEvent } = useGoogleAnalytics();
 
   const handleSubmit = () => {
     trackEvent("sign_up", { method: "email" });
   };
 
-  return <button onClick={handleSubmit} disabled={!isReady}>Sign up</button>;
+  return <button onClick={handleSubmit}>Sign up</button>;
 }
 ```
 

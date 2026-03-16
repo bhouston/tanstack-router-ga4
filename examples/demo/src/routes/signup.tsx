@@ -7,7 +7,7 @@ export const Route = createFileRoute("/signup")({
 });
 
 function SignupPage() {
-  const { trackEvent, isReady } = useGoogleAnalytics();
+  const { trackEvent } = useGoogleAnalytics();
 
   const handleSignup = useCallback(() => {
     trackEvent("sign_up", { method: "email" });
@@ -26,10 +26,9 @@ function SignupPage() {
       <button
         type="button"
         onClick={handleSignup}
-        disabled={!isReady}
-        className="rounded-lg bg-slate-800 px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-lg bg-slate-800 px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-slate-700"
       >
-        {isReady ? "Sign up" : "GA not ready (client-only)"}
+        Sign up
       </button>
     </div>
   );

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
+import { initGtag } from "./initGtag.js";
 
 type GoogleAnalyticsPrimitive = string | number | boolean | null;
 
@@ -106,30 +107,13 @@ declare global {
 }
 
 export function useGoogleAnalytics() {
-  const [isReady, setIsReady] = useState(false);
-
-  // Poll until window.gtag is available. React fires child effects before
-  // parent effects, so `GoogleAnalytics` (mounted in the root layout) may
-  // not have set up window.gtag yet when this hook first runs in a leaf page.
-  useEffect(() => {
-    const check = () => typeof window !== "undefined" && typeof window.gtag === "function";
-    if (check()) {
-      setIsReady(true);
-      return;
-    }
-    const id = setInterval(() => {
-      if (check()) {
-        setIsReady(true);
-        clearInterval(id);
-      }
-    }, 50);
-    return () => clearInterval(id);
-  }, []);
+  if (typeof window !== "undefined") {
+    initGtag();
+  }
 
   const trackEvent = useCallback<TrackGoogleAnalyticsEvent>(
     (eventName: string, params?: GoogleAnalyticsEventParams) => {
       if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        console.log('called trackEvent', eventName, params)
         window.gtag("event", eventName, params);
       }
     },
@@ -137,7 +121,6 @@ export function useGoogleAnalytics() {
   );
 
   return {
-    isReady,
     trackEvent,
   };
 }

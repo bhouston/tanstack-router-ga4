@@ -27,16 +27,13 @@ describe("useGoogleAnalytics", () => {
     });
   });
 
-  it("returns isReady true when window.gtag is defined", () => {
-    const { result } = renderHook(() => useGoogleAnalytics());
-    expect(result.current.isReady).toBe(true);
-  });
-
   it("does not throw when trackEvent is called without gtag (e.g. SSR)", () => {
-    vi.stubGlobal("window", { ...globalThis.window, gtag: undefined });
-
+    // Simulate SSR: trackEvent is called when gtag is not available. We cannot stub
+    // window to undefined (React/DOM need it), so we remove gtag after render.
     const { result } = renderHook(() => useGoogleAnalytics());
-    expect(result.current.isReady).toBe(false);
+    const win = globalThis.window as Window & { gtag?: typeof mockGtag };
+    const savedGtag = win.gtag;
+    win.gtag = undefined;
 
     expect(() => {
       act(() => {
@@ -44,6 +41,8 @@ describe("useGoogleAnalytics", () => {
       });
     }).not.toThrow();
     expect(mockGtag).not.toHaveBeenCalled();
+
+    win.gtag = savedGtag;
   });
 
   it("calls gtag with recommended event and typed params", () => {

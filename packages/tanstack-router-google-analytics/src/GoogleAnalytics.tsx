@@ -1,5 +1,6 @@
 import { ClientOnly, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { initGtag } from "./initGtag.js";
 import type { GoogleAnalyticsConfig } from "./useGoogleAnalytics.js";
 
 type GoogleAnalyticsProps = {
@@ -14,15 +15,8 @@ const GoogleAnalyticsInner = ({ config, measurementId }: GoogleAnalyticsProps) =
   useEffect(() => {
     if (!measurementId || typeof window === "undefined") return;
 
-    window.dataLayer = window.dataLayer || [];
-
-    // GA4's gtag.js processes dataLayer entries expecting the native `arguments`
-    // object (not a plain array). Using rest params / spread silently breaks
-    // event delivery — no errors, but no beacons reach Google's servers.
-    if (!window.gtag) {
-      // biome-ignore lint: GA4 requires the native Arguments object, not a rest-param array
-      window.gtag = function gtag() { window.dataLayer.push(arguments); } as unknown as Gtag;
-    }
+    initGtag();
+    if (typeof window.gtag !== "function") return;
 
     // Inject the gtag.js script if not already present
     const existingScript = document.querySelector(
