@@ -1,0 +1,25 @@
+node_modules
+dist
+publish
+.turbo
+coverage
+*.lcov
+profile-output
+tsconfig.tsbuildinfo
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+*.buildinfo
+.idea
+.vscode
+# Demo / Nitro
+.output
+.nitro
+.tanstack
+# Playwright
+test-results
+playwright-report
+playwright/.cache
+blob-report

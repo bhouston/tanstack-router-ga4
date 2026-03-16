@@ -1,0 +1,22 @@
+# Source and tests (only dist is published)
+src/
+tests/
+test/
+**/*.test.js
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.js
+**/*.spec.ts
+**/*.test.d.ts
+**/*.test.js.map
+
+# Config and build artifacts
+tsconfig.json
+tsconfig.build.json
+tsconfig.*.json
+vitest.config.ts
+vitest.config.js
+*.buildinfo
+coverage/
+.DS_Store
+node_modules/
