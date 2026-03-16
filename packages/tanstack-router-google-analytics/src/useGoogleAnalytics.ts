@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type GoogleAnalyticsPrimitive = string | number | boolean | null;
 
@@ -106,6 +106,12 @@ declare global {
 }
 
 export function useGoogleAnalytics() {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(typeof window !== "undefined" && typeof window.gtag === "function");
+  }, []);
+
   const trackEvent = useCallback<TrackGoogleAnalyticsEvent>(
     (eventName: string, params?: GoogleAnalyticsEventParams) => {
       if (typeof window !== "undefined" && typeof window.gtag === "function") {
@@ -114,8 +120,6 @@ export function useGoogleAnalytics() {
     },
     [],
   );
-
-  const isReady = typeof window !== "undefined" && typeof window.gtag === "function";
 
   return {
     isReady,

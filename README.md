@@ -1,6 +1,6 @@
 # tanstack-router-google-analytics
 
-Google Analytics (GA4) React integration for [TanStack Router](https://tanstack.com/router) and [TanStack Start](https://tanstack.com/start). Sends `page_view` events on route changes and exposes a `useGoogleAnalytics()` hook for custom events. Uses TanStack Router's `ClientOnly` for SSR-safe mounting.
+Google Analytics (GA4) React integration for [TanStack Router](https://tanstack.com/router) (and by extension [TanStack Start](https://tanstack.com/start).) Sends `page_view` events on route changes and exposes a `useGoogleAnalytics()` hook for custom events. Uses TanStack Router's `ClientOnly` for SSR-safe mounting.
 
 ## Install
 

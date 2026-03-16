@@ -20,7 +20,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body style={{ margin: 0, background: "#f8fafc" }}>
-        <GoogleAnalytics measurementId="G-XXXXXXXXXX" />
+        <GoogleAnalytics measurementId="G-FWJBK9S1RL" />
         {children}
         <Scripts />
       </body>
