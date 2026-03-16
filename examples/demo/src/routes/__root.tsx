@@ -1,5 +1,8 @@
+import "../app.css";
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { GoogleAnalytics } from "tanstack-router-google-analytics";
+import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -10,8 +13,20 @@ export const Route = createRootRoute({
     ],
   }),
   shellComponent: RootDocument,
-  component: () => <Outlet />,
+  component: RootLayout,
 });
+
+function RootLayout() {
+  return (
+    <>
+      <Header />
+      <main className="min-h-[60vh] flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+    </>
+  );
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
@@ -19,7 +34,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body style={{ margin: 0, background: "#f8fafc" }}>
+      <body className="flex min-h-screen flex-col bg-slate-50 text-slate-800">
         <GoogleAnalytics measurementId="G-FWJBK9S1RL" />
         {children}
         <Scripts />

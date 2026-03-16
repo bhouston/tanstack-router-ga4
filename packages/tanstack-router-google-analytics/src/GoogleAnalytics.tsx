@@ -10,24 +10,24 @@ type GoogleAnalyticsProps = {
 const GoogleAnalyticsInner = ({ config, measurementId }: GoogleAnalyticsProps) => {
   const location = useLocation();
 
-  // Initialize Google Analytics once: inject gtag and load script
+  // Initialize Google Analytics once: inject gtag script and set up dataLayer
   useEffect(() => {
     if (!measurementId || typeof window === "undefined") return;
 
-    // Check if script is already present to avoid duplicates
+    window.dataLayer = window.dataLayer || [];
+
+    // GA4's gtag.js processes dataLayer entries expecting the native `arguments`
+    // object (not a plain array). Using rest params / spread silently breaks
+    // event delivery — no errors, but no beacons reach Google's servers.
+    if (!window.gtag) {
+      // biome-ignore lint: GA4 requires the native Arguments object, not a rest-param array
+      window.gtag = function gtag() { window.dataLayer.push(arguments); } as unknown as Gtag;
+    }
+
+    // Inject the gtag.js script if not already present
     const existingScript = document.querySelector(
       `script[src*="googletagmanager.com/gtag/js?id=${measurementId}"]`,
     );
-
-    window.dataLayer = window.dataLayer || [];
-    const gtag: Gtag = (...args) => {
-      window.dataLayer.push(args);
-    };
-    // Only assign if not already defined to avoid overwriting existing config
-    if (!window.gtag) {
-      window.gtag = gtag;
-    }
-
     if (!existingScript) {
       const script = document.createElement("script");
       script.async = true;
