@@ -3,6 +3,7 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-r
 import { GoogleAnalytics } from "tanstack-router-ga4";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
+import { DEMO_MEASUREMENT_ID } from "../lib/googleAnalytics";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -35,7 +36,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="flex min-h-screen flex-col bg-slate-50 text-slate-800">
-        <GoogleAnalytics measurementId="G-FWJBK9S1RL" />
+        <GoogleAnalytics measurementId={DEMO_MEASUREMENT_ID} />
         {children}
         <Scripts />
       </body>

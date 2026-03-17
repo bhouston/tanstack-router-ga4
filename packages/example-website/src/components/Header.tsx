@@ -10,36 +10,30 @@ export function Header() {
         >
           tanstack-router-ga4
         </Link>
-        <nav className="flex items-center gap-6">
-          <Link
-            to="/"
-            className="text-slate-600 hover:text-slate-900"
-            activeProps={{ className: "font-medium text-slate-900" }}
+        <div className="flex items-center gap-3">
+          <a
+            href="https://github.com/bhouston/tanstack-router-ga4"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
           >
-            Home
-          </Link>
-          <Link
-            to="/lead-gen"
-            className="text-slate-600 hover:text-slate-900"
-            activeProps={{ className: "font-medium text-slate-900" }}
+            <span className="sr-only">GitHub repository</span>
+            <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
+              <path d="M12 1.5A10.5 10.5 0 0 0 8.68 22c.53.1.72-.23.72-.51v-1.78c-2.95.64-3.57-1.25-3.57-1.25-.48-1.2-1.18-1.51-1.18-1.51-.96-.66.07-.65.07-.65 1.07.08 1.63 1.08 1.63 1.08.94 1.59 2.47 1.13 3.08.86.1-.67.37-1.13.67-1.39-2.36-.26-4.85-1.16-4.85-5.19 0-1.15.42-2.08 1.1-2.82-.11-.27-.48-1.37.11-2.85 0 0 .9-.28 2.95 1.08a10.4 10.4 0 0 1 5.38 0c2.05-1.36 2.95-1.08 2.95-1.08.59 1.48.22 2.58.11 2.85.69.74 1.1 1.67 1.1 2.82 0 4.04-2.5 4.93-4.88 5.18.38.33.72.96.72 1.94v2.87c0 .28.19.62.73.51A10.5 10.5 0 0 0 12 1.5Z" />
+            </svg>
+          </a>
+          <a
+            href="https://www.npmjs.com/package/tanstack-router-ga4"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
           >
-            Lead gen
-          </Link>
-          <Link
-            to="/signup"
-            className="text-slate-600 hover:text-slate-900"
-            activeProps={{ className: "font-medium text-slate-900" }}
-          >
-            Sign up
-          </Link>
-          <Link
-            to="/register-user"
-            className="text-slate-600 hover:text-slate-900"
-            activeProps={{ className: "font-medium text-slate-900" }}
-          >
-            Register user
-          </Link>
-        </nav>
+            <span className="sr-only">npm package</span>
+            <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
+              <path d="M2 7.5v9h10.5V18H15v-1.5h1.5v-9Zm10.5 7.5H11V10.5H9.5V15H8V9h4.5Zm6-4.5H17V15h-1.5v-4.5H14V9h4.5Z" />
+            </svg>
+          </a>
+        </div>
       </div>
     </header>
   );

@@ -9,89 +9,133 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as RegisterUserRouteImport } from './routes/register-user'
-import { Route as LeadGenRouteImport } from './routes/lead-gen'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TestsIndexRouteImport } from './routes/tests/index'
+import { Route as TestsSignupRouteImport } from './routes/tests/signup'
+import { Route as TestsRegisterUserRouteImport } from './routes/tests/register-user'
+import { Route as TestsLeadGenRouteImport } from './routes/tests/lead-gen'
+import { Route as TestsGetClientIdRouteImport } from './routes/tests/get-client-id'
+import { Route as TestsConsentRouteImport } from './routes/tests/consent'
+import { Route as TestsConfigRouteImport } from './routes/tests/config'
 
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterUserRoute = RegisterUserRouteImport.update({
-  id: '/register-user',
-  path: '/register-user',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LeadGenRoute = LeadGenRouteImport.update({
-  id: '/lead-gen',
-  path: '/lead-gen',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TestsIndexRoute = TestsIndexRouteImport.update({
+  id: '/tests/',
+  path: '/tests/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestsSignupRoute = TestsSignupRouteImport.update({
+  id: '/tests/signup',
+  path: '/tests/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestsRegisterUserRoute = TestsRegisterUserRouteImport.update({
+  id: '/tests/register-user',
+  path: '/tests/register-user',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestsLeadGenRoute = TestsLeadGenRouteImport.update({
+  id: '/tests/lead-gen',
+  path: '/tests/lead-gen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestsGetClientIdRoute = TestsGetClientIdRouteImport.update({
+  id: '/tests/get-client-id',
+  path: '/tests/get-client-id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestsConsentRoute = TestsConsentRouteImport.update({
+  id: '/tests/consent',
+  path: '/tests/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestsConfigRoute = TestsConfigRouteImport.update({
+  id: '/tests/config',
+  path: '/tests/config',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/lead-gen': typeof LeadGenRoute
-  '/register-user': typeof RegisterUserRoute
-  '/signup': typeof SignupRoute
+  '/tests/config': typeof TestsConfigRoute
+  '/tests/consent': typeof TestsConsentRoute
+  '/tests/get-client-id': typeof TestsGetClientIdRoute
+  '/tests/lead-gen': typeof TestsLeadGenRoute
+  '/tests/register-user': typeof TestsRegisterUserRoute
+  '/tests/signup': typeof TestsSignupRoute
+  '/tests/': typeof TestsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/lead-gen': typeof LeadGenRoute
-  '/register-user': typeof RegisterUserRoute
-  '/signup': typeof SignupRoute
+  '/tests/config': typeof TestsConfigRoute
+  '/tests/consent': typeof TestsConsentRoute
+  '/tests/get-client-id': typeof TestsGetClientIdRoute
+  '/tests/lead-gen': typeof TestsLeadGenRoute
+  '/tests/register-user': typeof TestsRegisterUserRoute
+  '/tests/signup': typeof TestsSignupRoute
+  '/tests': typeof TestsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/lead-gen': typeof LeadGenRoute
-  '/register-user': typeof RegisterUserRoute
-  '/signup': typeof SignupRoute
+  '/tests/config': typeof TestsConfigRoute
+  '/tests/consent': typeof TestsConsentRoute
+  '/tests/get-client-id': typeof TestsGetClientIdRoute
+  '/tests/lead-gen': typeof TestsLeadGenRoute
+  '/tests/register-user': typeof TestsRegisterUserRoute
+  '/tests/signup': typeof TestsSignupRoute
+  '/tests/': typeof TestsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lead-gen' | '/register-user' | '/signup'
+  fullPaths:
+    | '/'
+    | '/tests/config'
+    | '/tests/consent'
+    | '/tests/get-client-id'
+    | '/tests/lead-gen'
+    | '/tests/register-user'
+    | '/tests/signup'
+    | '/tests/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lead-gen' | '/register-user' | '/signup'
-  id: '__root__' | '/' | '/lead-gen' | '/register-user' | '/signup'
+  to:
+    | '/'
+    | '/tests/config'
+    | '/tests/consent'
+    | '/tests/get-client-id'
+    | '/tests/lead-gen'
+    | '/tests/register-user'
+    | '/tests/signup'
+    | '/tests'
+  id:
+    | '__root__'
+    | '/'
+    | '/tests/config'
+    | '/tests/consent'
+    | '/tests/get-client-id'
+    | '/tests/lead-gen'
+    | '/tests/register-user'
+    | '/tests/signup'
+    | '/tests/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LeadGenRoute: typeof LeadGenRoute
-  RegisterUserRoute: typeof RegisterUserRoute
-  SignupRoute: typeof SignupRoute
+  TestsConfigRoute: typeof TestsConfigRoute
+  TestsConsentRoute: typeof TestsConsentRoute
+  TestsGetClientIdRoute: typeof TestsGetClientIdRoute
+  TestsLeadGenRoute: typeof TestsLeadGenRoute
+  TestsRegisterUserRoute: typeof TestsRegisterUserRoute
+  TestsSignupRoute: typeof TestsSignupRoute
+  TestsIndexRoute: typeof TestsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register-user': {
-      id: '/register-user'
-      path: '/register-user'
-      fullPath: '/register-user'
-      preLoaderRoute: typeof RegisterUserRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lead-gen': {
-      id: '/lead-gen'
-      path: '/lead-gen'
-      fullPath: '/lead-gen'
-      preLoaderRoute: typeof LeadGenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -99,14 +143,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tests/': {
+      id: '/tests/'
+      path: '/tests'
+      fullPath: '/tests/'
+      preLoaderRoute: typeof TestsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tests/signup': {
+      id: '/tests/signup'
+      path: '/tests/signup'
+      fullPath: '/tests/signup'
+      preLoaderRoute: typeof TestsSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tests/register-user': {
+      id: '/tests/register-user'
+      path: '/tests/register-user'
+      fullPath: '/tests/register-user'
+      preLoaderRoute: typeof TestsRegisterUserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tests/lead-gen': {
+      id: '/tests/lead-gen'
+      path: '/tests/lead-gen'
+      fullPath: '/tests/lead-gen'
+      preLoaderRoute: typeof TestsLeadGenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tests/get-client-id': {
+      id: '/tests/get-client-id'
+      path: '/tests/get-client-id'
+      fullPath: '/tests/get-client-id'
+      preLoaderRoute: typeof TestsGetClientIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tests/consent': {
+      id: '/tests/consent'
+      path: '/tests/consent'
+      fullPath: '/tests/consent'
+      preLoaderRoute: typeof TestsConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tests/config': {
+      id: '/tests/config'
+      path: '/tests/config'
+      fullPath: '/tests/config'
+      preLoaderRoute: typeof TestsConfigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LeadGenRoute: LeadGenRoute,
-  RegisterUserRoute: RegisterUserRoute,
-  SignupRoute: SignupRoute,
+  TestsConfigRoute: TestsConfigRoute,
+  TestsConsentRoute: TestsConsentRoute,
+  TestsGetClientIdRoute: TestsGetClientIdRoute,
+  TestsLeadGenRoute: TestsLeadGenRoute,
+  TestsRegisterUserRoute: TestsRegisterUserRoute,
+  TestsSignupRoute: TestsSignupRoute,
+  TestsIndexRoute: TestsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

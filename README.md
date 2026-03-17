@@ -4,8 +4,11 @@
 [![NPM Downloads][npm-downloads]][npmtrends-url]
 [![Tests][tests-badge]][tests-url]
 [![Coverage][coverage-badge]][coverage-url]
+[![Demo Site][demo-badge]][demo-url]
 
-Google Analytics (GA4) integration for [TanStack Router](https://tanstack.com/router) and [TanStack Start](https://tanstack.com/start), built for modern React apps that need reliable analytics with minimal setup.
+[Google Analytics (GA4)](https://marketingplatform.google.com/about/analytics/) integration for [TanStack Router](https://tanstack.com/router) and [TanStack Start](https://tanstack.com/start), built for modern React apps that need reliable analytics with minimal setup.
+
+Live demo: [tanstack-router-ga4.benhouston3d.com](https://tanstack-router-ga4.benhouston3d.com)
 
 ## Features
 
@@ -26,18 +29,24 @@ pnpm add tanstack-router-ga4
 
 ## Usage
 
-Mount the component in your app (e.g. root layout) so every route gets automatic page views, and use the hook as a typed wrapper over the core `gtag` commands.
+Mount the component in your app shell (for example a `RootDocument` or root layout) so every route gets automatic page views, and use the hook as a typed wrapper over the core `gtag` commands.
 
 ```tsx
+import { HeadContent, Scripts } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { GoogleAnalytics, useGoogleAnalytics } from "tanstack-router-ga4";
 
-// In your root layout or app shell — automatic page_view on each route change
-function RootLayout() {
+// In your root document — automatic page_view on each route change
+function RootDocument({ children }: { children: ReactNode }) {
   return (
-    <html>
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
       <body>
         <GoogleAnalytics measurementId="G-XXXXXXXXXX" />
-        <Outlet />
+        {children}
+        <Scripts />
       </body>
     </html>
   );
@@ -58,15 +67,27 @@ function SignupForm() {
 User identity registration example (`user_id` + `user_properties`):
 
 ```tsx
+import { HeadContent, Scripts } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { GoogleAnalytics, useGoogleAnalytics } from "tanstack-router-ga4";
 
-function AppShell() {
+function RootDocument({ children }: { children: ReactNode }) {
   return (
-    <>
-      <GoogleAnalytics measurementId="G-XXXXXXXXXX" />
-      <RegisterUserButton />
-    </>
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <GoogleAnalytics measurementId="G-XXXXXXXXXX" />
+        {children}
+        <Scripts />
+      </body>
+    </html>
   );
+}
+
+function AccountPage() {
+  return <RegisterUserButton />;
 }
 
 function RegisterUserButton() {
@@ -178,3 +199,5 @@ Created by [Ben Houston](https://benhouston3d.com) and sponsored by [Land of Ass
 [tests-url]: https://github.com/bhouston/tanstack-router-ga4/actions/workflows/test.yml
 [coverage-badge]: https://codecov.io/gh/bhouston/tanstack-router-ga4/graph/badge.svg
 [coverage-url]: https://codecov.io/gh/bhouston/tanstack-router-ga4
+[demo-badge]: https://img.shields.io/badge/demo-live-0f172a
+[demo-url]: https://tanstack-router-ga4.benhouston3d.com

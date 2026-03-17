@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { HomeFeatureSections } from "../components/AnalyticsDemoContent";
 
 export const Route = createFileRoute("/")({
   component: IndexPage,
@@ -6,107 +7,91 @@ export const Route = createFileRoute("/")({
 
 function IndexPage() {
   return (
-    <div className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">tanstack-router-ga4</h1>
-      <p className="mb-4 text-slate-600 leading-relaxed">
-        Google Analytics (GA4) React integration for{" "}
-        <a
-          href="https://tanstack.com/router"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-medium text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
-        >
-          TanStack Router
-        </a>{" "}
-        (and by extension{" "}
-        <a
-          href="https://tanstack.com/start"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-medium text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
-        >
-          TanStack Start
-        </a>
-        ). Sends <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">page_view</code>{" "}
-        events on route changes and exposes a{" "}
-        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">useGoogleAnalytics()</code>{" "}
-        hook with typed <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">event()</code>,{" "}
-        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">config()</code>,{" "}
-        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">set()</code>,{" "}
-        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">get()</code>, and{" "}
-        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">consent()</code> methods. Uses
-        TanStack Router&apos;s{" "}
-        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">ClientOnly</code> for SSR-safe
-        mounting.
-      </p>
-
-      <h2 className="mb-3 mt-8 text-xl font-semibold text-slate-900">Try the demo pages</h2>
-      <ul className="mb-8 space-y-2 text-slate-600">
-        <li>
-          <Link
-            to="/lead-gen"
-            className="font-medium text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
-          >
-            Lead gen
-          </Link>
-          — trigger a{" "}
-          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">generate_lead</code> event
-        </li>
-        <li>
-          <Link
-            to="/signup"
-            className="font-medium text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
-          >
-            Sign up
-          </Link>
-          — trigger a <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code>{" "}
-          event
-        </li>
-        <li>
-          <Link
-            to="/register-user"
-            className="font-medium text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
-          >
-            Register user
-          </Link>
-          — set <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_id</code> and{" "}
-          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_properties</code> in GA,
-          then track a <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code>{" "}
-          event
-        </li>
-      </ul>
-
-      <h2 className="mb-3 text-xl font-semibold text-slate-900">Install &amp; links</h2>
-      <div className="space-y-3">
-        <p className="text-slate-600">
-          <span className="font-medium text-slate-800">npm:</span>{" "}
+    <div className="mx-auto max-w-5xl px-4 py-12">
+      <section className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+        <h1 className="text-4xl font-bold tracking-tight text-slate-900">tanstack-router-ga4</h1>
+        <p className="mt-4 max-w-3xl text-slate-600 leading-relaxed">
+          Ship{" "}
           <a
-            href="https://www.npmjs.com/package/tanstack-router-ga4"
+            href="https://marketingplatform.google.com/about/analytics/"
             target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-sm text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
+            rel="noreferrer"
+            className="font-medium text-slate-900 underline underline-offset-2"
           >
-            tanstack-router-ga4
-          </a>
-        </p>
-        <p className="text-slate-600">
-          <span className="font-medium text-slate-800">GitHub:</span>{" "}
+            Google Analytics (GA4)
+          </a>{" "}
+          for{" "}
           <a
-            href="https://github.com/bhouston/tanstack-router-ga4"
+            href="https://tanstack.com/router"
             target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
+            rel="noreferrer"
+            className="font-medium text-slate-900 underline underline-offset-2"
           >
-            github.com/bhouston/tanstack-router-ga4
-          </a>
+            TanStack Router
+          </a>{" "}
+          and{" "}
+          <a
+            href="https://tanstack.com/start"
+            target="_blank"
+            rel="noreferrer"
+            className="font-medium text-slate-900 underline underline-offset-2"
+          >
+            TanStack Start
+          </a>{" "}
+          without wiring up fragile route listeners or untyped analytics helpers yourself. You get automatic{" "}
+          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">page_view</code> tracking,
+          typed event helpers, and a setup that fits naturally into real app shells.
         </p>
-      </div>
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="rounded-xl bg-slate-50 p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+              Automatic tracking
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-700">
+              Record route-based <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">page_view</code>{" "}
+              events automatically across client-side navigation.
+            </p>
+          </div>
+          <div className="rounded-xl bg-slate-50 p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+              Typed GA4 helpers
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-700">
+              Track <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">sign_up</code>,{" "}
+              <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">generate_lead</code>, consent,
+              config, and custom events with TypeScript support.
+            </p>
+          </div>
+          <div className="rounded-xl bg-slate-50 p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+              Built for real apps
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-700">
+              Works cleanly with TanStack Start, SSR-friendly root documents, and tested route flows.
+            </p>
+          </div>
+        </div>
+        <div className="mt-8 grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
+          <div className="rounded-xl bg-slate-50 p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+              Table of contents
+            </h2>
+            <ul className="mt-4 grid gap-2 text-slate-700">
+              <li><a href="#setup" className="underline underline-offset-2">Set up GoogleAnalytics</a></li>
+              <li><a href="#set" className="underline underline-offset-2">Set Global Config</a></li>
+              <li><a href="#config" className="underline underline-offset-2">Set Per-Stream Config</a></li>
+              <li><a href="#signup" className="underline underline-offset-2">Track sign_up events</a></li>
+              <li><a href="#lead-gen" className="underline underline-offset-2">Track generate_lead events</a></li>
+              <li><a href="#get" className="underline underline-offset-2">Read values with get</a></li>
+              <li><a href="#consent" className="underline underline-offset-2">Update consent</a></li>
+              <li><a href="#tests" className="underline underline-offset-2">Dedicated test routes</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-      <div className="mt-10 rounded-lg border border-slate-200 bg-white p-4">
-        <p className="text-sm text-slate-500">
-          Page views are sent automatically on each route change. Use the demo pages above to fire
-          custom events; with a real GA4 measurement ID you can see them in DebugView.
-        </p>
+      <div className="mt-10">
+        <HomeFeatureSections />
       </div>
     </div>
   );
