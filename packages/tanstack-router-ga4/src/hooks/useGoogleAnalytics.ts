@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { initGtag } from "./initGtag.js";
+import { initGtag } from "../lib/initGtag.js";
 
 type GoogleAnalyticsPrimitive = string | number | boolean | null;
 
@@ -10,6 +10,9 @@ export type GoogleAnalyticsParameterValue =
 
 export type GoogleAnalyticsEventParams = Record<string, GoogleAnalyticsParameterValue | undefined>;
 
+/**
+ * @see https://developers.google.com/analytics/devguides/collection/ga4/reference/config
+ */
 export type GoogleAnalyticsConfig = {
   allow_ad_personalization_signals?: boolean;
   allow_google_signals?: boolean;

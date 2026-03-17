@@ -12,8 +12,10 @@
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "tanstack-router-ga4": ["../tanstack-router-ga4/src/index.ts"]
     }
   }
 }

@@ -1,12 +1,13 @@
 {
-  "name": "example-demo",
+  "name": "example-website",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "tsc": "tsc --noEmit",
     "dev": "vite dev --port 3000 --strictPort",
     "preview": "vite preview",
-    "test": "echo \"No tests yet\""
+    "test": "vitest run"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.132.0",
@@ -15,7 +16,7 @@
     "nitro": "npm:nitro-nightly@latest",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "tanstack-router-google-analytics": "workspace:*",
+    "tanstack-router-ga4": "workspace:*",
     "vite-tsconfig-paths": "^6.0.2"
   },
   "devDependencies": {

@@ -16,10 +16,10 @@ describe("GoogleAnalytics", () => {
 
   beforeEach(() => {
     mockGtag.mockClear();
-    const win = globalThis.window as Window & { gtag?: typeof mockGtag; dataLayer: unknown[] };
+    const win = globalThis.window as unknown as Window & { gtag?: typeof mockGtag; dataLayer: unknown[] };
     win.dataLayer = [];
     win.gtag = mockGtag;
-    appendChildSpy = vi.spyOn(document.head, "appendChild").mockImplementation(() => null);
+    appendChildSpy = vi.spyOn(document.head, "appendChild").mockImplementation(() => document.createElement("div"));
   });
 
   afterEach(() => {
@@ -57,7 +57,7 @@ describe("GoogleAnalytics", () => {
 
     await waitFor(() => {
       expect(appendChildSpy).toHaveBeenCalled();
-      const scriptElement = appendChildSpy.mock.calls.find((call) =>
+      const scriptElement = appendChildSpy.mock.calls.find((call: [Node]) =>
         (call[0] as HTMLScriptElement)?.src?.includes("googletagmanager.com"),
       )?.[0] as HTMLScriptElement | undefined;
       expect(scriptElement).toBeDefined();
@@ -67,14 +67,14 @@ describe("GoogleAnalytics", () => {
 
   describe("dataLayer integration (Strategy 2)", () => {
     beforeEach(() => {
-      const win = globalThis.window as Window & { gtag?: typeof mockGtag; dataLayer: unknown[] };
+      const win = globalThis.window as unknown as Window & { gtag?: typeof mockGtag; dataLayer: unknown[] };
       win.dataLayer = [];
       // Use real gtag shape that pushes to dataLayer (as the component does)
       win.gtag = ((...args: unknown[]) => {
         win.dataLayer.push(args);
       }) as typeof mockGtag;
       appendChildSpy.mockRestore();
-      appendChildSpy = vi.spyOn(document.head, "appendChild").mockImplementation(() => null);
+      appendChildSpy = vi.spyOn(document.head, "appendChild").mockImplementation(() => document.createElement("div"));
     });
 
     it("pushes config and page_view to dataLayer when mounted", async () => {

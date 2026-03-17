@@ -8,7 +8,7 @@ export function Header() {
           to="/"
           className="text-lg font-semibold text-slate-800 hover:text-slate-600"
         >
-          tanstack-router-google-analytics
+          tanstack-router-ga4
         </Link>
         <nav className="flex items-center gap-6">
           <Link
@@ -31,6 +31,13 @@ export function Header() {
             activeProps={{ className: "font-medium text-slate-900" }}
           >
             Sign up
+          </Link>
+          <Link
+            to="/register-user"
+            className="text-slate-600 hover:text-slate-900"
+            activeProps={{ className: "font-medium text-slate-900" }}
+          >
+            Register user
           </Link>
         </nav>
       </div>

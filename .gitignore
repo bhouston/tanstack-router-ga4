@@ -18,9 +18,10 @@ tsconfig.tsbuildinfo
 .output
 .nitro
 .tanstack
-# Playwright
+# Playwright / E2E
 test-results
 playwright-report
 playwright/.cache
 blob-report
+**/e2e/__screenshots__
 bhouston-general-hosting-7c5255afe1ce.json

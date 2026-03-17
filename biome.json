@@ -3,7 +3,6 @@
   "files": {
     "includes": [
       "packages/*/src/**/*",
-      "examples/*/src/**/*",
       "**/package.json",
       "**/vite*.config.ts",
       "!**/routeTree.gen.ts"

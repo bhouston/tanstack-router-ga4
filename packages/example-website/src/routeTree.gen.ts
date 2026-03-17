@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as RegisterUserRouteImport } from './routes/register-user'
 import { Route as LeadGenRouteImport } from './routes/lead-gen'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterUserRoute = RegisterUserRouteImport.update({
+  id: '/register-user',
+  path: '/register-user',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeadGenRoute = LeadGenRouteImport.update({
@@ -32,30 +38,34 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/lead-gen': typeof LeadGenRoute
+  '/register-user': typeof RegisterUserRoute
   '/signup': typeof SignupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/lead-gen': typeof LeadGenRoute
+  '/register-user': typeof RegisterUserRoute
   '/signup': typeof SignupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/lead-gen': typeof LeadGenRoute
+  '/register-user': typeof RegisterUserRoute
   '/signup': typeof SignupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lead-gen' | '/signup'
+  fullPaths: '/' | '/lead-gen' | '/register-user' | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lead-gen' | '/signup'
-  id: '__root__' | '/' | '/lead-gen' | '/signup'
+  to: '/' | '/lead-gen' | '/register-user' | '/signup'
+  id: '__root__' | '/' | '/lead-gen' | '/register-user' | '/signup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LeadGenRoute: typeof LeadGenRoute
+  RegisterUserRoute: typeof RegisterUserRoute
   SignupRoute: typeof SignupRoute
 }
 
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register-user': {
+      id: '/register-user'
+      path: '/register-user'
+      fullPath: '/register-user'
+      preLoaderRoute: typeof RegisterUserRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lead-gen': {
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LeadGenRoute: LeadGenRoute,
+  RegisterUserRoute: RegisterUserRoute,
   SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport

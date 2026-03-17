@@ -1,5 +1,5 @@
 {
-  "name": "tanstack-router-google-analytics",
+  "name": "tanstack-router-ga4",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -15,6 +15,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "tsc": "tsc --noEmit",
     "dev": "tsc -p tsconfig.build.json --watch",
     "test": "vitest run"
   },
@@ -31,6 +32,6 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "typescript": "^5.9.2",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.0"
   }
 }

@@ -8,7 +8,7 @@ function IndexPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
       <h1 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">
-        tanstack-router-google-analytics
+        tanstack-router-ga4
       </h1>
       <p className="mb-4 text-slate-600 leading-relaxed">
         Google Analytics (GA4) React integration for{" "}
@@ -57,6 +57,27 @@ function IndexPage() {
           </Link>
           — trigger a <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code> event
         </li>
+        <li>
+          <Link
+            to="/register-user"
+            className="font-medium text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
+          >
+            Register user
+          </Link>
+          — set
+          {" "}
+          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_id</code>
+          {" "}
+          and
+          {" "}
+          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_properties</code>
+          {" "}
+          in GA, then track a
+          {" "}
+          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code>
+          {" "}
+          event
+        </li>
       </ul>
 
       <h2 className="mb-3 text-xl font-semibold text-slate-900">
@@ -66,23 +87,23 @@ function IndexPage() {
         <p className="text-slate-600">
           <span className="font-medium text-slate-800">npm:</span>{" "}
           <a
-            href="https://www.npmjs.com/package/tanstack-router-google-analytics"
+            href="https://www.npmjs.com/package/tanstack-router-ga4"
             target="_blank"
             rel="noopener noreferrer"
             className="font-mono text-sm text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
           >
-            tanstack-router-google-analytics
+            tanstack-router-ga4
           </a>
         </p>
         <p className="text-slate-600">
           <span className="font-medium text-slate-800">GitHub:</span>{" "}
           <a
-            href="https://github.com/bhouston/tanstack-router-google-analytics"
+            href="https://github.com/bhouston/tanstack-router-ga4"
             target="_blank"
             rel="noopener noreferrer"
             className="text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"
           >
-            github.com/bhouston/tanstack-router-google-analytics
+            github.com/bhouston/tanstack-router-ga4
           </a>
         </p>
       </div>

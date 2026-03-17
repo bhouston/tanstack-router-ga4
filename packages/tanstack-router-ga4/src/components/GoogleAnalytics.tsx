@@ -1,7 +1,7 @@
 import { ClientOnly, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { initGtag } from "./initGtag.js";
-import type { GoogleAnalyticsConfig } from "./useGoogleAnalytics.js";
+import { initGtag } from "../lib/initGtag.js";
+import type { GoogleAnalyticsConfig } from "../hooks/useGoogleAnalytics.js";
 
 type GoogleAnalyticsProps = {
   config?: GoogleAnalyticsConfig;

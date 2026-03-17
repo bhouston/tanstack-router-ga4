@@ -31,9 +31,9 @@ describe("useGoogleAnalytics", () => {
     // Simulate SSR: trackEvent is called when gtag is not available. We cannot stub
     // window to undefined (React/DOM need it), so we remove gtag after render.
     const { result } = renderHook(() => useGoogleAnalytics());
-    const win = globalThis.window as Window & { gtag?: typeof mockGtag };
+    const win = globalThis.window as unknown as Window & { gtag?: typeof mockGtag };
     const savedGtag = win.gtag;
-    win.gtag = undefined;
+    delete (win as unknown as Record<string, unknown>).gtag;
 
     expect(() => {
       act(() => {
@@ -42,7 +42,9 @@ describe("useGoogleAnalytics", () => {
     }).not.toThrow();
     expect(mockGtag).not.toHaveBeenCalled();
 
-    win.gtag = savedGtag;
+    if (savedGtag !== undefined) {
+      win.gtag = savedGtag;
+    }
   });
 
   it("calls gtag with recommended event and typed params", () => {
