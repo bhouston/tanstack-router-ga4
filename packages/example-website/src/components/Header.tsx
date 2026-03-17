@@ -23,11 +23,11 @@ export function Header() {
             href="https://www.npmjs.com/package/tanstack-router-ga4"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+            className="rounded-lg p-2 text-[#cb3837] transition hover:bg-red-50 hover:text-[#a62b2b]"
           >
             <span className="sr-only">npm package</span>
             <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
-              <path d="M2 7.5v9h10.5V18H15v-1.5h1.5v-9Zm10.5 7.5H11V10.5H9.5V15H8V9h4.5Zm6-4.5H17V15h-1.5v-4.5H14V9h4.5Z" />
+              <path d="M1.5 7.5v9h6v-4.5h3v4.5h12v-9Zm4.5 7.5H3V9h3Zm6 0H9V9h4.5v6Zm7.5 0H15V9h6v6Z" />
             </svg>
           </a>
         </div>
