@@ -4,6 +4,7 @@
   "description": "Google Analytics (GA4) integration for TanStack Router and TanStack Start.",
   "author": "Ben Houston (https://benhouston3d.com)",
   "license": "MIT",
+  "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

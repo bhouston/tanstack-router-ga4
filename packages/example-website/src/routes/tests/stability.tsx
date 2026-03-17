@@ -12,16 +12,19 @@ function StabilityFixturePage() {
   const [loadCount, setLoadCount] = useState(0);
   const [eventCount, setEventCount] = useState(0);
 
-  const loadFixtureExample = useCallback(async (exampleName: string) => {
-    if (!exampleName) return;
+  const loadFixtureExample = useCallback(
+    async (exampleName: string) => {
+      if (!exampleName) return;
 
-    await Promise.resolve();
-    setLoadCount((count) => count + 1);
-    ga.event("stability_fixture_load", {
-      example_name: exampleName,
-    });
-    setEventCount((count) => count + 1);
-  }, [ga]);
+      await Promise.resolve();
+      setLoadCount((count) => count + 1);
+      ga.event("stability_fixture_load", {
+        example_name: exampleName,
+      });
+      setEventCount((count) => count + 1);
+    },
+    [ga],
+  );
 
   useEffect(() => {
     if (!selectedFixtureExample) return;
@@ -55,7 +58,9 @@ function StabilityFixturePage() {
             <option value="blouberg_sunrise_2_1k.hdr">Blouberg Sunrise</option>
             <option value="reference_gradient.exr">Reference Gradient</option>
           </select>
-          <p className="text-sm text-slate-600">Selected example: {selectedFixtureExample || "(none)"}</p>
+          <p className="text-sm text-slate-600">
+            Selected example: {selectedFixtureExample || "(none)"}
+          </p>
           <p className="text-sm text-slate-600">Load count: {loadCount}</p>
           <p className="text-sm text-slate-600">Event count: {eventCount}</p>
         </div>
