@@ -19,9 +19,7 @@ export type GoogleAnalyticsCommandEvent = {
   (eventName: string, params?: GoogleAnalyticsEventParams): void;
 };
 
-export type GoogleAnalyticsCommandSet = {
-  (params: GoogleAnalyticsSetParams): void;
-};
+export type GoogleAnalyticsCommandSet = (params: GoogleAnalyticsSetParams) => void;
 
 export type GoogleAnalyticsCommandConfig = (
   measurementId: string,
@@ -66,14 +64,11 @@ export function useGoogleAnalytics() {
     [],
   );
 
-  const set = useCallback<GoogleAnalyticsCommandSet>(
-    (params: GoogleAnalyticsSetParams) => {
-      if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        window.gtag("set", params);
-      }
-    },
-    [],
-  );
+  const set = useCallback<GoogleAnalyticsCommandSet>((params: GoogleAnalyticsSetParams) => {
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("set", params);
+    }
+  }, []);
 
   const event = useCallback<GoogleAnalyticsCommandEvent>(
     (eventName: string, params?: GoogleAnalyticsEventParams) => {

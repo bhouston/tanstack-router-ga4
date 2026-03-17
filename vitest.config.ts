@@ -38,10 +38,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "tanstack-router-ga4": path.join(
-        rootDir,
-        "packages/tanstack-router-ga4/src/index.ts",
-      ),
+      "tanstack-router-ga4": path.join(rootDir, "packages/tanstack-router-ga4/src/index.ts"),
     },
   },
 });

@@ -1,4 +1,4 @@
-import { useCallback, useState, type ReactNode } from "react";
+import { type ReactNode, useCallback, useState } from "react";
 import type { GoogleAnalyticsConsentParams } from "tanstack-router-ga4";
 import { useGoogleAnalytics } from "tanstack-router-ga4";
 import { DEMO_MEASUREMENT_ID } from "../lib/googleAnalytics";
@@ -406,7 +406,8 @@ ga.event("sign_up", { method: "email" });`}
           <p>
             Use <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">config()</code> when you
             need per-measurement stream settings. If your app sends data to multiple streams,
-            configure each <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">measurementId</code>{" "}
+            configure each{" "}
+            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">measurementId</code>{" "}
             individually instead of relying only on global{" "}
             <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">set()</code> values.
           </p>
@@ -432,8 +433,9 @@ ga.config("G-MARKETING", {
         description={
           <p>
             Call <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">event()</code> with the
-            recommended GA4 <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code>{" "}
-            event name and any typed params.
+            recommended GA4{" "}
+            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code> event name and
+            any typed params.
           </p>
         }
         code={`const ga = useGoogleAnalytics();
@@ -470,8 +472,8 @@ ga.event("generate_lead", {
         title="Read values with get"
         description={
           <p>
-            The <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">get()</code> command reads
-            callback-based values such as{" "}
+            The <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">get()</code> command
+            reads callback-based values such as{" "}
             <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">client_id</code>.
           </p>
         }
@@ -489,8 +491,8 @@ ga.get("G-XXXXXXXXXX", "client_id", (value) => {
         title="Update consent"
         description={
           <p>
-            Call <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">consent()</code> when the
-            user updates their privacy preferences.
+            Call <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">consent()</code> when
+            the user updates their privacy preferences.
           </p>
         }
         code={`const ga = useGoogleAnalytics();

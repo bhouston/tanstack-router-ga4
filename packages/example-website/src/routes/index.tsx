@@ -38,9 +38,9 @@ function IndexPage() {
           >
             TanStack Start
           </a>{" "}
-          without wiring up fragile route listeners or untyped analytics helpers yourself. You get automatic{" "}
-          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">page_view</code> tracking,
-          typed event helpers, and a setup that fits naturally into real app shells.
+          without wiring up fragile route listeners or untyped analytics helpers yourself. You get
+          automatic <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">page_view</code>{" "}
+          tracking, typed event helpers, and a setup that fits naturally into real app shells.
         </p>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           <div className="rounded-xl bg-slate-50 p-5">
@@ -48,8 +48,9 @@ function IndexPage() {
               Automatic tracking
             </h2>
             <p className="mt-3 text-sm leading-6 text-slate-700">
-              Record route-based <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">page_view</code>{" "}
-              events automatically across client-side navigation.
+              Record route-based{" "}
+              <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">page_view</code> events
+              automatically across client-side navigation.
             </p>
           </div>
           <div className="rounded-xl bg-slate-50 p-5">
@@ -58,8 +59,8 @@ function IndexPage() {
             </h2>
             <p className="mt-3 text-sm leading-6 text-slate-700">
               Track <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">sign_up</code>,{" "}
-              <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">generate_lead</code>, consent,
-              config, and custom events with TypeScript support.
+              <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">generate_lead</code>,
+              consent, config, and custom events with TypeScript support.
             </p>
           </div>
           <div className="rounded-xl bg-slate-50 p-5">
@@ -67,7 +68,8 @@ function IndexPage() {
               Built for real apps
             </h2>
             <p className="mt-3 text-sm leading-6 text-slate-700">
-              Works cleanly with TanStack Start, SSR-friendly root documents, and tested route flows.
+              Works cleanly with TanStack Start, SSR-friendly root documents, and tested route
+              flows.
             </p>
           </div>
         </div>
@@ -77,14 +79,46 @@ function IndexPage() {
               Table of contents
             </h2>
             <ul className="mt-4 grid gap-2 text-slate-700">
-              <li><a href="#setup" className="underline underline-offset-2">Set up GoogleAnalytics</a></li>
-              <li><a href="#set" className="underline underline-offset-2">Set Global Config</a></li>
-              <li><a href="#config" className="underline underline-offset-2">Set Per-Stream Config</a></li>
-              <li><a href="#signup" className="underline underline-offset-2">Track sign_up events</a></li>
-              <li><a href="#lead-gen" className="underline underline-offset-2">Track generate_lead events</a></li>
-              <li><a href="#get" className="underline underline-offset-2">Read values with get</a></li>
-              <li><a href="#consent" className="underline underline-offset-2">Update consent</a></li>
-              <li><a href="#tests" className="underline underline-offset-2">Dedicated test routes</a></li>
+              <li>
+                <a href="#setup" className="underline underline-offset-2">
+                  Set up GoogleAnalytics
+                </a>
+              </li>
+              <li>
+                <a href="#set" className="underline underline-offset-2">
+                  Set Global Config
+                </a>
+              </li>
+              <li>
+                <a href="#config" className="underline underline-offset-2">
+                  Set Per-Stream Config
+                </a>
+              </li>
+              <li>
+                <a href="#signup" className="underline underline-offset-2">
+                  Track sign_up events
+                </a>
+              </li>
+              <li>
+                <a href="#lead-gen" className="underline underline-offset-2">
+                  Track generate_lead events
+                </a>
+              </li>
+              <li>
+                <a href="#get" className="underline underline-offset-2">
+                  Read values with get
+                </a>
+              </li>
+              <li>
+                <a href="#consent" className="underline underline-offset-2">
+                  Update consent
+                </a>
+              </li>
+              <li>
+                <a href="#tests" className="underline underline-offset-2">
+                  Dedicated test routes
+                </a>
+              </li>
             </ul>
           </div>
         </div>
