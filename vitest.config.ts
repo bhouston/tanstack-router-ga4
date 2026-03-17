@@ -6,7 +6,6 @@ const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   test: {
-    globalSetup: [path.join(rootDir, "scripts", "e2e-server.ts")],
     projects: [
       {
         name: "library",
@@ -29,6 +28,7 @@ export default defineConfig({
       {
         name: "demo",
         test: {
+          globalSetup: [path.join(rootDir, "scripts", "e2e-server.ts")],
           include: ["packages/example-website/e2e/**/*.test.ts"],
           environment: "node",
           testTimeout: 60_000,

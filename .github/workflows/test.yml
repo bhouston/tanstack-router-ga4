@@ -45,7 +45,7 @@ jobs:
         run: pnpm test
 
       - name: Run tests with coverage
-        run: pnpm exec vitest run --coverage
+        run: pnpm exec vitest run --coverage packages/tanstack-router-ga4/src/**/*.test.ts packages/tanstack-router-ga4/src/**/*.test.tsx
 
       - name: Find coverage files
         id: coverage

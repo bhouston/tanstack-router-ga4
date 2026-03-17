@@ -8,7 +8,7 @@
     "build": "pnpm -r build",
     "tsc": "pnpm -r tsc",
     "dev": "pnpm --parallel --filter tanstack-router-ga4 --filter example-website dev",
-    "test": "vitest run",
+    "test": "pnpm tsc && vitest run",
     "test:e2e:headed": "HEADED=1 vitest run --project demo",
     "lint": "biome check .",
     "format": "biome check --write .",
@@ -17,12 +17,13 @@
   "devDependencies": {
     "@biomejs/biome": "^2.3.4",
     "@playwright/test": "^1.58.2",
-    "@vitest/browser-playwright": "^4.0.0",
-    "playwright": "^1.58.2",
     "@types/node": "^24.0.0",
+    "@vitest/browser-playwright": "^4.0.0",
     "@vitest/coverage-v8": "^4.1.0",
     "jsdom": "^25.0.0",
+    "playwright": "^1.58.2",
     "typescript": "^5.9.2",
+    "vite": "^7.3.1",
     "vitest": "^4.1.0"
   },
   "engines": {

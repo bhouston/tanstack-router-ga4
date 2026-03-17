@@ -2,8 +2,12 @@ import { spawn } from "node:child_process";
 import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createServer, type ViteDevServer } from "vite";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const exampleWebsiteDir = path.join(rootDir, "packages", "example-website");
+const exampleWebsiteViteConfig = path.join(exampleWebsiteDir, "vite.config.ts");
+const librarySourceEntry = path.join(rootDir, "packages", "tanstack-router-ga4", "src", "index.ts");
 const DEMO_URL = "http://localhost:3000";
 const DEMO_PORT = 3000;
 const WAIT_TIMEOUT_MS = 120_000;
@@ -85,8 +89,26 @@ async function waitForUrl(url: string, timeoutMs: number): Promise<void> {
   throw new Error(`Server at ${url} did not become ready within ${timeoutMs}ms`);
 }
 
+async function createDemoServer(): Promise<ViteDevServer> {
+  return createServer({
+    appType: "spa",
+    configFile: exampleWebsiteViteConfig,
+    resolve: {
+      alias: {
+        "tanstack-router-ga4": librarySourceEntry,
+      },
+    },
+    root: exampleWebsiteDir,
+    server: {
+      host: "127.0.0.1",
+      port: DEMO_PORT,
+      strictPort: true,
+    },
+  });
+}
+
 export default async function setup(): Promise<() => void> {
-  let devProcess: ReturnType<typeof spawn> | null = null;
+  let viteServer: ViteDevServer | null = null;
 
   const occupantDetails = await getPortOccupantDetails(DEMO_PORT);
   if (occupantDetails) {
@@ -108,39 +130,15 @@ export default async function setup(): Promise<() => void> {
     );
   }
 
-  await new Promise<void>((resolve, reject) => {
-    const tsc = spawn("pnpm", ["run", "tsc"], {
-      cwd: rootDir,
-      stdio: "inherit",
-      shell: true,
-    });
-    tsc.on("error", reject);
-    tsc.on("exit", (code) => {
-      if (code !== 0) {
-        reject(new Error(`pnpm tsc exited with ${code}`));
-        return;
-      }
-      devProcess = spawn("pnpm", ["run", "dev"], {
-        cwd: rootDir,
-        stdio: "pipe",
-        shell: true,
-      });
-      devProcess.on("error", reject);
-      devProcess.on("exit", (c) => {
-        if (c !== 0 && c !== null && devProcess !== null) {
-          reject(new Error(`pnpm dev exited with ${c}`));
-        }
-      });
-      resolve();
-    });
-  });
+  viteServer = await createDemoServer();
+  await viteServer.listen();
 
   await waitForUrl(DEMO_URL, WAIT_TIMEOUT_MS);
 
-  return function teardown() {
-    if (devProcess?.pid) {
-      devProcess.kill("SIGTERM");
-      devProcess = null;
+  return async function teardown() {
+    if (viteServer) {
+      await viteServer.close();
+      viteServer = null;
     }
   };
 }
