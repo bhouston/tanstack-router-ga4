@@ -80,9 +80,9 @@ function SignupForm() {
 
 `useGoogleAnalytics()` exposes typed wrappers around the core `gtag` commands:
 
+- `set(config)` for global config
+- `config(measurementId, config?)` for per-stream config
 - `event(name, params?)` for recommended and custom events
-- `config(measurementId, config?)` for per-ID settings
-- `set(params)` for global params
 - `get(measurementId, fieldName, callback?)` for callback-based reads like `client_id`
 - `consent('default' | 'update', params)` for consent mode updates
 
