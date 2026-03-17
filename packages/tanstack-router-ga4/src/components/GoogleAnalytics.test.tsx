@@ -96,6 +96,29 @@ describe("GoogleAnalytics", () => {
     });
   });
 
+  it("reuses an existing gtag loader script for a different measurement ID", async () => {
+    const existingScript = document.createElement("script");
+    existingScript.src = "https://www.googletagmanager.com/gtag/js?id=G-FIRST";
+    document.head.insertAdjacentElement("beforeend", existingScript);
+
+    appendChildSpy.mockClear();
+
+    render(<GoogleAnalytics measurementId="G-SECOND" />);
+
+    await waitFor(() => {
+      expect(mockGtag).toHaveBeenCalledWith("config", "G-SECOND", {
+        send_page_view: false,
+      });
+    });
+
+    const appendedLoaderScripts = appendChildSpy.mock.calls.filter((call: [Node]) =>
+      (call[0] as HTMLScriptElement)?.src?.includes("googletagmanager.com/gtag/js"),
+    );
+    expect(appendedLoaderScripts).toHaveLength(0);
+
+    existingScript.remove();
+  });
+
   describe("dataLayer integration (Strategy 2)", () => {
     beforeEach(() => {
       const win = globalThis.window as unknown as Window & {
