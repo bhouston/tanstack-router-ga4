@@ -1,12 +1,34 @@
 {
   "name": "tanstack-router-ga4",
-  "version": "0.4.1",
+  "version": "0.4.2",
+  "description": "Google Analytics (GA4) integration for TanStack Router and TanStack Start.",
+  "author": "Ben Houston (https://benhouston3d.com)",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "keywords": [
+    "google-analytics",
+    "ga4",
+    "analytics",
+    "tanstack-router",
+    "tanstack-start",
+    "react",
+    "gtag",
+    "typescript"
+  ],
+  "homepage": "https://tanstack-router-ga4.benhouston3d.com",
+  "bugs": {
+    "url": "https://github.com/bhouston/tanstack-router-ga4/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhouston/tanstack-router-ga4.git",
+    "directory": "packages/tanstack-router-ga4"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
