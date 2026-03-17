@@ -18,6 +18,7 @@ Live demo: [tanstack-router-ga4.benhouston3d.com](https://tanstack-router-ga4.be
 - Supports supports advanced features like user-session assocation, consents and queries (`get`.)
 - Designed for TanStack Router and TanStack Start with correct behavior across client-side navigation and SSR
 - Full test suite with unit/integration coverage and browser-based E2E tests
+- Ultra small bundles (minified/gzipped) to less than 1KB.
 
 ## Install
 

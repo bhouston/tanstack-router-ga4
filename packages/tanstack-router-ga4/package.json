@@ -1,6 +1,6 @@
 {
   "name": "tanstack-router-ga4",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Google Analytics (GA4) integration for TanStack Router and TanStack Start.",
   "author": "Ben Houston (https://benhouston3d.com)",
   "license": "MIT",
