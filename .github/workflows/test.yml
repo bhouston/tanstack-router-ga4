@@ -47,29 +47,12 @@ jobs:
       - name: Run tests with coverage
         run: pnpm exec vitest run --coverage packages/tanstack-router-ga4/src/**/*.test.ts packages/tanstack-router-ga4/src/**/*.test.tsx
 
-      - name: Find coverage files
-        id: coverage
-        run: |
-          echo "Searching for coverage files..."
-          find . -name "lcov.info" -type f | head -20
-          COVERAGE_FILES=$(find . -name "lcov.info" -type f | tr '\n' ',' | sed 's/,$//')
-          if [ -z "$COVERAGE_FILES" ]; then
-            echo "No coverage files found"
-            echo "has_coverage=false" >> $GITHUB_OUTPUT
-          else
-            echo "Found coverage files: $COVERAGE_FILES"
-            echo "has_coverage=true" >> $GITHUB_OUTPUT
-            echo "files=$COVERAGE_FILES" >> $GITHUB_OUTPUT
-          fi
-
       - name: Upload coverage reports to Codecov
-        if: steps.coverage.outputs.has_coverage == 'true'
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ${{ steps.coverage.outputs.files }}
+          files: ./coverage/lcov.info
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
-          directory: ./
           verbose: true
