@@ -26,7 +26,7 @@ pnpm add tanstack-router-ga4
 
 ## Usage
 
-Mount the component in your app (e.g. root layout) so every route gets automatic page views, and use the hook for custom events:
+Mount the component in your app (e.g. root layout) so every route gets automatic page views, and use the hook as a typed wrapper over the core `gtag` commands.
 
 ```tsx
 import { GoogleAnalytics, useGoogleAnalytics } from "tanstack-router-ga4";
@@ -45,10 +45,10 @@ function RootLayout() {
 
 // In any component — track custom events
 function SignupForm() {
-  const { trackEvent } = useGoogleAnalytics();
+  const ga = useGoogleAnalytics();
 
   const handleSubmit = () => {
-    trackEvent("sign_up", { method: "email" });
+    ga.event("sign_up", { method: "email" });
   };
 
   return <button onClick={handleSubmit}>Sign up</button>;
@@ -58,57 +58,35 @@ function SignupForm() {
 User identity registration example (`user_id` + `user_properties`):
 
 ```tsx
-import { useState } from "react";
 import { GoogleAnalytics, useGoogleAnalytics } from "tanstack-router-ga4";
 
 function AppShell() {
-  const [gaUser, setGaUser] = useState<null | {
-    id: string;
-    email: string;
-    username: string;
-  }>(null);
-
   return (
     <>
-      <GoogleAnalytics
-        measurementId="G-XXXXXXXXXX"
-        config={
-          gaUser
-            ? {
-                user_id: gaUser.id,
-                user_properties: {
-                  email: gaUser.email,
-                  username: gaUser.username,
-                },
-              }
-            : undefined
-        }
-      />
-      <RegisterUserButton onRegistered={setGaUser} />
+      <GoogleAnalytics measurementId="G-XXXXXXXXXX" />
+      <RegisterUserButton />
     </>
   );
 }
 
-function RegisterUserButton({
-  onRegistered,
-}: {
-  onRegistered: (user: { id: string; email: string; username: string }) => void;
-}) {
-  const { trackEvent } = useGoogleAnalytics();
+function RegisterUserButton() {
+  const ga = useGoogleAnalytics();
 
   const handleRegisterUser = async () => {
     // Example API call to create a user account
     const user = await registerUser({ email: "ada@example.com", password: "secure-password" });
 
-    // Register the current GA user so subsequent events can be associated
-    onRegistered({
-      id: user.id,
-      email: user.email,
-      username: user.username,
+    // Update global GA params for subsequent events
+    ga.set({
+      user_id: user.id,
+      user_properties: {
+        email: user.email,
+        username: user.username,
+      },
     });
 
     // Optionally track completed registration
-    trackEvent("sign_up", { method: "email" });
+    ga.event("sign_up", { method: "email" });
   };
 
   return <button onClick={handleRegisterUser}>Register user in GA</button>;
@@ -123,6 +101,38 @@ Optional config (e.g. `debug_mode`, `user_id`):
   config={{ debug_mode: true }}
 />
 ```
+
+Optional consent defaults:
+
+```tsx
+<GoogleAnalytics
+  measurementId="G-XXXXXXXXXX"
+  consentDefaults={{
+    analytics_storage: "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    wait_for_update: 2000,
+  }}
+/>
+```
+
+### Hook API
+
+`useGoogleAnalytics()` exposes typed wrappers around the core `gtag` commands:
+
+- `event(name, params?)` for recommended and custom events
+- `config(measurementId, config?)` for per-ID settings
+- `set(params)` for global params
+- `get(measurementId, fieldName, callback?)` for callback-based reads like `client_id`
+- `consent('default' | 'update', params)` for consent mode updates
+
+### SPA notes
+
+- Repeated `config()` calls in SPAs should generally include `send_page_view: false` to avoid duplicate automatic page views.
+- Use `set()` for session-wide values like a logged-in `user_id` when you want to avoid repeating the measurement ID.
+- Runtime `config()` updates may be ignored if your GA4 stream has "Ignore duplicate instances of on-page configuration" enabled.
+- Use `consentDefaults` on `GoogleAnalytics` when consent defaults must be applied before the initial `js` and `config` calls, then use `consent("update", ...)` after the user responds to your consent UI.
 
 ---
 

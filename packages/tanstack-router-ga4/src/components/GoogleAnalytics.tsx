@@ -1,15 +1,21 @@
 import { ClientOnly, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { useGoogleAnalytics } from "../hooks/useGoogleAnalytics.js";
 import { initGtag } from "../lib/initGtag.js";
-import type { GoogleAnalyticsConfig } from "../hooks/useGoogleAnalytics.js";
+import type {
+  GoogleAnalyticsConfig,
+  GoogleAnalyticsConsentParams,
+} from "../types/googleAnalytics.js";
 
 type GoogleAnalyticsProps = {
   config?: GoogleAnalyticsConfig;
+  consentDefaults?: GoogleAnalyticsConsentParams;
   measurementId: string;
 };
 
-const GoogleAnalyticsInner = ({ config, measurementId }: GoogleAnalyticsProps) => {
+const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: GoogleAnalyticsProps) => {
   const location = useLocation();
+  const ga = useGoogleAnalytics();
 
   // Initialize Google Analytics once: inject gtag script and set up dataLayer
   useEffect(() => {
@@ -29,26 +35,29 @@ const GoogleAnalyticsInner = ({ config, measurementId }: GoogleAnalyticsProps) =
       document.head.appendChild(script);
     }
 
+    if (consentDefaults) {
+      window.gtag("consent", "default", consentDefaults);
+    }
+
     // Disable automatic page_view so we can send manual page views on route change
     window.gtag("js", new Date());
     window.gtag("config", measurementId, {
       ...config,
       send_page_view: false,
     });
-  }, [config, measurementId]);
+  }, [config, consentDefaults, measurementId]);
 
   // Track page views on route changes
   useEffect(() => {
-    if (!measurementId || typeof window === "undefined" || typeof window.gtag !== "function")
-      return;
+    if (!measurementId) return;
 
-    window.gtag("event", "page_view", {
+    ga.event("page_view", {
       page_path: location.pathname,
       page_location: window.location.href,
       page_title: document.title,
       page_referrer: document.referrer || undefined,
     });
-  }, [location.pathname, measurementId]);
+  }, [ga, location.pathname, measurementId]);
 
   return null;
 };

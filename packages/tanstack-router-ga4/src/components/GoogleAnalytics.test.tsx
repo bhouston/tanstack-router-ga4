@@ -16,10 +16,15 @@ describe("GoogleAnalytics", () => {
 
   beforeEach(() => {
     mockGtag.mockClear();
-    const win = globalThis.window as unknown as Window & { gtag?: typeof mockGtag; dataLayer: unknown[] };
+    const win = globalThis.window as unknown as Window & {
+      gtag?: typeof mockGtag;
+      dataLayer: unknown[];
+    };
     win.dataLayer = [];
     win.gtag = mockGtag;
-    appendChildSpy = vi.spyOn(document.head, "appendChild").mockImplementation(() => document.createElement("div"));
+    appendChildSpy = vi
+      .spyOn(document.head, "appendChild")
+      .mockImplementation(() => document.createElement("div"));
   });
 
   afterEach(() => {
@@ -36,6 +41,32 @@ describe("GoogleAnalytics", () => {
         send_page_view: false,
       });
     });
+  });
+
+  it("applies consent defaults before js and config", async () => {
+    render(
+      <GoogleAnalytics
+        measurementId="G-DEMO"
+        consentDefaults={{
+          analytics_storage: "denied",
+          ad_storage: "denied",
+        }}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(mockGtag).toHaveBeenCalledWith("consent", "default", {
+        analytics_storage: "denied",
+        ad_storage: "denied",
+      });
+    });
+
+    const consentCall = mockGtag.mock.calls.findIndex((call) => call[0] === "consent");
+    const jsCall = mockGtag.mock.calls.findIndex((call) => call[0] === "js");
+    const configCall = mockGtag.mock.calls.findIndex((call) => call[0] === "config");
+    expect(consentCall).toBeGreaterThanOrEqual(0);
+    expect(jsCall).toBeGreaterThan(consentCall);
+    expect(configCall).toBeGreaterThan(jsCall);
   });
 
   it("sends page_view with current pathname (from useLocation mock)", async () => {
@@ -67,14 +98,19 @@ describe("GoogleAnalytics", () => {
 
   describe("dataLayer integration (Strategy 2)", () => {
     beforeEach(() => {
-      const win = globalThis.window as unknown as Window & { gtag?: typeof mockGtag; dataLayer: unknown[] };
+      const win = globalThis.window as unknown as Window & {
+        gtag?: typeof mockGtag;
+        dataLayer: unknown[];
+      };
       win.dataLayer = [];
       // Use real gtag shape that pushes to dataLayer (as the component does)
       win.gtag = ((...args: unknown[]) => {
         win.dataLayer.push(args);
       }) as typeof mockGtag;
       appendChildSpy.mockRestore();
-      appendChildSpy = vi.spyOn(document.head, "appendChild").mockImplementation(() => document.createElement("div"));
+      appendChildSpy = vi
+        .spyOn(document.head, "appendChild")
+        .mockImplementation(() => document.createElement("div"));
     });
 
     it("pushes config and page_view to dataLayer when mounted", async () => {
@@ -84,7 +120,11 @@ describe("GoogleAnalytics", () => {
         const dataLayer = (globalThis.window as Window & { dataLayer: unknown[] }).dataLayer;
         expect(dataLayer.length).toBeGreaterThanOrEqual(2);
         expect(dataLayer).toContainEqual(
-          expect.arrayContaining(["config", "G-DEMO", expect.objectContaining({ send_page_view: false })]),
+          expect.arrayContaining([
+            "config",
+            "G-DEMO",
+            expect.objectContaining({ send_page_view: false }),
+          ]),
         );
         expect(dataLayer).toContainEqual(
           expect.arrayContaining([

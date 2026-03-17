@@ -7,9 +7,7 @@ export const Route = createFileRoute("/")({
 function IndexPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">
-        tanstack-router-ga4
-      </h1>
+      <h1 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">tanstack-router-ga4</h1>
       <p className="mb-4 text-slate-600 leading-relaxed">
         Google Analytics (GA4) React integration for{" "}
         <a
@@ -29,15 +27,20 @@ function IndexPage() {
         >
           TanStack Start
         </a>
-        ). Sends <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">page_view</code> events on
-        route changes and exposes a <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">useGoogleAnalytics()</code> hook
-        for custom events. Uses TanStack Router&apos;s <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">ClientOnly</code> for
-        SSR-safe mounting.
+        ). Sends <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">page_view</code>{" "}
+        events on route changes and exposes a{" "}
+        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">useGoogleAnalytics()</code>{" "}
+        hook with typed <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">event()</code>,{" "}
+        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">config()</code>,{" "}
+        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">set()</code>,{" "}
+        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">get()</code>, and{" "}
+        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">consent()</code> methods. Uses
+        TanStack Router&apos;s{" "}
+        <code className="rounded bg-slate-200 px-1.5 py-0.5 text-sm">ClientOnly</code> for SSR-safe
+        mounting.
       </p>
 
-      <h2 className="mb-3 mt-8 text-xl font-semibold text-slate-900">
-        Try the demo pages
-      </h2>
+      <h2 className="mb-3 mt-8 text-xl font-semibold text-slate-900">Try the demo pages</h2>
       <ul className="mb-8 space-y-2 text-slate-600">
         <li>
           <Link
@@ -46,7 +49,8 @@ function IndexPage() {
           >
             Lead gen
           </Link>
-          — trigger a <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">generate_lead</code> event
+          — trigger a{" "}
+          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">generate_lead</code> event
         </li>
         <li>
           <Link
@@ -55,7 +59,8 @@ function IndexPage() {
           >
             Sign up
           </Link>
-          — trigger a <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code> event
+          — trigger a <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code>{" "}
+          event
         </li>
         <li>
           <Link
@@ -64,25 +69,14 @@ function IndexPage() {
           >
             Register user
           </Link>
-          — set
-          {" "}
-          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_id</code>
-          {" "}
-          and
-          {" "}
-          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_properties</code>
-          {" "}
-          in GA, then track a
-          {" "}
-          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code>
-          {" "}
+          — set <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_id</code> and{" "}
+          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_properties</code> in GA,
+          then track a <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code>{" "}
           event
         </li>
       </ul>
 
-      <h2 className="mb-3 text-xl font-semibold text-slate-900">
-        Install &amp; links
-      </h2>
+      <h2 className="mb-3 text-xl font-semibold text-slate-900">Install &amp; links</h2>
       <div className="space-y-3">
         <p className="text-slate-600">
           <span className="font-medium text-slate-800">npm:</span>{" "}

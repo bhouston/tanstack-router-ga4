@@ -1,3 +1,24 @@
+declare global {
+  type Gtag = {
+    (command: "js", date: Date): void;
+    (command: "config", measurementId: string, config?: Record<string, unknown>): void;
+    (
+      command: "get",
+      measurementId: string,
+      fieldName: string,
+      callback?: (value?: string) => void,
+    ): void;
+    (command: "set", params: Record<string, unknown>): void;
+    (command: "event", eventName: string, params?: Record<string, unknown>): void;
+    (command: "consent", mode: "default" | "update", params: Record<string, unknown>): void;
+  };
+
+  interface Window {
+    dataLayer: unknown[];
+    gtag?: Gtag;
+  }
+}
+
 export function initGtag(): void {
   if (typeof window === "undefined") return;
   window.dataLayer = window.dataLayer || [];

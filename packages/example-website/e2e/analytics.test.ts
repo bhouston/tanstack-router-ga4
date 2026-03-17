@@ -117,7 +117,7 @@ describe(
       expect(debug.hasGtag).toBe(true);
     });
 
-    test("register-user: clicking Register user fires sign_up and shows registered user", async () => {
+    test("register-user: clicking Register user updates global state and fires sign_up", async () => {
       await page.goto(`${BASE_URL}/register-user`, { waitUntil: "networkidle" });
 
       const registerButton = page.getByRole("button", { name: /Register user/i });
@@ -131,15 +131,24 @@ describe(
 
       await registerButton.scrollIntoViewIfNeeded();
       await registerButton.click();
-      await expect(page.getByText(/Current registered user: user-123/i)).toBeVisible({
-        timeout: 10000,
-      });
-
       await page.waitForTimeout(1000);
 
       const debug = await hasGtagAndDataLayer(page);
       if (debug.hasDataLayer && debug.hasGtag) {
+        const hasUserSet = await page.evaluate(() => {
+          const dl = (window as Window & { dataLayer?: unknown[] }).dataLayer ?? [];
+          return dl.some((entry) => {
+            const normalized = Array.isArray(entry) ? entry : Array.from(entry as ArrayLike<unknown>);
+            return (
+              normalized[0] === "set"
+              && typeof normalized[1] === "object"
+              && normalized[1] !== null
+              && "user_id" in (normalized[1] as Record<string, unknown>)
+            );
+          });
+        });
         const eventNames = await getDataLayerEventNames(page);
+        expect(hasUserSet).toBe(true);
         expect(eventNames).toContain("sign_up");
       }
     });
