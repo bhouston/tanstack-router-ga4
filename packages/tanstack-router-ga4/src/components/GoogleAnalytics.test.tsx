@@ -1,6 +1,7 @@
 import { render, waitFor } from "@testing-library/react";
 import type React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import * as getGtagModule from "../lib/getGtag.js";
 
 // Mock useLocation and ClientOnly so we can test script injection and page_view without full router
 const mockGtag = vi.fn();
@@ -16,6 +17,7 @@ describe("GoogleAnalytics", () => {
 
   beforeEach(() => {
     mockGtag.mockClear();
+    document.head.innerHTML = "";
     const win = globalThis.window as unknown as Window & {
       gtag?: typeof mockGtag;
       dataLayer: unknown[];
@@ -41,6 +43,29 @@ describe("GoogleAnalytics", () => {
         send_page_view: false,
       });
     });
+  });
+
+  it("does nothing when measurementId is empty", async () => {
+    render(<GoogleAnalytics measurementId="" />);
+
+    await waitFor(() => {
+      expect(mockGtag).not.toHaveBeenCalled();
+    });
+    expect(appendChildSpy).not.toHaveBeenCalled();
+  });
+
+  it("does not initialize when gtag is unavailable", async () => {
+    const getGtagSpy = vi.spyOn(getGtagModule, "getGtag").mockReturnValue(undefined);
+
+    render(<GoogleAnalytics measurementId="G-DEMO" />);
+
+    await waitFor(() => {
+      expect(getGtagSpy).toHaveBeenCalled();
+    });
+    expect(mockGtag).not.toHaveBeenCalled();
+    expect(appendChildSpy).not.toHaveBeenCalled();
+
+    getGtagSpy.mockRestore();
   });
 
   it("applies consent defaults before js and config", async () => {
