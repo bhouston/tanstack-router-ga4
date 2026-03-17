@@ -34,7 +34,11 @@ export function useGoogleAnalytics() {
       consent: (mode: GoogleAnalyticsConsentMode, params: GoogleAnalyticsConsentParams) => {
         getGtag()?.("consent", mode, params);
       },
-      get: (measurementId: string, fieldName: GoogleAnalyticsGettableFieldName, callback: ( value?: string | undefined ) => void) => {
+      get: (
+        measurementId: string,
+        fieldName: GoogleAnalyticsGettableFieldName,
+        callback: (value?: string | undefined) => void,
+      ) => {
         getGtag()?.("get", measurementId, fieldName, callback);
       },
     };

@@ -34,5 +34,3 @@ export function getGtag(): Window["gtag"] | undefined {
 
   return window.gtag;
 }
-
-

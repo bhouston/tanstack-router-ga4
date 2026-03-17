@@ -25,9 +25,7 @@ const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: Google
     if (!gtag) return;
 
     // The gtag.js loader is shared across measurement IDs, so any existing loader script is reusable.
-    const existingScript = document.querySelector(
-      'script[src*="googletagmanager.com/gtag/js"]',
-    );
+    const existingScript = document.querySelector('script[src*="googletagmanager.com/gtag/js"]');
     if (!existingScript) {
       const script = document.createElement("script");
       script.async = true;
