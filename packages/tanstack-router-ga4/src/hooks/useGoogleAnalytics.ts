@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from "react";
-import { initGtag } from "../lib/initGtag.js";
+import { useMemo } from "react";
+import { getGtag } from "../lib/getGtag.js";
 import type {
   GoogleAnalyticsConfig,
   GoogleAnalyticsConsentMode,
@@ -19,83 +19,24 @@ export type GoogleAnalyticsCommandEvent = {
   (eventName: string, params?: GoogleAnalyticsEventParams): void;
 };
 
-export type GoogleAnalyticsCommandSet = (params: GoogleAnalyticsSetParams) => void;
-
-export type GoogleAnalyticsCommandConfig = (
-  measurementId: string,
-  config?: GoogleAnalyticsConfig,
-) => void;
-
-export type GoogleAnalyticsCommandGet = (
-  measurementId: string,
-  fieldName: GoogleAnalyticsGettableFieldName | string,
-  callback?: (value?: string) => void,
-) => void;
-
-export type GoogleAnalyticsCommandConsent = (
-  mode: GoogleAnalyticsConsentMode,
-  params: GoogleAnalyticsConsentParams,
-) => void;
-
 export function useGoogleAnalytics() {
-  if (typeof window !== "undefined") {
-    initGtag();
-  }
-
-  const config = useCallback<GoogleAnalyticsCommandConfig>(
-    (measurementId: string, configParams?: GoogleAnalyticsConfig) => {
-      if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        window.gtag("config", measurementId, configParams);
-      }
-    },
-    [],
-  );
-
-  const get = useCallback<GoogleAnalyticsCommandGet>(
-    (
-      measurementId: string,
-      fieldName: GoogleAnalyticsGettableFieldName | string,
-      callback?: (value?: string) => void,
-    ) => {
-      if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        window.gtag("get", measurementId, fieldName, callback);
-      }
-    },
-    [],
-  );
-
-  const set = useCallback<GoogleAnalyticsCommandSet>((params: GoogleAnalyticsSetParams) => {
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
-      window.gtag("set", params);
-    }
+  return useMemo(() => {
+    return {
+      set: (params: GoogleAnalyticsSetParams) => {
+        getGtag()?.("set", params);
+      },
+      config: (measurementId: string, configParams?: GoogleAnalyticsConfig) => {
+        getGtag()?.("config", measurementId, configParams);
+      },
+      event: ((eventName: string, params?: GoogleAnalyticsEventParams) => {
+        getGtag()?.("event", eventName, params);
+      }) as GoogleAnalyticsCommandEvent,
+      consent: (mode: GoogleAnalyticsConsentMode, params: GoogleAnalyticsConsentParams) => {
+        getGtag()?.("consent", mode, params);
+      },
+      get: (measurementId: string, fieldName: GoogleAnalyticsGettableFieldName, callback: ( value?: string | undefined ) => void) => {
+        getGtag()?.("get", measurementId, fieldName, callback);
+      },
+    };
   }, []);
-
-  const event = useCallback<GoogleAnalyticsCommandEvent>(
-    (eventName: string, params?: GoogleAnalyticsEventParams) => {
-      if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        window.gtag("event", eventName, params);
-      }
-    },
-    [],
-  );
-
-  const consent = useCallback<GoogleAnalyticsCommandConsent>(
-    (mode: GoogleAnalyticsConsentMode, params: GoogleAnalyticsConsentParams) => {
-      if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        window.gtag("consent", mode, params);
-      }
-    },
-    [],
-  );
-
-  return useMemo(
-    () => ({
-      config,
-      consent,
-      event,
-      get,
-      set,
-    }),
-    [config, consent, event, get, set],
-  );
 }

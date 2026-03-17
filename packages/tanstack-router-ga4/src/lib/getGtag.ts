@@ -19,8 +19,11 @@ declare global {
   }
 }
 
-export function initGtag(): void {
-  if (typeof window === "undefined") return;
+export function getGtag(): Window["gtag"] | undefined {
+  if (typeof window === "undefined") {
+    return undefined;
+  }
+
   window.dataLayer = window.dataLayer || [];
   if (!window.gtag) {
     window.gtag = function gtag() {
@@ -28,4 +31,8 @@ export function initGtag(): void {
       window.dataLayer.push(arguments);
     } as unknown as Gtag;
   }
+
+  return window.gtag;
 }
+
+

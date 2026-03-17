@@ -1,7 +1,7 @@
 import { ClientOnly, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useGoogleAnalytics } from "../hooks/useGoogleAnalytics.js";
-import { initGtag } from "../lib/initGtag.js";
+import { getGtag } from "../lib/getGtag.js";
 import type {
   GoogleAnalyticsConfig,
   GoogleAnalyticsConsentParams,
@@ -19,10 +19,10 @@ const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: Google
 
   // Initialize Google Analytics once: inject gtag script and set up dataLayer
   useEffect(() => {
-    if (!measurementId || typeof window === "undefined") return;
+    if (!measurementId) return;
 
-    initGtag();
-    if (typeof window.gtag !== "function") return;
+    const gtag = getGtag();
+    if (!gtag) return;
 
     // Inject the gtag.js script if not already present
     const existingScript = document.querySelector(
@@ -36,12 +36,12 @@ const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: Google
     }
 
     if (consentDefaults) {
-      window.gtag("consent", "default", consentDefaults);
+      gtag("consent", "default", consentDefaults);
     }
 
     // Disable automatic page_view so we can send manual page views on route change
-    window.gtag("js", new Date());
-    window.gtag("config", measurementId, {
+    gtag("js", new Date());
+    gtag("config", measurementId, {
       ...config,
       send_page_view: false,
     });
