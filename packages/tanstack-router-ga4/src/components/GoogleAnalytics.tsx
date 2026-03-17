@@ -15,7 +15,7 @@ type GoogleAnalyticsProps = {
 
 const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: GoogleAnalyticsProps) => {
   const location = useLocation();
-  const ga = useGoogleAnalytics();
+  const { event } = useGoogleAnalytics();
 
   // Initialize Google Analytics once: inject gtag script and set up dataLayer
   useEffect(() => {
@@ -51,13 +51,13 @@ const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: Google
   useEffect(() => {
     if (!measurementId) return;
 
-    ga.event("page_view", {
+    event("page_view", {
       page_path: location.pathname,
       page_location: window.location.href,
       page_title: document.title,
       page_referrer: document.referrer || undefined,
     });
-  }, [ga, location.pathname, measurementId]);
+  }, [event, location.pathname, measurementId]);
 
   return null;
 };

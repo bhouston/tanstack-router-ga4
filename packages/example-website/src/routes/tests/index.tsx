@@ -63,6 +63,14 @@ function TestsIndexPage() {
             Consent controls
           </Link>
         </li>
+        <li>
+          <Link
+            to="/tests/stability"
+            className="font-medium text-slate-800 underline underline-offset-2"
+          >
+            Stability regression fixture
+          </Link>
+        </li>
       </ul>
     </div>
   );

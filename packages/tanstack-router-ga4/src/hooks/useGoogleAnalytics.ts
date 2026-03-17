@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { initGtag } from "../lib/initGtag.js";
 import type {
   GoogleAnalyticsConfig,
@@ -88,11 +88,14 @@ export function useGoogleAnalytics() {
     [],
   );
 
-  return {
-    config,
-    consent,
-    event,
-    get,
-    set,
-  };
+  return useMemo(
+    () => ({
+      config,
+      consent,
+      event,
+      get,
+      set,
+    }),
+    [config, consent, event, get, set],
+  );
 }

@@ -93,6 +93,26 @@ describe("useGoogleAnalytics", () => {
     });
   });
 
+  it("returns a stable API object and stable members across rerenders", () => {
+    const { result, rerender } = renderHook(() => useGoogleAnalytics());
+
+    const firstApi = result.current;
+    const firstEvent = result.current.event;
+    const firstConfig = result.current.config;
+    const firstGet = result.current.get;
+    const firstSet = result.current.set;
+    const firstConsent = result.current.consent;
+
+    rerender();
+
+    expect(result.current).toBe(firstApi);
+    expect(result.current.event).toBe(firstEvent);
+    expect(result.current.config).toBe(firstConfig);
+    expect(result.current.get).toBe(firstGet);
+    expect(result.current.set).toBe(firstSet);
+    expect(result.current.consent).toBe(firstConsent);
+  });
+
   it("does not throw when gtag methods are called without gtag", () => {
     const { result } = renderHook(() => useGoogleAnalytics());
     const win = globalThis.window as unknown as Window & { gtag?: typeof mockGtag };

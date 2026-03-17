@@ -48,6 +48,11 @@ async function getNormalizedDataLayer(page: Page): Promise<unknown[][]> {
   });
 }
 
+async function getEventCount(page: Page, eventName: string): Promise<number> {
+  const eventNames = await getDataLayerEventNames(page);
+  return eventNames.filter((name) => name === eventName).length;
+}
+
 async function hasGtagAndDataLayer(page: Page): Promise<{ hasDataLayer: boolean; hasGtag: boolean }> {
   return page.evaluate(() => {
     const w = window as Window & { dataLayer?: unknown[]; gtag?: unknown };
@@ -65,17 +70,20 @@ describe(
     let browser: Browser;
     let page: Page;
 
-    beforeAll(async () => {
-      browser = await chromium.launch({ headless: process.env.HEADED !== "1" });
-      // Single initial visit so the app (and GA) have time to warm up; all tests then run fast.
-      const warmPage = await browser.newPage();
-      await warmPage.goto(`${BASE_URL}/`, { waitUntil: "networkidle" });
-      await expect(warmPage.getByRole("heading", { name: /tanstack-router-ga4/i })).toBeVisible({
-        timeout: 15000,
-      });
-      await warmPage.waitForTimeout(5000);
-      await warmPage.close();
-    });
+    beforeAll(
+      async () => {
+        browser = await chromium.launch({ headless: process.env.HEADED !== "1" });
+        // Single initial visit so the app (and GA) have time to warm up; all tests then run fast.
+        const warmPage = await browser.newPage();
+        await warmPage.goto(`${BASE_URL}/`, { waitUntil: "networkidle" });
+        await expect(warmPage.getByRole("heading", { name: /tanstack-router-ga4/i })).toBeVisible({
+          timeout: 15000,
+        });
+        await warmPage.waitForTimeout(5000);
+        await warmPage.close();
+      },
+      60_000,
+    );
 
     afterAll(async () => {
       await browser?.close();
@@ -308,6 +316,42 @@ describe(
         expect(eventNames).toContain("page_view");
         expect(eventNames).toContain("generate_lead");
       }
+    });
+
+    test("stability fixture loads once per selection and does not loop custom events", async () => {
+      await page.goto(`${BASE_URL}/tests/stability`, { waitUntil: "networkidle" });
+      await expect(page.getByRole("heading", { name: /Stability regression fixture/i })).toBeVisible({
+        timeout: 15000,
+      });
+      await page.waitForFunction(
+        () => typeof (window as Window & { gtag?: unknown }).gtag === "function",
+        null,
+        { timeout: 10000 },
+      );
+
+      const fixtureSelect = page.getByLabel(/Stability fixture example/i);
+
+      await fixtureSelect.selectOption("blouberg_sunrise_2_1k.hdr");
+      await expect(page.getByText("Load count: 1")).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText("Event count: 1")).toBeVisible({ timeout: 10000 });
+
+      await page.waitForTimeout(1500);
+      await expect(page.getByText("Load count: 1")).toBeVisible();
+      await expect(page.getByText("Event count: 1")).toBeVisible();
+
+      const firstEventCount = await getEventCount(page, "stability_fixture_load");
+      expect(firstEventCount).toBe(1);
+
+      await fixtureSelect.selectOption("reference_gradient.exr");
+      await expect(page.getByText("Load count: 2")).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText("Event count: 2")).toBeVisible({ timeout: 10000 });
+
+      await page.waitForTimeout(1500);
+      await expect(page.getByText("Load count: 2")).toBeVisible();
+      await expect(page.getByText("Event count: 2")).toBeVisible();
+
+      const secondEventCount = await getEventCount(page, "stability_fixture_load");
+      expect(secondEventCount).toBe(2);
     });
 
     test("GA collect endpoint receives page_view when requests are sent", async () => {

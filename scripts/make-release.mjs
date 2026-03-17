@@ -121,7 +121,7 @@ function main() {
     console.log("Copying LICENSE from root");
     cpSync(licensePath, join(publishPath, "LICENSE"));
   } else {
-    console.log("Skipping LICENSE (not found at repo root)");
+    throw new Error("Error: LICENSE not found at repo root");
   }
 
   const packageReadmePath = join(resolvedPackagePath, "README.md");

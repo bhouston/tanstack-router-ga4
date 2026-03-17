@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TestsIndexRouteImport } from './routes/tests/index'
+import { Route as TestsStabilityRouteImport } from './routes/tests/stability'
 import { Route as TestsSignupRouteImport } from './routes/tests/signup'
 import { Route as TestsRegisterUserRouteImport } from './routes/tests/register-user'
 import { Route as TestsLeadGenRouteImport } from './routes/tests/lead-gen'
@@ -26,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const TestsIndexRoute = TestsIndexRouteImport.update({
   id: '/tests/',
   path: '/tests/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestsStabilityRoute = TestsStabilityRouteImport.update({
+  id: '/tests/stability',
+  path: '/tests/stability',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TestsSignupRoute = TestsSignupRouteImport.update({
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/tests/lead-gen': typeof TestsLeadGenRoute
   '/tests/register-user': typeof TestsRegisterUserRoute
   '/tests/signup': typeof TestsSignupRoute
+  '/tests/stability': typeof TestsStabilityRoute
   '/tests/': typeof TestsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/tests/lead-gen': typeof TestsLeadGenRoute
   '/tests/register-user': typeof TestsRegisterUserRoute
   '/tests/signup': typeof TestsSignupRoute
+  '/tests/stability': typeof TestsStabilityRoute
   '/tests': typeof TestsIndexRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/tests/lead-gen': typeof TestsLeadGenRoute
   '/tests/register-user': typeof TestsRegisterUserRoute
   '/tests/signup': typeof TestsSignupRoute
+  '/tests/stability': typeof TestsStabilityRoute
   '/tests/': typeof TestsIndexRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/tests/lead-gen'
     | '/tests/register-user'
     | '/tests/signup'
+    | '/tests/stability'
     | '/tests/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/tests/lead-gen'
     | '/tests/register-user'
     | '/tests/signup'
+    | '/tests/stability'
     | '/tests'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/tests/lead-gen'
     | '/tests/register-user'
     | '/tests/signup'
+    | '/tests/stability'
     | '/tests/'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   TestsLeadGenRoute: typeof TestsLeadGenRoute
   TestsRegisterUserRoute: typeof TestsRegisterUserRoute
   TestsSignupRoute: typeof TestsSignupRoute
+  TestsStabilityRoute: typeof TestsStabilityRoute
   TestsIndexRoute: typeof TestsIndexRoute
 }
 
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/tests'
       fullPath: '/tests/'
       preLoaderRoute: typeof TestsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tests/stability': {
+      id: '/tests/stability'
+      path: '/tests/stability'
+      fullPath: '/tests/stability'
+      preLoaderRoute: typeof TestsStabilityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tests/signup': {
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   TestsLeadGenRoute: TestsLeadGenRoute,
   TestsRegisterUserRoute: TestsRegisterUserRoute,
   TestsSignupRoute: TestsSignupRoute,
+  TestsStabilityRoute: TestsStabilityRoute,
   TestsIndexRoute: TestsIndexRoute,
 }
 export const routeTree = rootRouteImport
