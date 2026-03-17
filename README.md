@@ -14,8 +14,8 @@ Live demo: [tanstack-router-ga4.benhouston3d.com](https://tanstack-router-ga4.be
 
 - Automatically records `page_view` events on route changes
 - Full TypeScript support for common GA4 events (`sign_up`, `generate_lead`, etc.) and custom events
-- Supports Google Analytics configuration options (for example `debug_mode` and `user_id`)
-- Supports user registration flows with typed tracking helpers
+- Supports all Google Analytics configuration options (for example `debug_mode` and `user_id`)
+- Supports supports advanced features like user-session assocation, consents and queries (`get`.)
 - Designed for TanStack Router and TanStack Start with correct behavior across client-side navigation and SSR
 - Full test suite with unit/integration coverage and browser-based E2E tests
 
@@ -57,47 +57,9 @@ function SignupForm() {
   const ga = useGoogleAnalytics();
 
   const handleSubmit = () => {
-    ga.event("sign_up", { method: "email" });
-  };
-
-  return <button onClick={handleSubmit}>Sign up</button>;
-}
-```
-
-User identity registration example (`user_id` + `user_properties`):
-
-```tsx
-import { HeadContent, Scripts } from "@tanstack/react-router";
-import type { ReactNode } from "react";
-import { GoogleAnalytics, useGoogleAnalytics } from "tanstack-router-ga4";
-
-function RootDocument({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <GoogleAnalytics measurementId="G-XXXXXXXXXX" />
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
-function AccountPage() {
-  return <RegisterUserButton />;
-}
-
-function RegisterUserButton() {
-  const ga = useGoogleAnalytics();
-
-  const handleRegisterUser = async () => {
-    // Example API call to create a user account
     const user = await registerUser({ email: "ada@example.com", password: "secure-password" });
 
-    // Update global GA params for subsequent events
+    // associate user id with session
     ga.set({
       user_id: user.id,
       user_properties: {
@@ -106,36 +68,12 @@ function RegisterUserButton() {
       },
     });
 
-    // Optionally track completed registration
+    // send standard GA event for signups
     ga.event("sign_up", { method: "email" });
   };
 
-  return <button onClick={handleRegisterUser}>Register user in GA</button>;
+  return <button onClick={handleSubmit}>Sign up</button>;
 }
-```
-
-Optional config (e.g. `debug_mode`, `user_id`):
-
-```tsx
-<GoogleAnalytics
-  measurementId="G-XXXXXXXXXX"
-  config={{ debug_mode: true }}
-/>
-```
-
-Optional consent defaults:
-
-```tsx
-<GoogleAnalytics
-  measurementId="G-XXXXXXXXXX"
-  consentDefaults={{
-    analytics_storage: "denied",
-    ad_storage: "denied",
-    ad_user_data: "denied",
-    ad_personalization: "denied",
-    wait_for_update: 2000,
-  }}
-/>
 ```
 
 ### Hook API
@@ -147,13 +85,6 @@ Optional consent defaults:
 - `set(params)` for global params
 - `get(measurementId, fieldName, callback?)` for callback-based reads like `client_id`
 - `consent('default' | 'update', params)` for consent mode updates
-
-### SPA notes
-
-- Repeated `config()` calls in SPAs should generally include `send_page_view: false` to avoid duplicate automatic page views.
-- Use `set()` for session-wide values like a logged-in `user_id` when you want to avoid repeating the measurement ID.
-- Runtime `config()` updates may be ignored if your GA4 stream has "Ignore duplicate instances of on-page configuration" enabled.
-- Use `consentDefaults` on `GoogleAnalytics` when consent defaults must be applied before the initial `js` and `config` calls, then use `consent("update", ...)` after the user responds to your consent UI.
 
 ---
 
