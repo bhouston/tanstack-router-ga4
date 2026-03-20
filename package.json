@@ -1,32 +1,36 @@
 {
   "name": "tanstack-router-ga4-monorepo",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.17.0",
   "scripts": {
+    "prepare": "husky",
     "build": "pnpm -r build",
-    "tsc": "pnpm -r tsc",
+    "tsc": "tsgo -b",
     "dev": "pnpm --parallel --filter tanstack-router-ga4 --filter example-website dev",
     "test": "pnpm tsc && vitest run",
     "test:e2e:headed": "HEADED=1 vitest run --project demo",
-    "lint": "biome check .",
-    "format": "biome check --write .",
+    "format": "oxfmt .",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
     "make-release": "node scripts/make-release.mjs packages/tanstack-router-ga4"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.4",
     "@playwright/test": "^1.58.2",
     "@types/node": "^24.0.0",
+    "@typescript/native-preview": "7.0.0-dev.20251229.1",
     "@vitest/browser-playwright": "^4.0.0",
     "@vitest/coverage-v8": "^4.1.0",
+    "husky": "^9.1.7",
     "jsdom": "^25.0.0",
+    "oxfmt": "^0.41.0",
+    "oxlint": "^1.56.0",
     "playwright": "^1.58.2",
-    "typescript": "^5.9.2",
-    "vite": "^7.3.1",
+    "vite": "^8.0.0",
     "vitest": "^4.1.0"
   },
   "engines": {
     "node": ">=22.0.0"
-  }
+  },
+  "packageManager": "pnpm@10.17.0"
 }

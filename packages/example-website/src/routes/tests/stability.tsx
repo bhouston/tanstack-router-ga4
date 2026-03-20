@@ -1,14 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
-import { useGoogleAnalytics } from "tanstack-router-ga4";
+import { createFileRoute } from '@tanstack/react-router';
+import { useCallback, useEffect, useState } from 'react';
+import { useGoogleAnalytics } from 'tanstack-router-ga4';
 
-export const Route = createFileRoute("/tests/stability")({
+export const Route = createFileRoute('/tests/stability')({
   component: StabilityFixturePage,
 });
 
 function StabilityFixturePage() {
   const ga = useGoogleAnalytics();
-  const [selectedFixtureExample, setSelectedFixtureExample] = useState("");
+  const [selectedFixtureExample, setSelectedFixtureExample] = useState('');
   const [loadCount, setLoadCount] = useState(0);
   const [eventCount, setEventCount] = useState(0);
 
@@ -18,7 +18,7 @@ function StabilityFixturePage() {
 
       await Promise.resolve();
       setLoadCount((count) => count + 1);
-      ga.event("stability_fixture_load", {
+      ga.event('stability_fixture_load', {
         example_name: exampleName,
       });
       setEventCount((count) => count + 1);
@@ -33,14 +33,10 @@ function StabilityFixturePage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="mb-4 text-3xl font-bold tracking-tight text-slate-900">
-        Stability regression fixture
-      </h1>
+      <h1 className="mb-4 text-3xl font-bold tracking-tight text-slate-900">Stability regression fixture</h1>
       <p className="mb-6 text-slate-600 leading-relaxed">
         This page intentionally depends on the full object returned from
-        <code className="mx-1 rounded bg-slate-100 px-1 py-0.5 text-slate-800">
-          useGoogleAnalytics()
-        </code>
+        <code className="mx-1 rounded bg-slate-100 px-1 py-0.5 text-slate-800">useGoogleAnalytics()</code>
         so E2E can catch rerender loops if the wrapper ever becomes unstable again.
       </p>
       <div className="rounded-lg border border-slate-200 p-4">
@@ -58,9 +54,7 @@ function StabilityFixturePage() {
             <option value="blouberg_sunrise_2_1k.hdr">Blouberg Sunrise</option>
             <option value="reference_gradient.exr">Reference Gradient</option>
           </select>
-          <p className="text-sm text-slate-600">
-            Selected example: {selectedFixtureExample || "(none)"}
-          </p>
+          <p className="text-sm text-slate-600">Selected example: {selectedFixtureExample || '(none)'}</p>
           <p className="text-sm text-slate-600">Load count: {loadCount}</p>
           <p className="text-sm text-slate-600">Event count: {eventCount}</p>
         </div>

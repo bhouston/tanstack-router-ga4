@@ -2,34 +2,34 @@
   "name": "tanstack-router-ga4",
   "version": "0.5.2",
   "description": "Google Analytics (GA4) integration for TanStack Router and TanStack Start.",
-  "author": "Ben Houston (https://benhouston3d.com)",
-  "license": "MIT",
-  "sideEffects": false,
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "keywords": [
-    "google-analytics",
-    "ga4",
     "analytics",
+    "ga4",
+    "google-analytics",
+    "gtag",
+    "react",
     "tanstack-router",
     "tanstack-start",
-    "react",
-    "gtag",
     "typescript"
   ],
   "homepage": "https://tanstack-router-ga4.benhouston3d.com",
   "bugs": {
     "url": "https://github.com/bhouston/tanstack-router-ga4/issues"
   },
+  "license": "MIT",
+  "author": "Ben Houston (https://benhouston3d.com)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bhouston/tanstack-router-ga4.git",
     "directory": "packages/tanstack-router-ga4"
   },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -37,14 +37,9 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "tsc": "tsc --noEmit",
-    "dev": "tsc -p tsconfig.build.json --watch",
+    "build": "tsgo",
+    "dev": "tsgo -w --preserveWatchOutput --noEmitOnError",
     "test": "vitest run"
-  },
-  "peerDependencies": {
-    "react": ">=18",
-    "@tanstack/react-router": ">=1"
   },
   "devDependencies": {
     "@tanstack/react-router": "^1.132.0",
@@ -54,7 +49,10 @@
     "jsdom": "^25.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "typescript": "^5.9.2",
     "vitest": "^4.1.0"
+  },
+  "peerDependencies": {
+    "@tanstack/react-router": ">=1",
+    "react": ">=18"
   }
 }

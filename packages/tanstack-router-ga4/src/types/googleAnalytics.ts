@@ -42,9 +42,9 @@ export type GoogleAnalyticsConfig = {
 
 export type GoogleAnalyticsSetParams = Record<string, GoogleAnalyticsParameterValue | undefined>;
 
-export type GoogleAnalyticsConsentState = "granted" | "denied";
+export type GoogleAnalyticsConsentState = 'granted' | 'denied';
 
-export type GoogleAnalyticsConsentMode = "default" | "update";
+export type GoogleAnalyticsConsentMode = 'default' | 'update';
 
 export type GoogleAnalyticsConsentParams = {
   ad_personalization?: GoogleAnalyticsConsentState;
@@ -54,11 +54,7 @@ export type GoogleAnalyticsConsentParams = {
   wait_for_update?: number;
 };
 
-export type GoogleAnalyticsGettableFieldName =
-  | "campaign_name"
-  | "client_id"
-  | "gclid"
-  | "session_id";
+export type GoogleAnalyticsGettableFieldName = 'campaign_name' | 'client_id' | 'gclid' | 'session_id';
 
 type PageViewEventParams = {
   page_location: string;

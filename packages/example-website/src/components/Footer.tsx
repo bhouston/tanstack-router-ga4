@@ -3,11 +3,11 @@ export function Footer() {
     <footer className="mt-auto border-t border-slate-200 bg-slate-50/80">
       <div className="mx-auto max-w-4xl px-4 py-8">
         <p className="text-center text-sm text-slate-600">
-          Made with{" "}
+          Made with{' '}
           <span className="text-red-500" aria-hidden>
             ♥
-          </span>{" "}
-          by{" "}
+          </span>{' '}
+          by{' '}
           <a
             href="https://benhouston3d.com"
             target="_blank"
@@ -16,7 +16,7 @@ export function Footer() {
           >
             Ben Houston
           </a>
-          . Sponsored by{" "}
+          . Sponsored by{' '}
           <a
             href="https://landofassets.com"
             target="_blank"

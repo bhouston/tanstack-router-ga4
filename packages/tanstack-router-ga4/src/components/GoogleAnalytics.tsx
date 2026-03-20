@@ -1,11 +1,8 @@
-import { ClientOnly, useLocation } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { useGoogleAnalytics } from "../hooks/useGoogleAnalytics.js";
-import { getGtag } from "../lib/getGtag.js";
-import type {
-  GoogleAnalyticsConfig,
-  GoogleAnalyticsConsentParams,
-} from "../types/googleAnalytics.js";
+import { ClientOnly, useLocation } from '@tanstack/react-router';
+import { useEffect } from 'react';
+import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics.js';
+import { getGtag } from '../lib/getGtag.js';
+import type { GoogleAnalyticsConfig, GoogleAnalyticsConsentParams } from '../types/googleAnalytics.js';
 
 type GoogleAnalyticsProps = {
   config?: GoogleAnalyticsConfig;
@@ -27,19 +24,19 @@ const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: Google
     // The gtag.js loader is shared across measurement IDs, so any existing loader script is reusable.
     const existingScript = document.querySelector('script[src*="googletagmanager.com/gtag/js"]');
     if (!existingScript) {
-      const script = document.createElement("script");
+      const script = document.createElement('script');
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
       document.head.appendChild(script);
     }
 
     if (consentDefaults) {
-      gtag("consent", "default", consentDefaults);
+      gtag('consent', 'default', consentDefaults);
     }
 
     // Disable automatic page_view so we can send manual page views on route change
-    gtag("js", new Date());
-    gtag("config", measurementId, {
+    gtag('js', new Date());
+    gtag('config', measurementId, {
       ...config,
       send_page_view: false,
     });
@@ -49,7 +46,7 @@ const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: Google
   useEffect(() => {
     if (!measurementId) return;
 
-    event("page_view", {
+    event('page_view', {
       page_path: location.pathname,
       page_location: window.location.href,
       page_title: document.title,

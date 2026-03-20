@@ -1,21 +1,19 @@
 {
+  "extends": "../../tsconfig.node.json",
   "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "target": "ES2022",
+    "composite": true,
+    "noEmit": true,
     "jsx": "react-jsx",
-    "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
+    "module": "ESNext",
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": false,
-    "noEmit": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "tanstack-router-ga4": ["../tanstack-router-ga4/src/index.ts"]
     }
-  }
+  },
+  "references": [{ "path": "../tanstack-router-ga4" }]
 }

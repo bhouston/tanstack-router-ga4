@@ -33,9 +33,9 @@ pnpm add tanstack-router-ga4
 Mount the component in your app shell (for example a `RootDocument` or root layout) so every route gets automatic page views, and use the hook as a typed wrapper over the core `gtag` commands.
 
 ```tsx
-import { HeadContent, Scripts } from "@tanstack/react-router";
-import type { ReactNode } from "react";
-import { GoogleAnalytics, useGoogleAnalytics } from "tanstack-router-ga4";
+import { HeadContent, Scripts } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
+import { GoogleAnalytics, useGoogleAnalytics } from 'tanstack-router-ga4';
 
 // In your root document — automatic page_view on each route change
 function RootDocument({ children }: { children: ReactNode }) {
@@ -58,7 +58,7 @@ function SignupForm() {
   const ga = useGoogleAnalytics();
 
   const handleSubmit = () => {
-    const user = await registerUser({ email: "ada@example.com", password: "secure-password" });
+    const user = await registerUser({ email: 'ada@example.com', password: 'secure-password' });
 
     // associate user id with session
     ga.set({
@@ -70,7 +70,7 @@ function SignupForm() {
     });
 
     // send standard GA event for signups
-    ga.event("sign_up", { method: "email" });
+    ga.event('sign_up', { method: 'email' });
   };
 
   return <button onClick={handleSubmit}>Sign up</button>;
@@ -89,31 +89,25 @@ function SignupForm() {
 
 ---
 
-## Dvelopment
+## Development
 
 This repo contains the library and a TanStack Start demo:
 
 - **Library:** `packages/tanstack-router-ga4`
 - **Demo:** `packages/example-website`
 
-```sh
+```bash
 pnpm install
-pnpm build      # build library and example
-pnpm dev        # library watch + example app (port 3000)
-pnpm make-release   # publish package (builds, copies dist + root README, npm publish)
+pnpm dev
+pnpm tsc # typescript-native
+pnpm build
+pnpm lint # oxlint
+pnpm lint:fix
+pnpm format # oxfmt
+pnpm test # vitest
 ```
 
-Publishing runs from the repo root and uses the root README as the package README.
-
----
-
-## Testing
-
-```sh
-pnpm exec playwright install chromium
-pnpm test       # run Vitest tests
-```
-
+Publishing runs from the repo root and uses the root README as the package README. Run `pnpm make-release` to publish. For E2E tests, run `pnpm exec playwright install chromium` then `pnpm test`.
 
 ## License
 

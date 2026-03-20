@@ -1,7 +1,7 @@
-import { type ReactNode, useCallback, useState } from "react";
-import type { GoogleAnalyticsConsentParams } from "tanstack-router-ga4";
-import { useGoogleAnalytics } from "tanstack-router-ga4";
-import { DEMO_MEASUREMENT_ID } from "../lib/googleAnalytics";
+import { type ReactNode, useCallback, useState } from 'react';
+import type { GoogleAnalyticsConsentParams } from 'tanstack-router-ga4';
+import { useGoogleAnalytics } from 'tanstack-router-ga4';
+import { DEMO_MEASUREMENT_ID } from '../lib/googleAnalytics';
 
 type RegisteredUser = {
   email: string;
@@ -11,7 +11,7 @@ type RegisteredUser = {
 
 type ConsentState = {
   label: string;
-  mode: "update";
+  mode: 'update';
   params: GoogleAnalyticsConsentParams;
 };
 
@@ -58,8 +58,8 @@ export function SignupDemo() {
   const [lastSignup, setLastSignup] = useState<{ method: string } | null>(null);
 
   const handleSignup = useCallback(() => {
-    const signupDetails = { method: "email" };
-    ga.event("sign_up", signupDetails);
+    const signupDetails = { method: 'email' };
+    ga.event('sign_up', signupDetails);
     setLastSignup(signupDetails);
   }, [ga]);
 
@@ -77,8 +77,8 @@ export function SignupDemo() {
           <p>No sign up event sent yet.</p>
         ) : (
           <p>
-            Sent <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code> with
-            method <strong>{lastSignup.method}</strong>.
+            Sent <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code> with method{' '}
+            <strong>{lastSignup.method}</strong>.
           </p>
         )}
       </div>
@@ -91,8 +91,8 @@ export function LeadGenDemo() {
   const [lastLead, setLastLead] = useState<{ currency: string; value: number } | null>(null);
 
   const handleGenerateLead = useCallback(() => {
-    const leadDetails = { currency: "USD", value: 1 };
-    ga.event("generate_lead", leadDetails);
+    const leadDetails = { currency: 'USD', value: 1 };
+    ga.event('generate_lead', leadDetails);
     setLastLead(leadDetails);
   }, [ga]);
 
@@ -110,8 +110,8 @@ export function LeadGenDemo() {
           <p>No lead event sent yet.</p>
         ) : (
           <p>
-            Sent <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">generate_lead</code> for{" "}
-            {lastLead.value} {lastLead.currency}.
+            Sent <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">generate_lead</code> for {lastLead.value}{' '}
+            {lastLead.currency}.
           </p>
         )}
       </div>
@@ -122,13 +122,13 @@ export function LeadGenDemo() {
 export function RegisterUserDemo() {
   const ga = useGoogleAnalytics();
   const [registeredUser, setRegisteredUser] = useState<RegisteredUser | null>(null);
-  const [statusMessage, setStatusMessage] = useState("No user changes sent yet.");
+  const [statusMessage, setStatusMessage] = useState('No user changes sent yet.');
 
   const handleRegisterUser = useCallback(() => {
     const user = {
-      id: "user-123",
-      email: "ada@example.com",
-      username: "ada",
+      id: 'user-123',
+      email: 'ada@example.com',
+      username: 'ada',
     };
 
     ga.set({
@@ -138,9 +138,9 @@ export function RegisterUserDemo() {
         username: user.username,
       },
     });
-    ga.event("sign_up", { method: "email" });
+    ga.event('sign_up', { method: 'email' });
     setRegisteredUser(user);
-    setStatusMessage("Registered user in GA and sent sign_up.");
+    setStatusMessage('Registered user in GA and sent sign_up.');
   }, [ga]);
 
   const handleClearUser = useCallback(() => {
@@ -149,7 +149,7 @@ export function RegisterUserDemo() {
       user_properties: undefined,
     });
     setRegisteredUser(null);
-    setStatusMessage("Cleared the registered user from GA.");
+    setStatusMessage('Cleared the registered user from GA.');
   }, [ga]);
 
   return (
@@ -187,7 +187,7 @@ export function RegisterUserDemo() {
 export function ConfigDemo() {
   const ga = useGoogleAnalytics();
   const [debugMode, setDebugMode] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("Debug mode is currently off.");
+  const [statusMessage, setStatusMessage] = useState('Debug mode is currently off.');
 
   const toggleDebugMode = useCallback(() => {
     const nextDebugMode = !debugMode;
@@ -196,7 +196,7 @@ export function ConfigDemo() {
       send_page_view: false,
     });
     setDebugMode(nextDebugMode);
-    setStatusMessage(`Debug mode is now ${nextDebugMode ? "on" : "off"}.`);
+    setStatusMessage(`Debug mode is now ${nextDebugMode ? 'on' : 'off'}.`);
   }, [debugMode, ga]);
 
   return (
@@ -206,12 +206,12 @@ export function ConfigDemo() {
         onClick={toggleDebugMode}
         className="rounded-lg bg-slate-800 px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-slate-700"
       >
-        Turn debug mode {debugMode ? "off" : "on"}
+        Turn debug mode {debugMode ? 'off' : 'on'}
       </button>
       <div aria-live="polite" className="mt-4 space-y-2 text-slate-600">
         <p>{statusMessage}</p>
         <p>
-          Current value: <strong>{debugMode ? "true" : "false"}</strong>
+          Current value: <strong>{debugMode ? 'true' : 'false'}</strong>
         </p>
       </div>
     </DemoPanel>
@@ -220,16 +220,16 @@ export function ConfigDemo() {
 
 export function GetClientIdDemo() {
   const ga = useGoogleAnalytics();
-  const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
   const [clientId, setClientId] = useState<string | null>(null);
 
   const handleGetClientId = useCallback(() => {
-    setStatus("loading");
+    setStatus('loading');
     setClientId(null);
 
-    ga.get(DEMO_MEASUREMENT_ID, "client_id", (value) => {
-      setClientId(value ?? "(empty response)");
-      setStatus("success");
+    ga.get(DEMO_MEASUREMENT_ID, 'client_id', (value) => {
+      setClientId(value ?? '(empty response)');
+      setStatus('success');
     });
   }, [ga]);
 
@@ -243,9 +243,9 @@ export function GetClientIdDemo() {
         Get client ID
       </button>
       <p aria-live="polite" className="mt-4 text-slate-600">
-        {status === "idle" && "No request sent yet."}
-        {status === "loading" && "Loading client ID..."}
-        {status === "success" && `Latest client ID: ${clientId}`}
+        {status === 'idle' && 'No request sent yet.'}
+        {status === 'loading' && 'Loading client ID...'}
+        {status === 'success' && `Latest client ID: ${clientId}`}
       </p>
     </DemoPanel>
   );
@@ -257,10 +257,10 @@ export function ConsentDemo() {
 
   const updateConsent = useCallback(
     (label: string, params: GoogleAnalyticsConsentParams) => {
-      ga.consent("update", params);
+      ga.consent('update', params);
       setLastConsent({
         label,
-        mode: "update",
+        mode: 'update',
         params,
       });
     },
@@ -273,11 +273,11 @@ export function ConsentDemo() {
         <button
           type="button"
           onClick={() =>
-            updateConsent("Analytics granted", {
-              analytics_storage: "granted",
-              ad_storage: "denied",
-              ad_user_data: "denied",
-              ad_personalization: "denied",
+            updateConsent('Analytics granted', {
+              analytics_storage: 'granted',
+              ad_storage: 'denied',
+              ad_user_data: 'denied',
+              ad_personalization: 'denied',
             })
           }
           className="rounded-lg bg-slate-800 px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-slate-700"
@@ -287,11 +287,11 @@ export function ConsentDemo() {
         <button
           type="button"
           onClick={() =>
-            updateConsent("All denied", {
-              analytics_storage: "denied",
-              ad_storage: "denied",
-              ad_user_data: "denied",
-              ad_personalization: "denied",
+            updateConsent('All denied', {
+              analytics_storage: 'denied',
+              ad_storage: 'denied',
+              ad_user_data: 'denied',
+              ad_personalization: 'denied',
             })
           }
           className="rounded-lg border border-slate-300 bg-white px-5 py-2.5 font-medium text-slate-700 transition hover:bg-slate-100"
@@ -342,8 +342,8 @@ export function HomeFeatureSections() {
         title="Set up GoogleAnalytics"
         description={
           <p>
-            Mount <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">GoogleAnalytics</code>{" "}
-            once near the top of your app so route changes can automatically emit{" "}
+            Mount <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">GoogleAnalytics</code> once near the top of
+            your app so route changes can automatically emit{' '}
             <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">page_view</code> events.
           </p>
         }
@@ -366,9 +366,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 }`}
       >
         <div className="rounded-xl border border-slate-200 bg-white p-5 text-slate-600 shadow-sm">
-          Automatic page views happen on route changes. The dedicated route-based demos live under{" "}
-          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">/tests/*</code> so the browser
-          test suite can keep validating real navigation behavior.
+          Automatic page views happen on route changes. The dedicated route-based demos live under{' '}
+          <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">/tests/*</code> so the browser test suite can keep
+          validating real navigation behavior.
         </div>
       </Section>
 
@@ -377,11 +377,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         title="Set Global Config"
         description={
           <p>
-            Use <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">set()</code> to define
-            global GA configuration that should apply across your session, such as{" "}
-            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_id</code>,{" "}
-            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_properties</code>, or
-            other shared parameters.
+            Use <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">set()</code> to define global GA
+            configuration that should apply across your session, such as{' '}
+            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_id</code>,{' '}
+            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">user_properties</code>, or other shared
+            parameters.
           </p>
         }
         code={`const ga = useGoogleAnalytics();
@@ -404,12 +404,10 @@ ga.event("sign_up", { method: "email" });`}
         title="Set Per-Stream Config"
         description={
           <p>
-            Use <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">config()</code> when you
-            need per-measurement stream settings. If your app sends data to multiple streams,
-            configure each{" "}
-            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">measurementId</code>{" "}
-            individually instead of relying only on global{" "}
-            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">set()</code> values.
+            Use <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">config()</code> when you need per-measurement
+            stream settings. If your app sends data to multiple streams, configure each{' '}
+            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">measurementId</code> individually instead of
+            relying only on global <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">set()</code> values.
           </p>
         }
         code={`const ga = useGoogleAnalytics();
@@ -432,10 +430,8 @@ ga.config("G-MARKETING", {
         title="Track sign_up events"
         description={
           <p>
-            Call <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">event()</code> with the
-            recommended GA4{" "}
-            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code> event name and
-            any typed params.
+            Call <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">event()</code> with the recommended GA4{' '}
+            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">sign_up</code> event name and any typed params.
           </p>
         }
         code={`const ga = useGoogleAnalytics();
@@ -452,8 +448,8 @@ ga.event("sign_up", {
         title="Track generate_lead events"
         description={
           <p>
-            Use the same <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">event()</code>{" "}
-            helper for conversion-style events such as{" "}
+            Use the same <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">event()</code> helper for
+            conversion-style events such as{' '}
             <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">generate_lead</code>.
           </p>
         }
@@ -472,9 +468,8 @@ ga.event("generate_lead", {
         title="Read values with get"
         description={
           <p>
-            The <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">get()</code> command
-            reads callback-based values such as{" "}
-            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">client_id</code>.
+            The <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">get()</code> command reads callback-based
+            values such as <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">client_id</code>.
           </p>
         }
         code={`const ga = useGoogleAnalytics();
@@ -491,8 +486,8 @@ ga.get("G-XXXXXXXXXX", "client_id", (value) => {
         title="Update consent"
         description={
           <p>
-            Call <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">consent()</code> when
-            the user updates their privacy preferences.
+            Call <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">consent()</code> when the user updates their
+            privacy preferences.
           </p>
         }
         code={`const ga = useGoogleAnalytics();

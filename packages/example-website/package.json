@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "tsc": "tsc --noEmit",
+    "tsc": "tsgo --noEmit",
     "dev": "vite dev --port 3000 --strictPort",
     "preview": "vite preview",
     "test": "vitest run"
@@ -20,12 +20,11 @@
     "vite-tsconfig-paths": "^6.0.2"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.2.1",
+    "@tailwindcss/vite": "^4.2.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "@vitejs/plugin-react": "^5.0.4",
-    "tailwindcss": "^4.2.1",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.7"
+    "@vitejs/plugin-react": "^6.0.0",
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.0"
   }
 }

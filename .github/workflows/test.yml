@@ -27,16 +27,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run build (type check + build)
+      - name: Run type check
+        run: pnpm tsc
+
+      - name: Run build
         run: pnpm build
 
       - name: Run linter
         run: pnpm lint
+
+      - name: Run format check
+        run: pnpm format
 
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
