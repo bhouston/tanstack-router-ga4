@@ -12,12 +12,12 @@
     "tanstack-start",
     "typescript"
   ],
-  "homepage": "https://tanstack-router-ga4.benhouston3d.com",
+  "homepage": "https://tanstack-router-ga4.ben3d.ca",
   "bugs": {
     "url": "https://github.com/bhouston/tanstack-router-ga4/issues"
   },
   "license": "MIT",
-  "author": "Ben Houston (https://benhouston3d.com)",
+  "author": "Ben Houston (https://ben3d.ca)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bhouston/tanstack-router-ga4.git",

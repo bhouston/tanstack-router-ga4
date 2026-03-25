@@ -9,7 +9,7 @@ export function Footer() {
           </span>{' '}
           by{' '}
           <a
-            href="https://benhouston3d.com"
+            href="https://ben3d.ca"
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-slate-800 underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600"

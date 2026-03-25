@@ -8,7 +8,7 @@
 
 [Google Analytics (GA4)](https://marketingplatform.google.com/about/analytics/) integration for [TanStack Router](https://tanstack.com/router) and [TanStack Start](https://tanstack.com/start), built for modern React apps that need reliable analytics with minimal setup.
 
-Live demo: [tanstack-router-ga4.benhouston3d.com](https://tanstack-router-ga4.benhouston3d.com)
+Live demo: [tanstack-router-ga4.ben3d.ca](https://tanstack-router-ga4.ben3d.ca)
 
 ## Features
 
@@ -115,7 +115,7 @@ MIT
 
 ## Author
 
-Created by [Ben Houston](https://benhouston3d.com) and sponsored by [Land of Assets](https://landofassets.com).
+Created by [Ben Houston](https://ben3d.ca) and sponsored by [Land of Assets](https://landofassets.com).
 
 [npm]: https://img.shields.io/npm/v/tanstack-router-ga4
 [npm-url]: https://www.npmjs.com/package/tanstack-router-ga4
@@ -126,4 +126,4 @@ Created by [Ben Houston](https://benhouston3d.com) and sponsored by [Land of Ass
 [coverage-badge]: https://codecov.io/gh/bhouston/tanstack-router-ga4/graph/badge.svg
 [coverage-url]: https://codecov.io/gh/bhouston/tanstack-router-ga4
 [demo-badge]: https://img.shields.io/badge/demo-live-0f172a
-[demo-url]: https://tanstack-router-ga4.benhouston3d.com
+[demo-url]: https://tanstack-router-ga4.ben3d.ca
