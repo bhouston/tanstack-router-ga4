@@ -373,6 +373,29 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </Section>
 
       <Section
+        id="deferred"
+        title="Deferred loading"
+        description={
+          <p>
+            By default, <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">GoogleAnalytics</code> waits until
+            the browser is idle before injecting the GA script, using the browser's{' '}
+            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">requestIdleCallback</code> API. This moves
+            analytics work out of the critical rendering path, improving Time to Interactive and other Core Web Vitals.
+            On browsers that don't support{' '}
+            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">requestIdleCallback</code> (such as Safari) the
+            script loads immediately so no data is lost. Pass{' '}
+            <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">{'deferred={false}'}</code> to opt out and load
+            GA immediately.
+          </p>
+        }
+        code={`
+// Opt out — GA script is injected immediately on first render
+<GoogleAnalytics measurementId="G-XXXXXXXXXX" deferred={false} />`}
+      >
+        <></>
+      </Section>
+
+      <Section
         id="set"
         title="Set Global Config"
         description={

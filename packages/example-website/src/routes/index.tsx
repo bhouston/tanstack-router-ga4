@@ -42,7 +42,7 @@ function IndexPage() {
           <code className="rounded bg-slate-200 px-1 py-0.5 text-sm">page_view</code> tracking, typed event helpers, and
           a setup that fits naturally into real app shells.
         </p>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-xl bg-slate-50 p-5">
             <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Automatic tracking</h2>
             <p className="mt-3 text-sm leading-6 text-slate-700">
@@ -59,6 +59,13 @@ function IndexPage() {
             </p>
           </div>
           <div className="rounded-xl bg-slate-50 p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Deferred loading</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-700">
+              Add the <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">deferred</code> prop to delay GA
+              script injection until the browser is idle, improving initial page load performance.
+            </p>
+          </div>
+          <div className="rounded-xl bg-slate-50 p-5">
             <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Built for real apps</h2>
             <p className="mt-3 text-sm leading-6 text-slate-700">
               Works cleanly with TanStack Start, SSR-friendly root documents, and tested route flows.
@@ -72,6 +79,11 @@ function IndexPage() {
               <li>
                 <a href="#setup" className="underline underline-offset-2">
                   Set up GoogleAnalytics
+                </a>
+              </li>
+              <li>
+                <a href="#deferred" className="underline underline-offset-2">
+                  Deferred loading
                 </a>
               </li>
               <li>

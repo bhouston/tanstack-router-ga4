@@ -1,13 +1,15 @@
 import { ClientOnly, useLocation } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics.js';
+import { useIdleReady } from '../hooks/useIdleReady.js';
 import { getGtag } from '../lib/getGtag.js';
 import type { GoogleAnalyticsConfig, GoogleAnalyticsConsentParams } from '../types/googleAnalytics.js';
 
-type GoogleAnalyticsProps = {
+export type GoogleAnalyticsProps = {
   config?: GoogleAnalyticsConfig;
   consentDefaults?: GoogleAnalyticsConsentParams;
   measurementId: string;
+  deferred?: boolean;
 };
 
 const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: GoogleAnalyticsProps) => {
@@ -57,8 +59,14 @@ const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: Google
   return null;
 };
 
-export const GoogleAnalytics = (props: GoogleAnalyticsProps) => (
+const DeferredGoogleAnalyticsInner = (props: GoogleAnalyticsProps) => {
+  const isIdle = useIdleReady();
+  if (!isIdle) return null;
+  return <GoogleAnalyticsInner {...props} />;
+};
+
+export const GoogleAnalytics = ({ deferred = true, ...rest }: GoogleAnalyticsProps) => (
   <ClientOnly fallback={null}>
-    <GoogleAnalyticsInner {...props} />
+    {deferred ? <DeferredGoogleAnalyticsInner {...rest} /> : <GoogleAnalyticsInner {...rest} />}
   </ClientOnly>
 );

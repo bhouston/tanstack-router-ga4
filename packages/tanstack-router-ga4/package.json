@@ -1,6 +1,6 @@
 {
   "name": "tanstack-router-ga4",
-  "version": "0.5.2",
+  "version": "1.6.0",
   "description": "Google Analytics (GA4) integration for TanStack Router and TanStack Start.",
   "keywords": [
     "analytics",
