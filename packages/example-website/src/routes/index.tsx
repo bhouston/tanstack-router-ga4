@@ -61,8 +61,8 @@ function IndexPage() {
           <div className="rounded-xl bg-slate-50 p-5">
             <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Deferred loading</h2>
             <p className="mt-3 text-sm leading-6 text-slate-700">
-              Add the <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">deferred</code> prop to delay GA
-              script injection until the browser is idle, improving initial page load performance.
+              Add the <code className="rounded bg-slate-200 px-1 py-0.5 text-xs">deferred</code> prop to delay GA script
+              injection until the browser is idle, improving initial page load performance.
             </p>
           </div>
           <div className="rounded-xl bg-slate-50 p-5">

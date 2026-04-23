@@ -13,7 +13,11 @@ describe('useIdleReady', () => {
         requestIdleCallback?: unknown;
         cancelIdleCallback?: unknown;
       };
-      const { requestIdleCallback: _ric, cancelIdleCallback: _cic, ...rest } = win as unknown as Record<string, unknown>;
+      const {
+        requestIdleCallback: _ric,
+        cancelIdleCallback: _cic,
+        ...rest
+      } = win as unknown as Record<string, unknown>;
       vi.stubGlobal('window', rest);
     });
 
