@@ -1,4 +1,7 @@
 packages:
   - packages/*
 
+allowBuilds:
+  esbuild: true
+
 link-workspace-packages: true

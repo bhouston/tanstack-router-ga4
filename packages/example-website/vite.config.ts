@@ -9,11 +9,13 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     nitro({
-      preset: 'node-server',
-      routeRules: {
-        '/assets/**': {
-          headers: {
-            'cache-control': 'public, max-age=31536000, immutable',
+      config: {
+        preset: 'node-server',
+        routeRules: {
+          '/assets/**': {
+            headers: {
+              'cache-control': 'public, max-age=31536000, immutable',
+            },
           },
         },
       },
