@@ -8,9 +8,9 @@ export default defineConfig({
   test: {
     projects: [
       {
-        name: 'library',
         test: {
-          include: ['packages/**/*.test.ts', 'packages/**/*.test.tsx'],
+          name: 'library',
+          include: ['packages/tanstack-router-ga4/src/**/*.test.ts', 'packages/tanstack-router-ga4/src/**/*.test.tsx'],
           exclude: ['**/e2e/**'],
           environment: 'jsdom',
           coverage: {
@@ -20,15 +20,6 @@ export default defineConfig({
             include: ['packages/tanstack-router-ga4/src/**/*.ts', 'packages/tanstack-router-ga4/src/**/*.tsx'],
             exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.d.ts', '**/index.ts'],
           },
-        },
-      },
-      {
-        name: 'demo',
-        test: {
-          globalSetup: [path.join(rootDir, 'scripts', 'e2e-server.ts')],
-          include: ['packages/example-website/e2e/**/*.test.ts'],
-          environment: 'node',
-          testTimeout: 60_000,
         },
       },
     ],

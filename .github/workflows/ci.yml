@@ -3,7 +3,8 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-  ci:
+  unit:
+    name: Unit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,8 +34,33 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Unit tests
+        run: pnpm test
+
+  e2e:
+    name: E2E
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 11.0.8
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Test
-        run: pnpm test
+      - name: E2E tests
+        run: pnpm test:e2e

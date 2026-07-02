@@ -115,10 +115,11 @@ pnpm build
 pnpm lint # oxlint
 pnpm lint:fix
 pnpm format # oxfmt
-pnpm test # vitest
+pnpm test # typecheck + unit tests
+pnpm test:e2e # playwright demo E2E tests
 ```
 
-Publishing runs from the repo root and uses the root README as the package README. Run `pnpm make-release` to publish. For E2E tests, run `pnpm exec playwright install chromium` then `pnpm test`.
+Publishing runs from the repo root and uses the root README as the package README. Run `pnpm make-release` to publish. For E2E tests, run `pnpm exec playwright install chromium` then `pnpm test:e2e`.
 
 ## License
 

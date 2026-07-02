@@ -1,13 +1,11 @@
-import { expect } from '@playwright/test';
-import { chromium, type Browser, type Page } from 'playwright';
-import { afterAll, afterEach, beforeAll, beforeEach, describe, test } from 'vitest';
+import { expect, test, type Page } from '@playwright/test';
 
 const BASE_URL = 'http://localhost:3000';
 
 /**
  * E2E: Asserts our GA integration pushes events to dataLayer and that real GA collect
  * requests are sent (external gtag.js must load and send to google-analytics.com).
- * Runs in Node with Playwright as library (browser in beforeAll, page in beforeEach).
+ * Runs with Playwright Test so the demo server and browser lifecycle are managed out of process.
  */
 
 function eventNameFromRequest(url: string, postData?: string | null): string | null {
@@ -59,12 +57,10 @@ async function hasGtagAndDataLayer(page: Page): Promise<{ hasDataLayer: boolean;
   });
 }
 
-describe('Google Analytics E2E', { timeout: 60_000 }, () => {
-  let browser: Browser;
-  let page: Page;
+test.describe('Google Analytics E2E', () => {
+  test.describe.configure({ timeout: 60_000 });
 
-  beforeAll(async () => {
-    browser = await chromium.launch({ headless: process.env.HEADED !== '1' });
+  test.beforeAll(async ({ browser }) => {
     // Single initial visit so the app (and GA) have time to warm up; all tests then run fast.
     const warmPage = await browser.newPage();
     await warmPage.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
@@ -73,28 +69,16 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     });
     await warmPage.waitForTimeout(5000);
     await warmPage.close();
-  }, 60_000);
-
-  afterAll(async () => {
-    await browser?.close();
   });
 
-  beforeEach(async () => {
-    page = await browser.newPage();
-  });
-
-  afterEach(async () => {
-    await page?.close();
-  });
-
-  test('home page loads and shows heading', async () => {
+  test('home page loads and shows heading', async ({ page }) => {
     await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
     await expect(page.getByRole('heading', { name: /tanstack-router-ga4/i })).toBeVisible({
       timeout: 15000,
     });
   });
 
-  test('GA gtag script is requested when loading the app', async () => {
+  test('GA gtag script is requested when loading the app', async ({ page }) => {
     const scriptRequests: string[] = [];
     page.on('request', (req) => {
       const url = req.url();
@@ -112,7 +96,7 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     expect(scriptRequests.length).toBeGreaterThan(0);
   });
 
-  test('dataLayer and gtag exist after loading home and waiting for hydration', async () => {
+  test('dataLayer and gtag exist after loading home and waiting for hydration', async ({ page }) => {
     await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
     await expect(page.getByRole('heading', { name: /tanstack-router-ga4/i })).toBeVisible({
       timeout: 15000,
@@ -124,7 +108,7 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     expect(debug.hasGtag).toBe(true);
   });
 
-  test('register-user: clicking Register user updates global state and fires sign_up', async () => {
+  test('register-user: clicking Register user updates global state and fires sign_up', async ({ page }) => {
     await page.goto(`${BASE_URL}/tests/register-user`, { waitUntil: 'networkidle' });
 
     const registerButton = page.getByRole('button', { name: /Register user/i });
@@ -158,7 +142,7 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     }
   });
 
-  test('lead-gen: clicking Generate lead fires generate_lead in dataLayer', async () => {
+  test('lead-gen: clicking Generate lead fires generate_lead in dataLayer', async ({ page }) => {
     await page.goto(`${BASE_URL}/tests/lead-gen`, { waitUntil: 'networkidle' });
 
     const trackButton = page.getByRole('button', { name: /Generate lead/i });
@@ -176,7 +160,7 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     }
   });
 
-  test('config: clicking the toggle updates debug_mode on and off', async () => {
+  test('config: clicking the toggle updates debug_mode on and off', async ({ page }) => {
     await page.goto(`${BASE_URL}/tests/config`, { waitUntil: 'networkidle' });
 
     const toggleButton = page.getByRole('button', { name: /Turn debug mode on/i });
@@ -216,7 +200,7 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     }
   });
 
-  test('get-client-id: clicking Get client ID shows the callback result', async () => {
+  test('get-client-id: clicking Get client ID shows the callback result', async ({ page }) => {
     await page.goto(`${BASE_URL}/tests/get-client-id`, { waitUntil: 'networkidle' });
 
     const getClientIdButton = page.getByRole('button', { name: /Get client ID/i });
@@ -247,7 +231,7 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     }
   });
 
-  test('consent: clicking Grant analytics consent updates the page and dataLayer', async () => {
+  test('consent: clicking Grant analytics consent updates the page and dataLayer', async ({ page }) => {
     await page.goto(`${BASE_URL}/tests/consent`, { waitUntil: 'networkidle' });
 
     const grantConsentButton = page.getByRole('button', { name: /Grant analytics consent/i });
@@ -277,7 +261,7 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     }
   });
 
-  test('page_view appears in dataLayer after navigation', async () => {
+  test('page_view appears in dataLayer after navigation', async ({ page }) => {
     await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
     await expect(page.getByRole('heading', { name: /tanstack-router-ga4/i })).toBeVisible({
       timeout: 15000,
@@ -298,7 +282,7 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     }
   });
 
-  test('stability fixture loads once per selection and does not loop custom events', async () => {
+  test('stability fixture loads once per selection and does not loop custom events', async ({ page }) => {
     await page.goto(`${BASE_URL}/tests/stability`, { waitUntil: 'networkidle' });
     await expect(page.getByRole('heading', { name: /Stability regression fixture/i })).toBeVisible({
       timeout: 15000,
@@ -332,7 +316,7 @@ describe('Google Analytics E2E', { timeout: 60_000 }, () => {
     expect(secondEventCount).toBe(2);
   });
 
-  test('GA collect endpoint receives page_view when requests are sent', async () => {
+  test('GA collect endpoint receives page_view when requests are sent', async ({ page }) => {
     const gaRequests: { url: string; postData: string | null }[] = [];
     page.on('request', (req) => {
       const url = req.url();
