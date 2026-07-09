@@ -14,6 +14,11 @@ declare global {
   }
 }
 
+// oxlint-disable-next-line prefer-rest-params -- GA4 requires the native Arguments object
+function gtag() {
+  window.dataLayer.push(arguments);
+}
+
 export function getGtag(): Window['gtag'] | undefined {
   if (typeof window === 'undefined') {
     return undefined;
@@ -21,10 +26,7 @@ export function getGtag(): Window['gtag'] | undefined {
 
   window.dataLayer = window.dataLayer || [];
   if (!window.gtag) {
-    window.gtag = function gtag() {
-      // oxlint-disable-next-line prefer-rest-params -- GA4 requires the native Arguments object
-      window.dataLayer.push(arguments);
-    } as unknown as Gtag;
+    window.gtag = gtag as unknown as Gtag;
   }
 
   return window.gtag;
