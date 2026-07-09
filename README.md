@@ -110,7 +110,7 @@ This repo contains the library and a TanStack Start demo:
 ```bash
 pnpm install
 pnpm dev
-pnpm tsc # typescript-native
+pnpm tsc
 pnpm build
 pnpm lint # oxlint
 pnpm lint:fix

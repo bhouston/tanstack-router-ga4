@@ -37,8 +37,8 @@
     }
   },
   "scripts": {
-    "build": "tsgo",
-    "dev": "tsgo -w --preserveWatchOutput --noEmitOnError",
+    "build": "tsc",
+    "dev": "tsc -w --preserveWatchOutput --noEmitOnError",
     "test": "vitest run"
   },
   "devDependencies": {

@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "husky",
     "build": "pnpm -r build",
-    "tsc": "tsgo -b",
+    "tsc": "tsc -b",
     "dev": "pnpm --parallel --filter tanstack-router-ga4 --filter example-website dev",
     "test": "pnpm test:unit",
     "test:unit": "pnpm tsc && vitest run --project library",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@playwright/test": "^1.61.1",
     "@types/node": "^22.20.0",
-    "@typescript/native-preview": "7.0.0-dev.20260421.2",
+    "typescript": "^7",
     "@vitest/browser-playwright": "^4.1.9",
     "@vitest/coverage-v8": "^4.1.9",
     "husky": "^9.1.7",
