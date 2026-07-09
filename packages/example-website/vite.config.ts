@@ -1,6 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -8,6 +9,7 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   plugins: [
+    react(),
     tanstackStart(),
     nitroV2Plugin({
       preset: 'node-server',
