@@ -75,7 +75,8 @@ function main() {
   }
   mkdirSync(publishPath, { recursive: true });
 
-  console.log('Building package');
+  console.log('Building package from clean output');
+  rmSync(join(resolvedPackagePath, 'dist'), { recursive: true, force: true });
   execSync('pnpm -s build', { cwd: resolvedPackagePath, stdio: 'inherit' });
 
   console.log('Copying files to publish directory...');
@@ -122,18 +123,12 @@ function main() {
   console.log(`Copying README from ${existsSync(packageReadmePath) ? 'package' : 'root'}`);
   cpSync(readmePath, join(publishPath, 'README.md'));
 
-  console.log('Publishing package');
-  execSync('npm publish ./publish/ --access public', {
-    cwd: resolvedPackagePath,
-    stdio: 'inherit',
-  });
-
-  console.log('Release completed successfully!');
+  console.log('Release package prepared in', publishPath);
 }
 
 try {
   main();
 } catch (error) {
-  console.error(`Error: Release failed: ${error}`);
+  console.error(`Error: Package preparation failed: ${error}`);
   process.exit(1);
 }

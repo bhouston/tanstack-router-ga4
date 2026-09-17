@@ -1,0 +1,29 @@
+name: Feature or improvement
+description: Propose a scoped change with verifiable acceptance criteria.
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What should change?
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is the change needed?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List observable outcomes as a checklist.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Compatibility, scope, and other requirements.

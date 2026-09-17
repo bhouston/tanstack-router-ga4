@@ -119,7 +119,7 @@ pnpm test # typecheck + unit tests
 pnpm test:e2e # playwright demo E2E tests
 ```
 
-Publishing runs from the repo root and uses the root README as the package README. Run `pnpm make-release` to publish. For E2E tests, run `pnpm exec playwright install chromium` then `pnpm test:e2e`.
+Before submitting changes, follow [CONTRIBUTING.md](CONTRIBUTING.md): open an issue first, branch from `dev`, and target `dev` in your PR. Releases are automated when `dev` is merged into `main`; see the guide for maintainer setup and [CHANGELOG.md](CHANGELOG.md) for release history. For E2E tests, run `pnpm exec playwright install chromium` then `pnpm test:e2e`.
 
 ## License
 
@@ -133,8 +133,8 @@ Created by [Ben Houston](https://ben3d.ca) and sponsored by [Land of Assets](htt
 [npm-url]: https://www.npmjs.com/package/tanstack-router-ga4
 [npm-downloads]: https://img.shields.io/npm/dw/tanstack-router-ga4
 [npmtrends-url]: https://www.npmtrends.com/tanstack-router-ga4
-[tests-badge]: https://github.com/bhouston/tanstack-router-ga4/workflows/Tests/badge.svg
-[tests-url]: https://github.com/bhouston/tanstack-router-ga4/actions/workflows/test.yml
+[tests-badge]: https://github.com/bhouston/tanstack-router-ga4/actions/workflows/ci.yml/badge.svg
+[tests-url]: https://github.com/bhouston/tanstack-router-ga4/actions/workflows/ci.yml
 [coverage-badge]: https://codecov.io/gh/bhouston/tanstack-router-ga4/graph/badge.svg
 [coverage-url]: https://codecov.io/gh/bhouston/tanstack-router-ga4
 [demo-badge]: https://img.shields.io/badge/demo-live-0f172a
