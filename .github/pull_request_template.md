@@ -1,4 +1,4 @@
-Follow [CONTRIBUTING.md](https://github.com/bhouston/tanstack-router-ga4/blob/dev/CONTRIBUTING.md) before submitting changes.
+Follow [CONTRIBUTING.md](https://github.com/bhouston/tanstack-router-ga4/blob/main/CONTRIBUTING.md) before submitting changes.
 
 ## Change
 
@@ -12,7 +12,6 @@ List checks run and their results, including any limitations.
 
 ## Checklist
 
-- [ ] Targets `dev` and has a Conventional Commit title (ordinary changes).
+- [ ] Targets `main` and has a Conventional Commit title.
 - [ ] Includes an issue reference and acceptance criteria are met.
 - [ ] Breaking changes are marked with `!` or a `BREAKING CHANGE:` footer.
-- [ ] Release PR only: source is `dev`, target is `main`, and merge method is **merge commit**, not squash.
