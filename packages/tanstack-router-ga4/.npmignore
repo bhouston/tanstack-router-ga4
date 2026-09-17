@@ -17,6 +17,7 @@ tsconfig.*.json
 vitest.config.ts
 vitest.config.js
 *.buildinfo
+**/*.tsbuildinfo
 coverage/
 .DS_Store
 node_modules/
