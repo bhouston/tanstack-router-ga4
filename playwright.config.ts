@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = 'http://localhost:3000';
+const port = Number(process.env.PLAYWRIGHT_PORT || 3000);
+const baseURL = `http://localhost:${port}`;
 
 export default defineConfig({
   testDir: './packages/example-website/e2e',
@@ -23,7 +24,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm --filter example-website dev',
+    command: `pnpm --filter example-website exec vite dev --port ${port} --strictPort`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

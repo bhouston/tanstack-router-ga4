@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Library (minified and gzipped, excluding peers)",
+    "path": "packages/tanstack-router-ga4/dist/index.js",
+    "limit": "1 kB",
+    "gzip": true,
+    "brotli": false,
+    "ignore": ["react", "react/jsx-runtime", "@tanstack/react-router"]
+  }
+]

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = `http://localhost:${process.env.PLAYWRIGHT_PORT || 3000}`;
 
 /**
  * E2E: Asserts our GA integration pushes events to dataLayer and that real GA collect

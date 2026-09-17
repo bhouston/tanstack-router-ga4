@@ -1,6 +1,15 @@
 name: ci
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+  workflow_call:
+
+permissions:
+  contents: read
 
 jobs:
   unit:
@@ -33,8 +42,30 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Unit tests
+      - name: Unit tests and coverage gate
         run: pnpm test
+
+      - name: Bundle size gate
+        shell: bash
+        run: pnpm size | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Dependency audit
+        id: audit
+        continue-on-error: true
+        run: pnpm audit --audit-level high
+
+      - name: Flag dependency vulnerabilities
+        if: steps.audit.outcome == 'failure'
+        run: |
+          echo "::warning::Dependency audit failed. Review the audit step for vulnerabilities or registry errors."
+          echo "Dependency audit needs review; see the audit step for details." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
 
   e2e:
     name: E2E
@@ -62,3 +93,40 @@ jobs:
 
       - name: E2E tests
         run: pnpm test:e2e
+
+  contribution:
+    name: Contribution policy
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Validate Conventional Commit PR title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s\n' "$PR_TITLE" | pnpm exec commitlint
+      - name: Validate target branch and issue link
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (pr.base.ref === 'main') {
+              if (pr.head.ref !== 'dev' || pr.head.repo.full_name !== pr.base.repo.full_name) {
+                core.setFailed('Only release PRs from this repository’s dev branch may target main.');
+              }
+              return;
+            }
+            const match = (pr.body || '').match(/\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)\b/i);
+            if (!match) {
+              core.setFailed('Feature PRs must target dev and include Closes #<issue>. See CONTRIBUTING.md.');
+              return;
+            }
+            const { data: issue } = await github.rest.issues.get({
+              ...context.repo, issue_number: Number(match[1]),
+            });
+            if (issue.pull_request) core.setFailed('The closing reference must point to an issue, not a PR.');
