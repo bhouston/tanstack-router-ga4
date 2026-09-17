@@ -2,9 +2,9 @@ name: ci
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, dev] # ponytail: dev kept only for the #6 cutover PR, drop after promoting to main
   pull_request:
-    branches: [main, dev]
+    branches: [main, dev] # ponytail: dev kept only for the #6 cutover PR, drop after promoting to main
     types: [opened, synchronize, reopened, edited, ready_for_review]
   workflow_call:
 
@@ -115,15 +115,16 @@ jobs:
         with:
           script: |
             const pr = context.payload.pull_request;
-            if (pr.base.ref === 'main') {
-              if (pr.head.ref !== 'dev' || pr.head.repo.full_name !== pr.base.repo.full_name) {
-                core.setFailed('Only release PRs from this repository’s dev branch may target main.');
-              }
+            const sameRepo = pr.head.repo.full_name === pr.base.repo.full_name;
+            // ponytail: dev->main bypass is transitional for #6's cutover PR only, drop once dev is retired.
+            if (pr.base.ref === 'main' && pr.head.ref === 'dev' && sameRepo) return;
+            if (pr.base.ref !== 'main' && pr.base.ref !== 'dev') {
+              core.setFailed(`Pull requests must target main (unexpected base: ${pr.base.ref}).`);
               return;
             }
             const match = (pr.body || '').match(/\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)\b/i);
             if (!match) {
-              core.setFailed('Feature PRs must target dev and include Closes #<issue>. See CONTRIBUTING.md.');
+              core.setFailed('PRs must include Closes #<issue>. See CONTRIBUTING.md.');
               return;
             }
             const { data: issue } = await github.rest.issues.get({

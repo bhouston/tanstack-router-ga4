@@ -1,8 +1,12 @@
 name: Release
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no tag, no publish, no GitHub release)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -12,7 +16,18 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require dispatch against main
+        run: |
+          if [ "${{ github.ref }}" != "refs/heads/main" ]; then
+            echo "::error::Release can only be dispatched against main (got ${{ github.ref }})."
+            exit 1
+          fi
+
   checks:
+    needs: guard
     uses: ./.github/workflows/ci.yml
     secrets: inherit
 
@@ -37,6 +52,6 @@ jobs:
       - name: Prepare package
         run: pnpm release:prepare
       - name: Publish using npm trusted publishing
-        run: pnpm release
+        run: pnpm release ${{ inputs.dry_run && '--dry-run' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
