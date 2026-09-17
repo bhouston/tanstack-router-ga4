@@ -2,9 +2,9 @@ name: ci
 
 on:
   push:
-    branches: [main, dev] # ponytail: dev kept only for the #6 cutover PR, drop after promoting to main
+    branches: [main]
   pull_request:
-    branches: [main, dev] # ponytail: dev kept only for the #6 cutover PR, drop after promoting to main
+    branches: [main]
     types: [opened, synchronize, reopened, edited, ready_for_review]
   workflow_call:
 
@@ -115,10 +115,7 @@ jobs:
         with:
           script: |
             const pr = context.payload.pull_request;
-            const sameRepo = pr.head.repo.full_name === pr.base.repo.full_name;
-            // ponytail: dev->main bypass is transitional for #6's cutover PR only, drop once dev is retired.
-            if (pr.base.ref === 'main' && pr.head.ref === 'dev' && sameRepo) return;
-            if (pr.base.ref !== 'main' && pr.base.ref !== 'dev') {
+            if (pr.base.ref !== 'main') {
               core.setFailed(`Pull requests must target main (unexpected base: ${pr.base.ref}).`);
               return;
             }
