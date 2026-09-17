@@ -119,7 +119,7 @@ pnpm test # typecheck + unit tests
 pnpm test:e2e # playwright demo E2E tests
 ```
 
-Before submitting changes, follow [CONTRIBUTING.md](CONTRIBUTING.md): open an issue first, branch from `dev`, and target `dev` in your PR. Releases are automated when `dev` is merged into `main`; see the guide for maintainer setup and [CHANGELOG.md](CHANGELOG.md) for release history. For E2E tests, run `pnpm exec playwright install chromium` then `pnpm test:e2e`.
+Before submitting changes, follow [CONTRIBUTING.md](CONTRIBUTING.md): open an issue first, branch from `main`, and target `main` in your PR. Releases are triggered manually by the maintainer via `gh workflow run release.yml --ref main`; see the guide for maintainer setup and [CHANGELOG.md](CHANGELOG.md) for release history. For E2E tests, run `pnpm exec playwright install chromium` then `pnpm test:e2e`.
 
 ## License
 
