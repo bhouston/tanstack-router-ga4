@@ -15,4 +15,4 @@ List checks run and their results, including any limitations.
 - [ ] Targets `dev` and has a Conventional Commit title (ordinary changes).
 - [ ] Includes an issue reference and acceptance criteria are met.
 - [ ] Breaking changes are marked with `!` or a `BREAKING CHANGE:` footer.
-- [ ] Release PR only: source is `dev`, target is `main`, and merge method is **merge commit**, not squash.
+- [ ] Release PR only: source is `dev`, target is `main`, and merge method is **merge commit**, not squash. A descriptive PR title and GitHub’s default merge commit message are allowed.

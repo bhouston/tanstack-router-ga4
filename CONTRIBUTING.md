@@ -24,6 +24,8 @@ gh pr create --base dev --title "feat: add batch export" --body-file /path/to/pr
 
 Use `type(scope): description`; the scope is optional. Types are `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `style`, `perf`, `build`, `ci`, and `revert`. `feat` triggers a minor release; `fix` and `perf` trigger a patch release. Mark incompatible changes with `!` after the type/scope or a `BREAKING CHANGE:` footer to trigger a major release. Other types do not trigger releases unless marked breaking. Reference the issue in the body where helpful. Do not bypass Git hooks.
 
+GitHub’s default merge commit message (`Merge pull request #… from …`) is accepted by commitlint’s default merge-message ignore rule. Keep that default for release merges. The preserved `feat`/`fix` commits determine the release version, not the merge message. For ordinary PRs, use a title such as `feat: add tracking` or `fix: handle navigation`; GitHub is configured to suggest that title for the squash commit. Do not relax title checks on ordinary PRs, because their squash commit is what Semantic Release reads.
+
 ## Development and validation
 
 Use Node from `.nvmrc` and the pnpm version in `package.json`.
@@ -47,7 +49,7 @@ The library is in `packages/tanstack-router-ga4`; the demo is in `packages/examp
 
 ## Controlled releases
 
-Open a release PR **from `dev` to `main`**, titled `chore: release`. Merge it using a **merge commit, never squash or rebase**, so Semantic Release sees the individual Conventional Commits. Ordinary merges into `dev` never publish. Keep both branches' history intact; main receives only release merges from dev.
+Open a release PR **from `dev` to `main`**. Use a descriptive title such as `New release` or `chore: release`; release PR titles are exempt from Conventional Commit linting. Merge it using a **merge commit, never squash or rebase**, so Semantic Release sees the individual Conventional Commits. Ordinary merges into `dev` never publish. Keep both branches' history intact; main receives only release merges from dev.
 
 On a push to `main`, `release.yml` runs the CI checks before Semantic Release computes the next version, creates a tag and GitHub release, and publishes using npm OIDC trusted publishing. A release with no relevant commits publishes nothing. The historical `v1.6.0` tag is required to prevent accidentally restarting at version 1.0.0.
 
