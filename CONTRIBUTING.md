@@ -5,18 +5,18 @@ These requirements apply to everyone submitting changes, including automated too
 ## Issue, branch, and pull request
 
 1. **Create a GitHub issue before making changes** to explain the proposed change, why it is needed, acceptance criteria, and constraints. Use the [feature template](https://github.com/bhouston/tanstack-router-ga4/issues/new?template=feature.yml). If an issue already describes the work, use it instead of creating a duplicate.
-2. Fetch the remote and **create your branch from `origin/main`**. Use `feature/<issue>-<slug>`, `fix/<issue>-<slug>`, or `chore/<issue>-<slug>`. Never commit directly to `main`.
+2. Fetch the remote and **create your branch from `origin/main`**. Branch names are not restricted to a naming convention. Never commit directly to `main`.
 3. Implement the scoped change, preserve unrelated work, and run the checks below.
 4. Push your branch and **open a PR targeting `main`**, with a Conventional Commit title, a description of the resulting behavior, validation results, and `Closes #<issue>`. Follow the PR template. Do not merge without maintainer approval.
 5. PRs are merged into `main` with merge commits; do not squash. Use a Conventional Commit PR title. CI checks PR titles and issue references; local hooks check every new commit. Merging does not publish; see [Releases](#releases).
 
 ```sh
 git fetch origin
-git switch -c feature/42-batch-export origin/main
+git switch -c batch-export origin/main
 # implement and validate
 git add <changed-files>
 git commit -m "feat: add batch export" -m "Refs #42"
-git push -u origin feature/42-batch-export
+git push -u origin batch-export
 gh pr create --base main --title "feat: add batch export" --body-file /path/to/pr-body.md
 ```
 
