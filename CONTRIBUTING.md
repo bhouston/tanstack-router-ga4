@@ -8,7 +8,7 @@ These requirements apply to everyone submitting changes, including automated too
 2. Fetch the remote and **create your branch from `origin/main`**. Use `feature/<issue>-<slug>`, `fix/<issue>-<slug>`, or `chore/<issue>-<slug>`. Never commit directly to `main`.
 3. Implement the scoped change, preserve unrelated work, and run the checks below.
 4. Push your branch and **open a PR targeting `main`**, with a Conventional Commit title, a description of the resulting behavior, validation results, and `Closes #<issue>`. Follow the PR template. Do not merge without maintainer approval.
-5. Squash PRs into `main`, using the Conventional Commit PR title as the squash commit message. CI checks PR titles and issue references; local hooks check every new commit. Merging does not publish; see [Releases](#releases).
+5. PRs are merged into `main` with merge commits; do not squash. Use a Conventional Commit PR title. CI checks PR titles and issue references; local hooks check every new commit. Merging does not publish; see [Releases](#releases).
 
 ```sh
 git fetch origin
@@ -60,7 +60,7 @@ Do not bump versions manually or publish from a workstation. `pnpm release:prepa
 ## One-time maintainer setup
 
 - `main` is the integration branch and repository default. PRs target it, and issue-closing keywords take effect when merged there.
-- Protect `main`: require PRs and the `Unit`, `E2E`, and `Contribution policy` checks. Allow squash merges. Restrict direct pushes; the release job only needs to create tags and releases, triggered manually via `workflow_dispatch`.
+- Protect `main`: require PRs and the `Unit`, `E2E`, and `Contribution policy` checks. Allow merge commits only; disable squash and rebase merges. Restrict direct pushes; the release job only needs to create tags and releases, triggered manually via `workflow_dispatch`.
 - The historical `v1.6.0` baseline tag points to `960ea71540bb5e4915589fb60b1bb2de89db2549`, verified against the published JavaScript. npm’s recorded `gitHead` points to an older version; do not move the baseline to that commit. The release workflow checks that the baseline tag exists.
 - In npm’s `tanstack-router-ga4` package settings, configure a GitHub Actions trusted publisher with owner `bhouston`, repository `tanstack-router-ga4`, and workflow filename `release.yml` (no environment). See [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/). No `NPM_TOKEN` secret is used. Configure this before the first release merge.
 - Enable GitHub private vulnerability reporting. Configure `CODECOV_TOKEN` if required by the Codecov account; coverage gating does not depend on it.
