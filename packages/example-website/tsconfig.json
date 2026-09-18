@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.node.json",
   "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "composite": true,
-    "rootDir": ".",
+    "rootDir": "..",
     "noEmit": true,
     "jsx": "react-jsx",
     "lib": ["ES2024", "DOM", "DOM.Iterable"],
@@ -14,6 +13,5 @@
       "@/*": ["./src/*"],
       "tanstack-router-ga4": ["../tanstack-router-ga4/src/index.ts"]
     }
-  },
-  "references": [{ "path": "../tanstack-router-ga4" }]
+  }
 }

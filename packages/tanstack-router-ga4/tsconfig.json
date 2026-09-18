@@ -1,11 +1,9 @@
 {
   "extends": "../../tsconfig.node.json",
   "compilerOptions": {
-    "composite": true,
     "jsx": "react-jsx",
     "lib": ["ES2024", "DOM", "DOM.Iterable"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"],
-  "references": []
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
 }
