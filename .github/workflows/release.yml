@@ -51,6 +51,8 @@ jobs:
         run: |
           version=$(node -p "require('./packages/tanstack-router-ga4/package.json').version")
           git rev-parse --verify "refs/tags/v${version}"
+      - name: Build
+        run: pnpm build
       - name: Publish using npm trusted publishing
         run: pnpm release ${{ inputs.dry_run && '--dry-run' || '' }}
         env:
