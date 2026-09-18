@@ -48,9 +48,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Require historical release baseline
-        run: git rev-parse --verify refs/tags/v1.6.0
-      - name: Prepare package
-        run: pnpm release:prepare
+        run: |
+          version=$(node -p "require('./packages/tanstack-router-ga4/package.json').version")
+          git rev-parse --verify "refs/tags/v${version}"
       - name: Publish using npm trusted publishing
         run: pnpm release ${{ inputs.dry_run && '--dry-run' || '' }}
         env:
