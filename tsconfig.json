@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true
-  },
-  "files": [],
-  "include": [],
-  "references": [{ "path": "./packages/tanstack-router-ga4" }, { "path": "./packages/example-website" }]
-}
