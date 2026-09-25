@@ -32,7 +32,9 @@ pnpm test # typecheck + unit tests
 pnpm test:e2e # playwright demo E2E tests
 ```
 
-Before submitting changes, follow [CONTRIBUTING.md](CONTRIBUTING.md): open an issue first, branch from `main`, and target `main` in your PR. Releases are triggered manually by the maintainer via `gh workflow run release.yml --ref main`; see the guide for maintainer setup and [CHANGELOG.md](CHANGELOG.md) for release history. For E2E tests, run `pnpm exec playwright install chromium` then `pnpm test:e2e`.
+For E2E tests, run `pnpm exec playwright install chromium` then `pnpm test:e2e`. If port 3000 is already in use, override it with `PLAYWRIGHT_PORT=3107 pnpm test:e2e`.
+
+Before submitting changes, follow [CONTRIBUTING.md](CONTRIBUTING.md): open an issue first, branch from `main`, and target `main` in your PR. See [RELEASING.md](RELEASING.md) for coverage/size gates, the release process, and one-time maintainer setup, and [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## License
 

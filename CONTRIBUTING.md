@@ -1,70 +1,59 @@
 # Contributing
 
-These requirements apply to everyone submitting changes, including automated tools.
+These rules apply to every contributor, human or AI agent (Claude, Codex, and others). This file is the single source of truth for the workflow; `AGENTS.md` and `CLAUDE.md` only point here.
 
-## Issue, branch, and pull request
+## Issue → branch → PR
 
-1. **Create a GitHub issue before making changes** to explain the proposed change, why it is needed, acceptance criteria, and constraints. Use the [feature template](https://github.com/bhouston/tanstack-router-ga4/issues/new?template=feature.yml). If an issue already describes the work, use it instead of creating a duplicate.
-2. Fetch the remote and **create your branch from `origin/main`**. Branch names are not restricted to a naming convention. Never commit directly to `main`.
-3. Implement the scoped change, preserve unrelated work, and run the checks below.
-4. Push your branch and **open a PR targeting `main`**, with a Conventional Commit title, a description of the resulting behavior, validation results, and `Closes #<issue>`. Follow the PR template. Do not merge without maintainer approval.
-5. PRs are merged into `main` with merge commits; do not squash. Use a Conventional Commit PR title. CI checks PR titles and issue references; local hooks check every new commit. Merging does not publish; see [Releases](#releases).
+1. **Start with an issue.** Before a feature, fix, or other tracked change, open a GitHub issue (or reuse one that already covers it) with the problem, motivation, constraints, and testable acceptance criteria. Agents use `gh issue create` with the same sections.
+2. **Branch from `main`.** Fetch and branch from current `origin/main`, named `<type>/<issue>-<short-description>` (for example `feat/42-batch-export`). Never commit directly to `main`. Use a separate worktree when you have unrelated local changes.
+3. **Commit with Conventional Commits** (see below). Reference the issue in the commit body where useful.
+4. **Run the local checks** below and fix failures before opening the PR.
+5. **Open a PR against `main`** with a Conventional Commit title, `Closes #<issue>` in the body, a description of the resulting behavior, and the validation you ran.
+6. **Merge only on green CI.** Every required check must pass. PRs are merged with merge commits (`gh pr merge --merge`); never squash or rebase-merge. Do not merge your own PR unless the maintainer asked you to.
 
-```sh
-git fetch origin
-git switch -c batch-export origin/main
-# implement and validate
-git add <changed-files>
-git commit -m "feat: add batch export" -m "Refs #42"
-git push -u origin batch-export
-gh pr create --base main --title "feat: add batch export" --body-file /path/to/pr-body.md
-```
+`main` is the default branch and the only integration branch. There are no long-lived release, promotion, or sync branches.
 
-## Commit messages
+## Commit format
 
-Use `type(scope): description`; the scope is optional. Types are `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `style`, `perf`, `build`, `ci`, and `revert`. `feat` triggers a minor release; `fix` and `perf` trigger a patch release. Mark incompatible changes with `!` after the type/scope or a `BREAKING CHANGE:` footer to trigger a major release. Other types do not trigger releases unless marked breaking. Reference the issue in the body where helpful. Do not bypass Git hooks.
+Use `type(optional-scope): description` in the imperative mood. Allowed types: `feat`, `fix`, `perf`, `docs`, `chore`, `refactor`, `test`, `style`, `build`, `ci`, `revert`.
 
-## Development and validation
+- `feat:` produces a minor release.
+- `fix:` and `perf:` produce a patch release.
+- `feat!:` (any type with `!`) or a `BREAKING CHANGE:` footer produces a major release.
+- Other types do not trigger a release on their own.
 
-Use Node from `.nvmrc` and the pnpm version in `package.json`.
+Husky runs commitlint on every commit after `pnpm install`. CI checks the PR title and every commit in the PR. Git-generated merge commits are exempt.
+
+## Local checks
+
+Use the Node version in `.nvmrc` and the pnpm version pinned in `package.json` (`packageManager`).
 
 ```sh
 pnpm install --frozen-lockfile
 pnpm build
+pnpm tsc
 pnpm lint
 pnpm test
-pnpm size
-pnpm exec playwright install chromium
-pnpm test:e2e
-pnpm audit --audit-level high
 ```
 
-`pnpm test` includes type checking and coverage gates: 95% lines/statements/functions and 90% branches. `pnpm size` measures the minified, gzipped library with peer dependencies excluded against the budget in `.size-limit.json`. Audit failures produce a CI warning for review; they do not block unrelated work. Codecov reporting is supplementary; coverage thresholds are enforced locally and in CI even if uploading fails.
-
-If another app uses port 3000, run `PLAYWRIGHT_PORT=3107 pnpm test:e2e`.
-
-The library is in `packages/tanstack-router-ga4`; the demo is in `packages/example-website`. Preserve public API compatibility and TypeScript declarations. Commit dependency changes with `pnpm-lock.yaml`. Run `pnpm format` for formatting.
+The Husky pre-commit hook formats and lints staged files (`oxfmt`, `oxlint --fix`) and type-checks the workspace. CI runs the same checks plus any repository-specific gates, such as coverage floors, bundle-size budgets, package-content checks, and a dependency audit; see `.github/workflows/ci.yml`. Explain any intentional threshold change in the PR.
 
 ## Releases
 
-Merging a PR into `main` never publishes; it only runs CI. When ready to publish, the maintainer manually dispatches the release workflow against `main`:
+Merging to `main` never publishes. A release is a separate, deliberate step that the maintainer triggers whenever the changes accumulated on `main` should ship:
 
 ```sh
-gh workflow run release.yml --ref main
+gh workflow run release.yml --ref main                  # release
+gh workflow run release.yml --ref main -f dry_run=true  # preview only, publishes nothing
 ```
 
-`release.yml` rejects dispatches against any ref other than `refs/heads/main`, then runs the CI checks before Semantic Release computes the next version, creates a tag and GitHub release, and publishes using npm OIDC trusted publishing. A dispatch with no release-worthy commits since the last release succeeds without publishing anything. Pass `dry_run: true` (`gh workflow run release.yml --ref main -f dry_run=true`) to preview the computed version and changelog without publishing or tagging. The historical `v1.6.0` tag is required to prevent accidentally restarting at version 1.0.0.
+The Release workflow refuses any ref other than `main`, re-runs CI on the dispatched commit, and then uses semantic-release to compute the next version from the Conventional Commits since the last release tag, generate release notes, create the tag and GitHub Release, and publish:
 
-Do not bump versions manually or publish from a workstation. `pnpm release:prepare` only builds and stages the package in the ignored `publish` directory; it never publishes. Semantic Release updates the staged package version. The checked-in package version is a development baseline, not the current registry version; tags and npm are authoritative. Generated notes accumulate in GitHub Releases, with a per-release changelog included in the package and attached as a release asset. No generated release commits are pushed back into `main`.
+- npm packages, through npm trusted publishing (GitHub OIDC, no `NPM_TOKEN`);
+- VS Code extensions, where the repository has one, to the VS Code Marketplace and Open VSX.
 
-## One-time maintainer setup
+When there are no release-worthy commits, the run is a no-op. Never bump versions, edit changelogs, or push release tags by hand.
 
-- `main` is the integration branch and repository default. PRs target it, and issue-closing keywords take effect when merged there.
-- Protect `main`: require PRs and the `Unit`, `E2E`, and `Contribution policy` checks. Allow merge commits only; disable squash and rebase merges. Restrict direct pushes; the release job only needs to create tags and releases, triggered manually via `workflow_dispatch`.
-- The historical `v1.6.0` baseline tag points to `960ea71540bb5e4915589fb60b1bb2de89db2549`, verified against the published JavaScript. npm’s recorded `gitHead` points to an older version; do not move the baseline to that commit. The release workflow checks that the baseline tag exists.
-- In npm’s `tanstack-router-ga4` package settings, configure a GitHub Actions trusted publisher with owner `bhouston`, repository `tanstack-router-ga4`, and workflow filename `release.yml` (no environment). See [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/). No `NPM_TOKEN` secret is used. Configure this before the first release merge.
-- Enable GitHub private vulnerability reporting. Configure `CODECOV_TOKEN` if required by the Codecov account; coverage gating does not depend on it.
+## Security
 
-## Reusing this workflow
-
-After the first successful issue → PR → release cycle, copy this guide, issue/PR templates, commitlint config, Husky hook, release config, and CI workflows into a dedicated template repository. Adapt package paths, repository URLs, runtime, coverage and size budgets, and release baseline per project. Do not copy this repository’s deployment credentials or baseline tag. Mark that separate repository as a GitHub template after validation. This repository remains the library repository.
+Report vulnerabilities privately through GitHub's private vulnerability reporting (see `SECURITY.md` where present), never in a public issue.
