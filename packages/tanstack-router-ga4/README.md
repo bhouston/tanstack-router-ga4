@@ -5,6 +5,7 @@
 [![Tests][tests-badge]][tests-url]
 [![Coverage][coverage-badge]][coverage-url]
 [![Demo Site][demo-badge]][demo-url]
+[![Discord](https://img.shields.io/badge/Discord-Join%20Chat-5865F2?logo=discord&logoColor=white)][discord-url]
 
 [Google Analytics (GA4)](https://marketingplatform.google.com/about/analytics/) integration for [TanStack Router](https://tanstack.com/router) and [TanStack Start](https://tanstack.com/start), built for modern React apps that need reliable analytics with minimal setup.
 
@@ -116,3 +117,4 @@ Created by [Ben Houston](https://ben3d.ca) and sponsored by [Land of Assets](htt
 [coverage-url]: https://codecov.io/gh/bhouston/tanstack-router-ga4
 [demo-badge]: https://img.shields.io/badge/demo-live-0f172a
 [demo-url]: https://tanstack-router-ga4.ben3d.ca
+[discord-url]: https://discord.gg/fwupDN493R
