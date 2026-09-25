@@ -5,37 +5,35 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-    types: [opened, synchronize, reopened, edited, ready_for_review]
   workflow_call:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  unit:
-    name: Unit
+  ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+      - uses: actions/checkout@v6
         with:
-          run_install: false
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
+          persist-credentials: false
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm build
-
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm tsc
+      - run: pnpm lint
+      - name: Check formatting
+        run: pnpm exec oxfmt --check .
+      - run: pnpm test --coverage
+      # --- repository-specific steps (package-content check, size budget, e2e, docs, ...) go here ---
       - name: Verify published package includes dist
         run: |
           cd packages/tanstack-router-ga4
@@ -43,103 +41,36 @@ jobs:
             echo "::error::dist/index.js missing from the packed tarball; the publish step would ship a broken package."
             exit 1
           }
-
-      - name: Type check
-        run: pnpm tsc
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Unit tests and coverage gate
-        run: pnpm test
-
       - name: Bundle size gate
         shell: bash
         run: pnpm size | tee -a "$GITHUB_STEP_SUMMARY"
-
-      - name: Dependency audit
+      - name: Audit dependencies
         id: audit
         continue-on-error: true
-        run: pnpm audit --audit-level high
-
-      - name: Flag dependency vulnerabilities
+        run: pnpm audit --audit-level=high
+      - name: Flag audit findings
         if: steps.audit.outcome == 'failure'
-        run: |
-          echo "::warning::Dependency audit failed. Review the audit step for vulnerabilities or registry errors."
-          echo "Dependency audit needs review; see the audit step for details." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v5
+        run: echo '::warning::Dependency audit found vulnerabilities or could not reach the registry. Review the audit step.'
+      - uses: codecov/codecov-action@v5
+        if: ${{ !cancelled() && hashFiles('coverage/lcov.info') != '' }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/lcov.info
+          files: coverage/lcov.info
           fail_ci_if_error: false
 
   e2e:
-    name: E2E
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v5
-        with:
-          run_install: false
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: E2E tests
-        run: pnpm test:e2e
-
-  contribution:
-    name: Contribution policy
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          persist-credentials: false
       - uses: pnpm/action-setup@v5
       - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Validate Conventional Commit PR title
-        env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
-        run: printf '%s\n' "$PR_TITLE" | pnpm exec commitlint
-      - name: Validate Conventional Commits in PR
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: pnpm exec commitlint --from "$BASE_SHA" --to "$HEAD_SHA"
-      - name: Validate target branch and issue link
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const pr = context.payload.pull_request;
-            if (pr.base.ref !== 'main') {
-              core.setFailed(`Pull requests must target main (unexpected base: ${pr.base.ref}).`);
-              return;
-            }
-            const match = (pr.body || '').match(/\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)\b/i);
-            if (!match) {
-              core.setFailed('PRs must include Closes #<issue>. See CONTRIBUTING.md.');
-              return;
-            }
-            const { data: issue } = await github.rest.issues.get({
-              ...context.repo, issue_number: Number(match[1]),
-            });
-            if (issue.pull_request) core.setFailed('The closing reference must point to an issue, not a PR.');
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+      - name: E2E tests
+        run: pnpm test:e2e

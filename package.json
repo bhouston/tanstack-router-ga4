@@ -8,7 +8,7 @@
     "build": "pnpm -r build",
     "tsc": "pnpm -r tsc",
     "dev": "pnpm --parallel --filter tanstack-router-ga4 --filter example-website dev",
-    "test": "pnpm test:unit",
+    "test": "vitest run --project library",
     "test:unit": "pnpm tsc && vitest run --project library --coverage",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
@@ -55,7 +55,7 @@
     "*.{json,jsonc,md,mdx,css,html,yml,yaml}": "oxfmt"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22"
   },
   "packageManager": "pnpm@11.27.0"
 }

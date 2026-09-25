@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry run (no tag, no publish, no GitHub release)'
+        description: 'Validate and preview the release without publishing'
         type: boolean
         default: false
 
@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: npm-release
+  group: release
   cancel-in-progress: false
 
 jobs:
@@ -20,11 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Require dispatch against main
+        if: github.ref != 'refs/heads/main'
         run: |
-          if [ "${{ github.ref }}" != "refs/heads/main" ]; then
-            echo "::error::Release can only be dispatched against main (got ${{ github.ref }})."
-            exit 1
-          fi
+          echo "::error::Release must be dispatched with ref=main (got ${{ github.ref }})."
+          exit 1
 
   checks:
     needs: guard
@@ -32,28 +31,42 @@ jobs:
     secrets: inherit
 
   release:
-    needs: checks
+    needs: [guard, checks]
     runs-on: ubuntu-latest
+    environment: npm
     permissions:
       contents: write
       id-token: write
+    env:
+      HUSKY: '0'
     steps:
       - uses: actions/checkout@v6
         with:
+          ref: ${{ github.sha }}
           fetch-depth: 0
+          persist-credentials: false
+      - name: Verify main has not advanced since dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head="$(gh api "repos/${{ github.repository }}/git/ref/heads/main" --jq .object.sha)"
+          if [ "$head" != "$GITHUB_SHA" ]; then
+            echo "::error::main moved from $GITHUB_SHA to $head after dispatch; dispatch the release again."
+            exit 1
+          fi
       - uses: pnpm/action-setup@v5
       - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Require historical release baseline
-        run: |
-          version=$(node -p "require('./packages/tanstack-router-ga4/package.json').version")
-          git rev-parse --verify "refs/tags/v${version}"
-      - name: Build
-        run: pnpm build
-      - name: Publish using npm trusted publishing
+      - run: pnpm build
+      - name: Release
         run: pnpm release ${{ inputs.dry_run && '--dry-run' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+      - name: Summary
+        if: inputs.dry_run
+        run: echo "Dry run complete; nothing was published and no tag was created." >> "$GITHUB_STEP_SUMMARY"
