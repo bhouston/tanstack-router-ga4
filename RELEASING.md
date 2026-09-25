@@ -20,7 +20,7 @@ gh workflow run release.yml --ref main
 
 `release.yml` rejects dispatches against any ref other than `refs/heads/main`, then runs the CI checks before Semantic Release computes the next version, creates a tag and GitHub release, and publishes using npm OIDC trusted publishing. A dispatch with no release-worthy commits since the last release succeeds without publishing anything. Pass `dry_run: true` (`gh workflow run release.yml --ref main -f dry_run=true`) to preview the computed version and changelog without publishing or tagging. The historical `v1.6.0` tag is required to prevent accidentally restarting at version 1.0.0.
 
-Do not bump versions manually or publish from a workstation. `pnpm release:prepare` only builds and stages the package in the ignored `publish` directory; it never publishes. Semantic Release updates the staged package version. The checked-in package version is a development baseline, not the current registry version; tags and npm are authoritative. Generated notes accumulate in GitHub Releases, with a per-release changelog included in the package and attached as a release asset. No generated release commits are pushed back into `main`.
+Do not bump versions manually or publish from a workstation. `pnpm release:prepare` only builds and stages the package in the ignored `publish` directory; it never publishes. Semantic Release updates the staged package version. The checked-in package version is a development baseline, not the current registry version; tags and npm are authoritative. Generated notes accumulate on the [GitHub Releases page](https://github.com/bhouston/tanstack-router-ga4/releases), which is the changelog of record. No generated release commits are pushed back into `main`.
 
 ## One-time maintainer setup
 
