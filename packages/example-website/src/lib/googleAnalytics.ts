@@ -1,1 +1,0 @@
-export const DEMO_MEASUREMENT_ID = 'G-FWJBK9S1RL';
