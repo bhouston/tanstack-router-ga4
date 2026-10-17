@@ -5,10 +5,15 @@ import { useIdleReady } from '../hooks/useIdleReady.js';
 import { getGtag } from '../lib/getGtag.js';
 import type { GoogleAnalyticsConfig, GoogleAnalyticsConsentParams } from '../types/googleAnalytics.js';
 
+/** Options for the client-only GA4 component. Keep config objects stable across renders. */
 export type GoogleAnalyticsProps = {
+  /** Stream configuration. Automatic gtag page views are always disabled by this component. */
   config?: GoogleAnalyticsConfig;
+  /** Initial consent commands, queued before stream configuration. Does not block script loading. */
   consentDefaults?: GoogleAnalyticsConsentParams;
+  /** GA4 web stream measurement ID, such as `G-XXXXXXXXXX`. */
   measurementId: string;
+  /** Wait for requestIdleCallback when available. Defaults to true; no idle timeout is set. */
   deferred?: boolean;
 };
 
@@ -65,6 +70,17 @@ const DeferredGoogleAnalyticsInner = (props: GoogleAnalyticsProps) => {
   return <GoogleAnalyticsInner {...props} />;
 };
 
+/**
+ * Initializes GA4 on the client and sends page views on pathname changes.
+ *
+ * Mount once inside a TanStack Router root. Search/hash-only changes do not trigger page views.
+ * The component renders nothing during SSR and reuses an existing gtag loader script.
+ *
+ * @example
+ * ```tsx
+ * <GoogleAnalytics measurementId="G-XXXXXXXXXX" deferred={false} />
+ * ```
+ */
 export const GoogleAnalytics = ({ deferred = true, ...rest }: GoogleAnalyticsProps) => (
   <ClientOnly fallback={null}>
     {deferred ? <DeferredGoogleAnalyticsInner {...rest} /> : <GoogleAnalyticsInner {...rest} />}

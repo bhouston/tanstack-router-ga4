@@ -56,6 +56,7 @@ export type GoogleAnalyticsConsentParams = {
 
 export type GoogleAnalyticsGettableFieldName = 'campaign_name' | 'client_id' | 'gclid' | 'session_id';
 
+/** @inline */
 type PageViewEventParams = {
   page_location: string;
   page_path: string;
@@ -64,25 +65,30 @@ type PageViewEventParams = {
   send_to?: string;
 };
 
+/** @inline */
 type ExceptionEventParams = {
   description?: string;
   fatal?: boolean;
 };
 
+/** @inline */
 type SearchEventParams = {
   search_term: string;
 };
 
+/** @inline */
 type AuthEventParams = {
   method?: string;
 };
 
+/** @inline */
 type ShareEventParams = {
   content_type?: string;
   item_id?: string;
   method: string;
 };
 
+/** @inline */
 type SelectContentEventParams = {
   content_type: string;
   item_id?: string;
