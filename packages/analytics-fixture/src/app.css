@@ -1,0 +1,23 @@
+body {
+  font:
+    16px system-ui,
+    sans-serif;
+  margin: 2rem auto;
+  max-width: 48rem;
+  padding: 0 1rem;
+  color: #172033;
+}
+nav {
+  margin-bottom: 2rem;
+}
+button,
+select {
+  font: inherit;
+  padding: 0.6rem 1rem;
+  margin: 0.3rem;
+}
+pre {
+  white-space: pre-wrap;
+  background: #f1f5f9;
+  padding: 1rem;
+}

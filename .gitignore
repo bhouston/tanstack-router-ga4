@@ -25,3 +25,8 @@ blob-report
 **/e2e/__screenshots__
 bhouston-general-hosting-7c5255afe1ce.json
 .pnpm-store
+# Docusaurus and generated API reference
+build
+.docusaurus
+packages/website/docs/api
+

@@ -7,7 +7,7 @@
     "prepare": "husky",
     "build": "pnpm -r build",
     "tsc": "pnpm -r tsc",
-    "dev": "pnpm --parallel --filter tanstack-router-ga4 --filter example-website dev",
+    "dev": "pnpm --filter @tanstack-router-ga4/website dev",
     "test": "vitest run --project library",
     "test:unit": "pnpm tsc && vitest run --project library --coverage",
     "test:e2e": "playwright test",
@@ -17,7 +17,9 @@
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
     "size": "size-limit",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "docs:build": "pnpm --filter @tanstack-router-ga4/website build",
+    "docs:serve": "pnpm --filter @tanstack-router-ga4/website serve"
   },
   "devDependencies": {
     "@anolilab/semantic-release-pnpm": "^8.1.25",

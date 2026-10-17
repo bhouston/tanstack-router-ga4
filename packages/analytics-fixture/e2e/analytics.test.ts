@@ -1,26 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const BASE_URL = `http://localhost:${process.env.PLAYWRIGHT_PORT || 3000}`;
+const BASE_URL = `http://localhost:${process.env.PLAYWRIGHT_PORT || 3100}`;
 
-/**
- * E2E: Asserts our GA integration pushes events to dataLayer and that real GA collect
- * requests are sent (external gtag.js must load and send to google-analytics.com).
- * Runs with Playwright Test so the demo server and browser lifecycle are managed out of process.
- */
-
-function eventNameFromRequest(url: string, postData?: string | null): string | null {
-  try {
-    const u = new URL(url);
-    const en = u.searchParams.get('en');
-    if (en) return en;
-  } catch {
-    // ignore
-  }
-  if (postData?.includes('page_view')) return 'page_view';
-  if (postData?.includes('generate_lead')) return 'generate_lead';
-  if (postData?.includes('sign_up')) return 'sign_up';
-  return null;
-}
+/** Browser integration tests use a local gtag stub; no production analytics are sent. */
 
 async function getDataLayerEventNames(page: Page): Promise<string[]> {
   const dataLayer = await page.evaluate(() => {
@@ -60,15 +42,31 @@ async function hasGtagAndDataLayer(page: Page): Promise<{ hasDataLayer: boolean;
 test.describe('Google Analytics E2E', () => {
   test.describe.configure({ timeout: 60_000 });
 
-  test.beforeAll(async ({ browser }) => {
-    // Single initial visit so the app (and GA) have time to warm up; all tests then run fast.
-    const warmPage = await browser.newPage();
-    await warmPage.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
-    await expect(warmPage.getByRole('heading', { name: /tanstack-router-ga4/i })).toBeVisible({
-      timeout: 15000,
+  test.beforeEach(async ({ page }) => {
+    // Keep Google scripts and collection endpoints entirely offline.
+    await page.route('**/*', async (route) => {
+      const url = new URL(route.request().url());
+      if (url.hostname === 'www.googletagmanager.com') {
+        await route.fulfill({
+          contentType: 'application/javascript',
+          body: `
+          (() => {
+            const dataLayer = window.dataLayer;
+            const respond = (entry) => {
+              if (entry[0] === 'get') entry[3]('fixture-client-id');
+            };
+            dataLayer.forEach(respond);
+            const push = dataLayer.push.bind(dataLayer);
+            dataLayer.push = (...entries) => { entries.forEach(respond); return push(...entries); };
+          })();
+        `,
+        });
+      } else if (url.hostname.endsWith('google-analytics.com')) {
+        await route.abort();
+      } else {
+        await route.continue();
+      }
     });
-    await warmPage.waitForTimeout(5000);
-    await warmPage.close();
   });
 
   test('home page loads and shows heading', async ({ page }) => {
@@ -123,7 +121,8 @@ test.describe('Google Analytics E2E', () => {
     await page.waitForTimeout(1000);
 
     const debug = await hasGtagAndDataLayer(page);
-    if (debug.hasDataLayer && debug.hasGtag) {
+    expect(debug).toEqual({ hasDataLayer: true, hasGtag: true });
+    {
       const hasUserSet = await page.evaluate(() => {
         const dl = (window as Window & { dataLayer?: unknown[] }).dataLayer ?? [];
         return dl.some((entry) => {
@@ -154,7 +153,8 @@ test.describe('Google Analytics E2E', () => {
     await page.waitForTimeout(1000);
 
     const debug = await hasGtagAndDataLayer(page);
-    if (debug.hasDataLayer && debug.hasGtag) {
+    expect(debug).toEqual({ hasDataLayer: true, hasGtag: true });
+    {
       const eventNames = await getDataLayerEventNames(page);
       expect(eventNames).toContain('generate_lead');
     }
@@ -179,11 +179,12 @@ test.describe('Google Analytics E2E', () => {
     await expect(page.getByText(/Current value: false/i)).toBeVisible({ timeout: 10000 });
 
     const debug = await hasGtagAndDataLayer(page);
-    if (debug.hasDataLayer && debug.hasGtag) {
+    expect(debug).toEqual({ hasDataLayer: true, hasGtag: true });
+    {
       const dataLayer = await getNormalizedDataLayer(page);
       expect(dataLayer).toContainEqual([
         'config',
-        'G-FWJBK9S1RL',
+        'G-TESTONLY',
         {
           debug_mode: true,
           send_page_view: false,
@@ -191,7 +192,7 @@ test.describe('Google Analytics E2E', () => {
       ]);
       expect(dataLayer).toContainEqual([
         'config',
-        'G-FWJBK9S1RL',
+        'G-TESTONLY',
         {
           debug_mode: false,
           send_page_view: false,
@@ -216,15 +217,16 @@ test.describe('Google Analytics E2E', () => {
     });
 
     const resultText = await page.getByText(/Latest client ID:/i).textContent();
-    expect(resultText).not.toContain('(empty response)');
+    expect(resultText).toBe('Latest client ID: fixture-client-id');
 
     const debug = await hasGtagAndDataLayer(page);
-    if (debug.hasDataLayer && debug.hasGtag) {
+    expect(debug).toEqual({ hasDataLayer: true, hasGtag: true });
+    {
       const hasGetCommand = await page.evaluate(() => {
         const dl = (window as Window & { dataLayer?: unknown[] }).dataLayer ?? [];
         return dl.some((entry) => {
           const normalized = Array.isArray(entry) ? entry : Array.from(entry as ArrayLike<unknown>);
-          return normalized[0] === 'get' && normalized[1] === 'G-FWJBK9S1RL' && normalized[2] === 'client_id';
+          return normalized[0] === 'get' && normalized[1] === 'G-TESTONLY' && normalized[2] === 'client_id';
         });
       });
       expect(hasGetCommand).toBe(true);
@@ -246,7 +248,8 @@ test.describe('Google Analytics E2E', () => {
     await expect(page.getByText(/Mode: update/i)).toBeVisible({ timeout: 10000 });
 
     const debug = await hasGtagAndDataLayer(page);
-    if (debug.hasDataLayer && debug.hasGtag) {
+    expect(debug).toEqual({ hasDataLayer: true, hasGtag: true });
+    {
       const dataLayer = await getNormalizedDataLayer(page);
       expect(dataLayer).toContainEqual([
         'consent',
@@ -268,14 +271,19 @@ test.describe('Google Analytics E2E', () => {
     });
     await page.waitForTimeout(1000);
 
-    await page.goto(`${BASE_URL}/tests/lead-gen`, { waitUntil: 'networkidle' });
+    const initialPageViews = await getEventCount(page, 'page_view');
+    expect(initialPageViews).toBeGreaterThan(0);
+
+    await page.getByRole('link', { name: 'Generate lead', exact: true }).click();
     const trackButton = page.getByRole('button', { name: /Generate lead/i });
     await trackButton.waitFor({ state: 'visible', timeout: 15000 });
+    await expect.poll(() => getEventCount(page, 'page_view')).toBe(initialPageViews + 1);
     await trackButton.click();
     await page.waitForTimeout(1000);
 
     const debug = await hasGtagAndDataLayer(page);
-    if (debug.hasDataLayer && debug.hasGtag) {
+    expect(debug).toEqual({ hasDataLayer: true, hasGtag: true });
+    {
       const eventNames = await getDataLayerEventNames(page);
       expect(eventNames).toContain('page_view');
       expect(eventNames).toContain('generate_lead');
@@ -314,33 +322,5 @@ test.describe('Google Analytics E2E', () => {
 
     const secondEventCount = await getEventCount(page, 'stability_fixture_load');
     expect(secondEventCount).toBe(2);
-  });
-
-  test('GA collect endpoint receives page_view when requests are sent', async ({ page }) => {
-    const gaRequests: { url: string; postData: string | null }[] = [];
-    page.on('request', (req) => {
-      const url = req.url();
-      if (url.includes('google-analytics.com')) {
-        gaRequests.push({ url, postData: req.postData() });
-      }
-    });
-
-    await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle' });
-    await expect(page.getByRole('heading', { name: /tanstack-router-ga4/i })).toBeVisible({
-      timeout: 15000,
-    });
-    await page.waitForTimeout(1000);
-
-    await page.goto(`${BASE_URL}/tests/lead-gen`, { waitUntil: 'networkidle' });
-    await page.waitForTimeout(1000);
-
-    const debug = await hasGtagAndDataLayer(page);
-    if (debug.hasDataLayer && debug.hasGtag && gaRequests.length > 0) {
-      const networkEventNames = gaRequests.flatMap((r) => {
-        const en = eventNameFromRequest(r.url, r.postData);
-        return en ? [en] : [];
-      });
-      expect(networkEventNames).toContain('page_view');
-    }
   });
 });

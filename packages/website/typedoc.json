@@ -1,0 +1,17 @@
+{
+  "entryPoints": ["../tanstack-router-ga4/src/index.ts"],
+  "tsconfig": "../tanstack-router-ga4/tsconfig.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0"
+  },
+  "plugin": ["typedoc-plugin-markdown"],
+  "out": "docs/api",
+  "entryFileName": "index.md",
+  "readme": "none",
+  "name": "API reference",
+  "hideBreadcrumbs": true,
+  "hidePageHeader": true,
+  "parametersFormat": "table",
+  "propertiesFormat": "table",
+  "typeDeclarationFormat": "list"
+}
