@@ -1,0 +1,29 @@
+{
+  "name": "@tanstack-router-ga4/website",
+  "private": true,
+  "scripts": {
+    "generate:api": "typedoc --options typedoc.json",
+    "build": "pnpm generate:api && docusaurus build",
+    "dev": "pnpm generate:api && docusaurus start --port 3000 --no-open",
+    "serve": "docusaurus serve --port 3000 --no-open",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.10.2",
+    "@docusaurus/plugin-content-docs": "3.10.2",
+    "@docusaurus/theme-classic": "3.10.2",
+    "@docusaurus/tsconfig": "3.10.2",
+    "@docusaurus/types": "3.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typedoc": "^0.28.0",
+    "typedoc-plugin-markdown": "^4.0.0",
+    "typescript": "~5.9.3"
+  }
+}

@@ -4,5 +4,6 @@ packages:
 allowBuilds:
   '@parcel/watcher': false
   esbuild: true
+  core-js: false
 
 link-workspace-packages: true
