@@ -45,11 +45,13 @@ describe('useIdleReady', () => {
         return capturedId;
       });
 
-      vi.stubGlobal('window', {
-        ...globalThis.window,
-        requestIdleCallback: mockRequestIdleCallback,
-        cancelIdleCallback: mockCancelIdleCallback,
-      });
+      vi.stubGlobal(
+        'window',
+        Object.assign({}, globalThis.window, {
+          requestIdleCallback: mockRequestIdleCallback,
+          cancelIdleCallback: mockCancelIdleCallback,
+        }),
+      );
     });
 
     it('returns false before idle fires', () => {
