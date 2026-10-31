@@ -6,4 +6,8 @@ allowBuilds:
   esbuild: true
   core-js: false
 
-link-workspace-packages: true
+linkWorkspacePackages: true
+
+overrides:
+  tinypool@<2.1.2: ^2.1.2
+  serialize-javascript@<7.0.3: ^7.0.3
