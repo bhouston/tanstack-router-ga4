@@ -31,7 +31,7 @@
     "@semantic-release/release-notes-generator": "^14.1.1",
     "@size-limit/esbuild": "^14.0.0",
     "@size-limit/file": "^14.0.0",
-    "@types/node": "^22.20.0",
+    "@types/node": "^22.20.5",
     "@visulima/yaml": "1.0.0",
     "@vitest/browser-playwright": "^5.0.5",
     "@vitest/coverage-v8": "^5.0.5",
