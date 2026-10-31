@@ -6,6 +6,7 @@ const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   test: {
+    fsModuleCache: true,
     coverage: {
       provider: 'v8',
       thresholds: { lines: 95, statements: 95, functions: 95, branches: 90 },
@@ -21,6 +22,7 @@ export default defineConfig({
           include: ['packages/tanstack-router-ga4/src/**/*.test.ts', 'packages/tanstack-router-ga4/src/**/*.test.tsx'],
           exclude: ['**/e2e/**'],
           environment: 'jsdom',
+          fsModuleCache: true,
         },
       },
     ],
