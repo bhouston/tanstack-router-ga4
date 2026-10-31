@@ -54,11 +54,7 @@ export function useGoogleAnalytics() {
         getGtag()?.('consent', mode, params);
       },
       /** Requests a field asynchronously; the callback is invoked by the loaded GA script. */
-      get: (
-        measurementId: string,
-        fieldName: GoogleAnalyticsGettableFieldName,
-        callback: (value?: string | undefined) => void,
-      ) => {
+      get: (measurementId: string, fieldName: GoogleAnalyticsGettableFieldName, callback: (value?: string) => void) => {
         getGtag()?.('get', measurementId, fieldName, callback);
       },
     };

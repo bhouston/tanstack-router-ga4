@@ -6,7 +6,7 @@ describe('useGoogleAnalytics', () => {
   const mockGtag = vi.fn();
 
   beforeEach(() => {
-    vi.stubGlobal('window', { ...globalThis.window, gtag: mockGtag });
+    vi.stubGlobal('window', Object.assign({}, globalThis.window, { gtag: mockGtag }));
     mockGtag.mockClear();
   });
 
