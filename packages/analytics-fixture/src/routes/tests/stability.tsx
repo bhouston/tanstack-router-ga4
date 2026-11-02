@@ -28,6 +28,7 @@ function StabilityFixturePage() {
 
   useEffect(() => {
     if (!selectedFixtureExample) return;
+    // oxlint-disable-next-line react/set-state-in-effect -- fixture intentionally drives state from an effect for E2E stability checks
     void loadFixtureExample(selectedFixtureExample);
   }, [loadFixtureExample, selectedFixtureExample]);
 
