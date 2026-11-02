@@ -46,6 +46,7 @@ export function useGoogleAnalytics() {
         getGtag()?.('config', measurementId, configParams);
       },
       /** Sends a recommended or custom event with optional parameters. */
+      // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- cast widens the public type to the overloaded GoogleAnalyticsCommandEvent
       event: ((eventName: string, params?: GoogleAnalyticsEventParams) => {
         getGtag()?.('event', eventName, params);
       }) as GoogleAnalyticsCommandEvent,

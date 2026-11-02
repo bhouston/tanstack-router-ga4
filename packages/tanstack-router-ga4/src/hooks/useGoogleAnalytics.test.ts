@@ -139,9 +139,9 @@ describe('useGoogleAnalytics', () => {
     beforeEach(() => {
       const win = globalThis.window as Window & { gtag?: Gtag; dataLayer: unknown[] };
       win.dataLayer = [];
-      win.gtag = ((...args: unknown[]) => {
+      win.gtag = (...args: unknown[]) => {
         win.dataLayer.push(args);
-      }) as Gtag;
+      };
       mockGtag.mockClear();
       vi.stubGlobal('window', win);
     });

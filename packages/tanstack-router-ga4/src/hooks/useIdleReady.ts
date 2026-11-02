@@ -15,6 +15,7 @@ export function useIdleReady(): boolean {
 
     if (!browserWindow.requestIdleCallback) {
       // requestIdleCallback is not supported (e.g. Safari); skip deferral and render immediately
+      // oxlint-disable-next-line react/set-state-in-effect -- no requestIdleCallback (Safari): render immediately, intentional
       setIsReady(true);
       return;
     }
