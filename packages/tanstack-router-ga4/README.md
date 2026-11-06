@@ -1,23 +1,36 @@
+<p align="center">
+  <a href="https://npmjs.com/package/tanstack-router-ga4"><img src="https://img.shields.io/npm/v/tanstack-router-ga4.svg" alt="npm package"></a>
+  <a href="https://www.npmtrends.com/tanstack-router-ga4"><img src="https://img.shields.io/npm/dw/tanstack-router-ga4.svg" alt="npm downloads"></a>
+  <a href="https://codecov.io/gh/bhouston/tanstack-router-ga4"><img src="https://codecov.io/gh/bhouston/tanstack-router-ga4/branch/main/graph/badge.svg" alt="coverage"></a>
+  <a href="https://discord.gg/fwupDN493R"><img src="https://img.shields.io/badge/chat-discord-blue?style=flat&logo=discord" alt="discord chat"></a>
+  <a href="https://bhouston.github.io/tanstack-router-ga4/"><img src="https://img.shields.io/badge/docs-read-blue?style=flat" alt="documentation"></a>
+</p>
+<br/>
+
 # tanstack-router-ga4
 
-[![NPM Package][npm]][npm-url]
-[![NPM Downloads][npm-downloads]][npmtrends-url]
-[![Tests][tests-badge]][tests-url]
-[![Coverage][coverage-badge]][coverage-url]
-[![Demo Site][demo-badge]][demo-url]
-[![Discord](https://img.shields.io/badge/Discord-Join%20Chat-5865F2?logo=discord&logoColor=white)][discord-url]
+> Google Analytics (GA4) for TanStack Router and TanStack Start.
 
-[Google Analytics (GA4)](https://marketingplatform.google.com/about/analytics/) integration for [TanStack Router](https://tanstack.com/router) and [TanStack Start](https://tanstack.com/start), built for modern React apps that need reliable analytics with minimal setup.
+- 🧭 Automatic Page Views
+- 🔷 Typed GA4 Event Helpers
+- 💤 Deferred Script Loading
+- 🚀 TanStack Start and SSR Ready
+- 🔒 Consent Mode Support
+- 🪶 Under 1 KB Gzipped
 
-Live demo: [tanstack-router-ga4.ben3d.ca](https://tanstack-router-ga4.ben3d.ca)
+[Google Analytics (GA4)](https://marketingplatform.google.com/about/analytics/) integration for [TanStack Router](https://tanstack.com/router) and [TanStack Start](https://tanstack.com/start), built for modern React apps that need reliable analytics with minimal setup. Mount one `GoogleAnalytics` component in your root layout and every route change records a `page_view`; use the `useGoogleAnalytics` hook for typed `set`, `config`, `event`, `get`, and `consent` calls.
 
-## Features
+[Read the Docs to Learn More](https://bhouston.github.io/tanstack-router-ga4/).
+
+Live demo: [tanstack-router-ga4.ben3d.ca](https://tanstack-router-ga4.ben3d.ca). See the [repository](https://github.com/bhouston/tanstack-router-ga4) for the full project.
+
+## Capabilities
 
 - Automatically records `page_view` events on route changes
 - Full TypeScript support for common GA4 events (`sign_up`, `generate_lead`, etc.) and custom events
 - Supports all Google Analytics configuration options (for example `debug_mode` and `user_id`)
 - Supports advanced features like user-session association, consents and queries (`get`)
-- Deferred GA script injection by default — waits for the browser to be idle via `requestIdleCallback` before loading, improving initial page load performance. Pass `deferred={false}` to load immediately
+- Deferred GA script injection by default: waits for the browser to be idle via `requestIdleCallback` before loading, improving initial page load performance. Pass `deferred={false}` to load immediately
 - Designed for TanStack Router and TanStack Start with correct behavior across client-side navigation and SSR
 - Full test suite with unit/integration coverage and browser-based E2E tests
 - Ultra small bundles (minified/gzipped) to less than 1KB.
@@ -59,7 +72,7 @@ function RootDocument({ children }: { children: ReactNode }) {
 function SignupForm() {
   const ga = useGoogleAnalytics();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const user = await registerUser({ email: 'ada@example.com', password: 'secure-password' });
 
     // associate user id with session
@@ -99,22 +112,14 @@ To load GA immediately instead, pass `deferred={false}`:
 - `get(measurementId, fieldName, callback?)` for callback-based reads like `client_id`
 - `consent('default' | 'update', params)` for consent mode updates
 
+## Contribution
+
+See [Contributing Guide](https://github.com/bhouston/tanstack-router-ga4/blob/main/CONTRIBUTING.md).
+
 ## License
 
 MIT
 
 ## Author
 
-Created by [Ben Houston](https://ben3d.ca) and sponsored by [Land of Assets](https://landofassets.com).
-
-[npm]: https://img.shields.io/npm/v/tanstack-router-ga4
-[npm-url]: https://www.npmjs.com/package/tanstack-router-ga4
-[npm-downloads]: https://img.shields.io/npm/dw/tanstack-router-ga4
-[npmtrends-url]: https://www.npmtrends.com/tanstack-router-ga4
-[tests-badge]: https://github.com/bhouston/tanstack-router-ga4/actions/workflows/ci.yml/badge.svg
-[tests-url]: https://github.com/bhouston/tanstack-router-ga4/actions/workflows/ci.yml
-[coverage-badge]: https://codecov.io/gh/bhouston/tanstack-router-ga4/graph/badge.svg
-[coverage-url]: https://codecov.io/gh/bhouston/tanstack-router-ga4
-[demo-badge]: https://img.shields.io/badge/demo-live-0f172a
-[demo-url]: https://tanstack-router-ga4.ben3d.ca
-[discord-url]: https://discord.gg/fwupDN493R
+[Ben Houston](https://ben3d.ca), Sponsored by [Land of Assets](https://landofassets.com).
