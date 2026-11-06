@@ -1,35 +1,61 @@
 # Releasing
 
-This document covers release-only and one-time maintainer setup for `tanstack-router-ga4`. Day-to-day contribution workflow lives in [CONTRIBUTING.md](CONTRIBUTING.md); development setup lives in [README.md](README.md).
+Releases are manual and maintainer-only. Merging to `main` never publishes.
 
-## Coverage and size gates
-
-`pnpm test` includes type checking and enforces coverage gates: 95% lines/statements/functions and 90% branches.
-
-`pnpm size` measures the minified, gzipped library (peer dependencies excluded) against the budget in `.size-limit.json`.
-
-Audit failures (`pnpm audit --audit-level high`) produce a CI warning for review; they do not block unrelated work. Codecov reporting is supplementary; coverage thresholds are enforced locally and in CI even if uploading fails.
-
-## Release process
-
-Merging a PR into `main` never publishes; it only runs CI. When ready to publish, the maintainer manually dispatches the release workflow against `main`:
+## Running a Release
 
 ```sh
-gh workflow run release.yml --ref main
+gh workflow run release.yml --ref main                  # release
+gh workflow run release.yml --ref main -f dry_run=true  # preview only, publishes nothing
 ```
 
-`release.yml` rejects dispatches against any ref other than `refs/heads/main`, then runs the CI checks before Semantic Release computes the next version, creates a tag and GitHub release, and publishes using npm OIDC trusted publishing. A dispatch with no release-worthy commits since the last release succeeds without publishing anything. Pass `dry_run: true` (`gh workflow run release.yml --ref main -f dry_run=true`) to preview the computed version and changelog without publishing or tagging. The historical `v1.6.0` tag is required to prevent accidentally restarting at version 1.0.0.
+When there are no release-worthy commits since the last `v*` tag, the run is a no-op.
 
-Do not bump versions manually or publish from a workstation. `pnpm release:prepare` only builds and stages the package in the ignored `publish` directory; it never publishes. Semantic Release updates the staged package version. The checked-in package version is a development baseline, not the current registry version; tags and npm are authoritative. Generated notes accumulate on the [GitHub Releases page](https://github.com/bhouston/tanstack-router-ga4/releases), which is the changelog of record. No generated release commits are pushed back into `main`.
+## What the Workflow Does
 
-## One-time maintainer setup
+1. Refuses any ref other than `main`.
+2. Runs the full CI workflow on the dispatched commit.
+3. Stops if `main` has moved since the dispatch.
+4. Installs, builds, and runs `pnpm release`, which is semantic-release.
+5. semantic-release computes the next version, creates the `v<version>` tag and GitHub Release, and publishes.
 
-- `main` is the integration branch and repository default. PRs target it, and issue-closing keywords take effect when merged there.
-- Protect `main`: require PRs and the `Unit`, `E2E`, and `Contribution policy` checks. Allow merge commits only; disable squash and rebase merges. Restrict direct pushes; the release job only needs to create tags and releases, triggered manually via `workflow_dispatch`.
-- The historical `v1.6.0` baseline tag points to `960ea71540bb5e4915589fb60b1bb2de89db2549`, verified against the published JavaScript. npm's recorded `gitHead` points to an older version; do not move the baseline to that commit. The release workflow checks that the baseline tag exists.
-- In npm's `tanstack-router-ga4` package settings, configure a GitHub Actions trusted publisher with owner `bhouston`, repository `tanstack-router-ga4`, and workflow filename `release.yml` (no environment). See [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/). No `NPM_TOKEN` secret is used. Configure this before the first release merge.
-- Enable GitHub private vulnerability reporting. Configure `CODECOV_TOKEN` if required by the Codecov account; coverage gating does not depend on it.
+Releases run one at a time and never cancel a publish in progress. npm packages publish through npm trusted publishing (GitHub OIDC), so no `NPM_TOKEN` is stored.
 
-## Reusing this workflow
+## Versioning
 
-After the first successful issue → PR → release cycle, copy this guide, issue/PR templates, commitlint config, Husky hook, release config, and CI workflows into a dedicated template repository. Adapt package paths, repository URLs, runtime, coverage and size budgets, and release baseline per project. Do not copy this repository's deployment credentials or baseline tag. Mark that separate repository as a GitHub template after validation. This repository remains the library repository.
+The version comes from the Conventional Commits since the last `v*` tag. The highest change wins:
+
+- `feat` produces a minor release.
+- `fix` and `perf` produce a patch release.
+- `!` or a `BREAKING CHANGE:` footer produces a major release.
+- Other types do not trigger a release.
+
+Everything this repository publishes shares one version. `package.json` versions in source are development snapshots; the Git tag and the registry hold the released version. [GitHub Releases](https://github.com/bhouston/tanstack-router-ga4/releases) is the changelog of record.
+
+## One-Time Setup
+
+1. On npmjs.com, open each package's Trusted Publisher settings, choose GitHub Actions, and enter organization or user `bhouston`, repository `tanstack-router-ga4`, workflow filename `release.yml`, and environment name `npm`.
+2. Protect `main`: require pull requests and the CI checks, allow merge commits, and block force pushes and deletion.
+3. If the repository uploads coverage to Codecov, add the `CODECOV_TOKEN` repository secret.
+
+## Recovery
+
+Publishing is not atomic. If a run fails part way, compare the registry versions, the `v<version>` tag, and the workflow log, then finish what is missing from the same release commit. If publishing succeeded but the GitHub Release failed, create the release from the existing tag. Never republish a version, delete a published version, or move a release tag. Resolve the failure before dispatching another release.
+
+## Repository Specifics
+
+### Published Artifacts
+
+- `tanstack-router-ga4` on npm, built from `packages/tanstack-router-ga4`. `@tanstack-router-ga4/website` and `analytics-fixture` are private and never published.
+
+### Required Checks
+
+The `main` protection requires the `ci` and `contribution` checks.
+
+### Thresholds
+
+`pnpm test --coverage` enforces 95% lines, statements, and functions and 90% branches. `pnpm size` enforces a 1 kB gzipped limit on `packages/tanstack-router-ga4/dist/index.js` (`.size-limit.json`), excluding the `react`, `react/jsx-runtime`, and `@tanstack/react-router` peers. `pnpm audit --audit-level=high` is advisory in CI: it warns but does not fail the run. Explain any intentional threshold change in the PR.
+
+### Website
+
+The documentation site deploys to GitHub Pages from `pages.yml` on every push to `main` and on manual dispatch. It is independent of releases. Enable Settings → Pages → Source → GitHub Actions once; see `packages/website/README.md` for the full hosting setup.
