@@ -71,6 +71,13 @@ const config: Config = {
         { to: '/docs/behavior-and-consent', label: 'Behavior and consent', position: 'left' },
         { to: '/docs/api', label: 'API reference', position: 'left' },
         {
+          href: 'https://www.npmjs.com/package/tanstack-router-ga4',
+          html: '<span class="navbar-npm-icon" aria-hidden="true"></span>',
+          'aria-label': 'npm package',
+          title: 'npm package',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/bhouston/tanstack-router-ga4',
           html: '<span class="navbar-github-icon" aria-hidden="true"></span>',
           'aria-label': 'GitHub repository',
