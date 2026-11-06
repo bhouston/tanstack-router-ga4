@@ -13,7 +13,7 @@ pnpm docs:serve
 
 The development and production commands generate `docs/api` from the library's public entry point using TypeDoc and typedoc-plugin-markdown. Edit TSDoc comments in `packages/tanstack-router-ga4/src` to update the API reference. Generated API Markdown, `.docusaurus`, and `build` are ignored. Restart the dev server after changing API comments to regenerate the reference.
 
-The production build checks broken links and emits static files to `packages/docs/build`. GitHub Actions uploads that directory with `actions/upload-pages-artifact` and deploys with `actions/deploy-pages` on pushes to main or a manual run from main. Pull request CI builds the site without deploying.
+The production build checks broken links and emits static files to `packages/docs/build`. GitHub Actions uploads that directory with `actions/upload-pages-artifact` and deploys with `actions/deploy-pages` after each published release (the Release workflow calls `pages.yml` with the release tag) or on a manual dispatch. Pull request CI builds the site without deploying.
 
 ## Hosting
 
