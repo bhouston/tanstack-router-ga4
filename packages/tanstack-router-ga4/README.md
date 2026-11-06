@@ -22,18 +22,13 @@
 
 [Read the Docs to Learn More](https://tanstack-router-ga4.ben3d.ca).
 
-Live demo: [tanstack-router-ga4.ben3d.ca](https://tanstack-router-ga4.ben3d.ca). See the [repository](https://github.com/bhouston/tanstack-router-ga4) for the full project.
+## Features
 
-## Capabilities
-
-- Automatically records `page_view` events on route changes
-- Full TypeScript support for common GA4 events (`sign_up`, `generate_lead`, etc.) and custom events
-- Supports all Google Analytics configuration options (for example `debug_mode` and `user_id`)
-- Supports advanced features like user-session association, consents and queries (`get`)
-- Deferred GA script injection by default: waits for the browser to be idle via `requestIdleCallback` before loading, improving initial page load performance. Pass `deferred={false}` to load immediately
-- Designed for TanStack Router and TanStack Start with correct behavior across client-side navigation and SSR
-- Full test suite with unit/integration coverage and browser-based E2E tests
-- Ultra small bundles (minified/gzipped) to less than 1KB.
+- Automatic `page_view` events on route changes: [Getting started](https://tanstack-router-ga4.ben3d.ca/docs/getting-started/)
+- Typed helpers for recommended GA4 events and custom events: [Examples](https://tanstack-router-ga4.ben3d.ca/docs/examples/)
+- Deferred script loading, SSR safety and consent mode: [Behavior and consent](https://tanstack-router-ga4.ben3d.ca/docs/behavior-and-consent/)
+- Every prop, hook command and type, generated from TSDoc: [API reference](https://tanstack-router-ga4.ben3d.ca/docs/api/)
+- Under 1 KB gzipped
 
 ## Install
 
@@ -92,25 +87,7 @@ function SignupForm() {
 }
 ```
 
-### Deferred loading
-
-By default, `GoogleAnalytics` delays GA script injection until the browser is idle using [`requestIdleCallback`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback). This moves analytics work out of the critical rendering path, improving Time to Interactive and other Core Web Vitals. On browsers that don't support `requestIdleCallback` (such as Safari) the script loads immediately so no data is lost.
-
-To load GA immediately instead, pass `deferred={false}`:
-
-```tsx
-<GoogleAnalytics measurementId="G-XXXXXXXXXX" deferred={false} />
-```
-
-### Hook API
-
-`useGoogleAnalytics()` exposes typed wrappers around the core `gtag` commands:
-
-- `set(config)` for global config
-- `config(measurementId, config?)` for per-stream config
-- `event(name, params?)` for recommended and custom events
-- `get(measurementId, fieldName, callback?)` for callback-based reads like `client_id`
-- `consent('default' | 'update', params)` for consent mode updates
+See the [documentation](https://tanstack-router-ga4.ben3d.ca) for deferred loading, consent, and the full hook and component API.
 
 ## Contribution
 
