@@ -48,7 +48,11 @@ For E2E tests, run `pnpm build` and `pnpm exec playwright install chromium` firs
 
 See [website development and hosting](packages/website/README.md) for API generation and GitHub Pages setup. The previous Cloud Run deployment workflows have been removed; the running service and its DNS are unchanged.
 
-Before submitting changes, follow [CONTRIBUTING.md](CONTRIBUTING.md): open an issue first, branch from `main`, and target `main` in your PR. See [RELEASING.md](RELEASING.md) for coverage/size gates, the release process, and one-time maintainer setup, and the [GitHub Releases page](https://github.com/bhouston/tanstack-router-ga4/releases) for release history.
+Before submitting changes, follow [CONTRIBUTING.md](CONTRIBUTING.md): open an issue first, branch from `main`, and target `main` in your PR.
+
+## Releases
+
+See [RELEASING.md](RELEASING.md) for how releases are published and [GitHub Releases](https://github.com/bhouston/tanstack-router-ga4/releases) for changes.
 
 ## Contribution
 
