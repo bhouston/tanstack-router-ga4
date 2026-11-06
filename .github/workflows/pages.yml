@@ -28,7 +28,7 @@ jobs:
       - run: pnpm docs:build
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: packages/website/build
+          path: packages/docs/build
   deploy:
     if: github.ref == 'refs/heads/main'
     needs: build

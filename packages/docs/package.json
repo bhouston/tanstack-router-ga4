@@ -1,10 +1,10 @@
 {
-  "name": "@tanstack-router-ga4/website",
+  "name": "@tanstack-router-ga4/docs",
   "private": true,
   "scripts": {
-    "generate:api": "typedoc --options typedoc.json",
-    "build": "pnpm generate:api && docusaurus build",
-    "dev": "pnpm generate:api && docusaurus start --port 3000 --no-open",
+    "generate": "typedoc --options typedoc.json",
+    "build": "pnpm generate && docusaurus build",
+    "dev": "pnpm generate && docusaurus start --port 3000 --no-open",
     "serve": "docusaurus serve --port 3000 --no-open",
     "tsc": "tsc --noEmit"
   },

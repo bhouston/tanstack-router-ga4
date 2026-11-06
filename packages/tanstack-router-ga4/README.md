@@ -3,7 +3,7 @@
   <a href="https://www.npmtrends.com/tanstack-router-ga4"><img src="https://img.shields.io/npm/dw/tanstack-router-ga4.svg" alt="npm downloads"></a>
   <a href="https://codecov.io/gh/bhouston/tanstack-router-ga4"><img src="https://codecov.io/gh/bhouston/tanstack-router-ga4/branch/main/graph/badge.svg" alt="coverage"></a>
   <a href="https://discord.gg/fwupDN493R"><img src="https://img.shields.io/badge/chat-discord-blue?style=flat&logo=discord" alt="discord chat"></a>
-  <a href="https://bhouston.github.io/tanstack-router-ga4/"><img src="https://img.shields.io/badge/docs-read-blue?style=flat" alt="documentation"></a>
+  <a href="https://tanstack-router-ga4.ben3d.ca"><img src="https://img.shields.io/badge/docs-read-blue?style=flat" alt="documentation"></a>
 </p>
 <br/>
 
@@ -20,7 +20,7 @@
 
 [Google Analytics (GA4)](https://marketingplatform.google.com/about/analytics/) integration for [TanStack Router](https://tanstack.com/router) and [TanStack Start](https://tanstack.com/start), built for modern React apps that need reliable analytics with minimal setup. Mount one `GoogleAnalytics` component in your root layout and every route change records a `page_view`; use the `useGoogleAnalytics` hook for typed `set`, `config`, `event`, `get`, and `consent` calls.
 
-[Read the Docs to Learn More](https://bhouston.github.io/tanstack-router-ga4/).
+[Read the Docs to Learn More](https://tanstack-router-ga4.ben3d.ca).
 
 Live demo: [tanstack-router-ga4.ben3d.ca](https://tanstack-router-ga4.ben3d.ca). See the [repository](https://github.com/bhouston/tanstack-router-ga4) for the full project.
 

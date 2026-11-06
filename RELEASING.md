@@ -46,7 +46,7 @@ Publishing is not atomic. If a run fails part way, compare the registry versions
 
 ### Published Artifacts
 
-- `tanstack-router-ga4` on npm, built from `packages/tanstack-router-ga4`. `@tanstack-router-ga4/website` and `analytics-fixture` are private and never published.
+- `tanstack-router-ga4` on npm, built from `packages/tanstack-router-ga4`. `@tanstack-router-ga4/docs` and `analytics-fixture` are private and never published.
 
 ### Required Checks
 
@@ -58,4 +58,4 @@ The `main` protection requires the `ci` and `contribution` checks.
 
 ### Website
 
-The documentation site deploys to GitHub Pages from `pages.yml` on every push to `main` and on manual dispatch. It is independent of releases. Enable Settings → Pages → Source → GitHub Actions once; see `packages/website/README.md` for the full hosting setup.
+The documentation site at <https://tanstack-router-ga4.ben3d.ca> deploys to GitHub Pages from `pages.yml` on every push to `main` and on manual dispatch. It is independent of releases. Pages must use Settings → Pages → Source → GitHub Actions, with the custom domain `tanstack-router-ga4.ben3d.ca`; see `packages/docs/README.md`.

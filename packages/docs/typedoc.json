@@ -1,0 +1,26 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["../tanstack-router-ga4/src/index.ts"],
+  "tsconfig": "../tanstack-router-ga4/tsconfig.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0"
+  },
+  "plugin": ["typedoc-plugin-markdown"],
+  "out": "docs/api",
+  "readme": "none",
+  "entryFileName": "index",
+  "outputFileStrategy": "modules",
+  "hidePageHeader": true,
+  "hideBreadcrumbs": true,
+  "sort": ["source-order"],
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "disableSources": true,
+  "groupOrder": ["Functions", "Classes", "*"],
+  "interfacePropertiesFormat": "table",
+  "parametersFormat": "table",
+  "typeDeclarationFormat": "table",
+  "useCodeBlocks": true,
+  "excludeExternals": true,
+  "name": "API reference"
+}
