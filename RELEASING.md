@@ -58,4 +58,4 @@ The `main` protection requires the `ci` and `contribution` checks.
 
 ### Website
 
-The documentation site at <https://tanstack-router-ga4.ben3d.ca> deploys to GitHub Pages from `pages.yml` on every push to `main` and on manual dispatch. It is independent of releases. Pages must use Settings → Pages → Source → GitHub Actions, with the custom domain `tanstack-router-ga4.ben3d.ca`; see `packages/docs/README.md`.
+The Release workflow calls `pages.yml` after each published release. It builds `packages/docs` from the new `v<version>` tag and deploys to <https://tanstack-router-ga4.ben3d.ca> with the built-in `GITHUB_TOKEN`. Dry runs and runs that publish nothing do not deploy. To redeploy the latest release, run `gh workflow run pages.yml --ref main` (optionally with `-f ref=v<version>`). Pages uses Settings → Pages → Source → GitHub Actions with the custom domain `tanstack-router-ga4.ben3d.ca`; see `packages/docs/README.md`.
