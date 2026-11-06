@@ -22,5 +22,7 @@
   "typeDeclarationFormat": "table",
   "useCodeBlocks": true,
   "excludeExternals": true,
-  "name": "API reference"
+  "name": "API reference",
+  "validation": { "notDocumented": true },
+  "treatValidationWarningsAsErrors": true
 }
