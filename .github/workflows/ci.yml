@@ -34,6 +34,7 @@ jobs:
         run: pnpm exec oxfmt --check .
       - run: pnpm test --coverage
       # --- repository-specific steps (package-content check, size budget, e2e, docs, ...) go here ---
+      - run: pnpm docs:build
       - name: Verify published package includes dist
         run: |
           cd packages/tanstack-router-ga4

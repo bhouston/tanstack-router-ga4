@@ -6,13 +6,13 @@ test('homepage links reach guides and generated API without runtime errors', asy
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto(baseURL!);
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Your routes.');
-  await page.getByRole('link', { name: 'Get started →', exact: true }).click();
+  await page.locator('header').getByRole('link', { name: 'Get started', exact: true }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Getting started');
   await page.goto(`${baseURL}docs/examples/`);
   await expect(page.getByRole('heading', { name: /^Read the client ID/ })).toBeVisible();
   await page.goto(`${baseURL}docs/api/`);
-  await page.locator('main').getByRole('link', { name: 'GoogleAnalytics', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Function: GoogleAnalytics()');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('API reference');
+  await expect(page.getByRole('heading', { name: /^GoogleAnalytics\(\)/ })).toBeVisible();
   await expect(page.locator('main')).toContainText('measurementId');
   expect(errors).toEqual([]);
 });

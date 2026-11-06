@@ -1,0 +1,13 @@
+{
+  "name": "tanstack-router-ga4",
+  "short_name": "tanstack-router-ga4",
+  "description": "Google Analytics 4 for TanStack Router and TanStack Start. Automatic page views, typed event helpers, and client-only initialization for React apps.",
+  "start_url": ".",
+  "display": "browser",
+  "background_color": "#11151d",
+  "theme_color": "#11151d",
+  "icons": [
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

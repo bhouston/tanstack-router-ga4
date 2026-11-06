@@ -28,5 +28,5 @@ bhouston-general-hosting-7c5255afe1ce.json
 # Docusaurus and generated API reference
 build
 .docusaurus
-packages/website/docs/api
+packages/docs/docs/api
 

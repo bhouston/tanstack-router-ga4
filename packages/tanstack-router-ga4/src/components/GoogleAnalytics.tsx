@@ -76,6 +76,9 @@ const DeferredGoogleAnalyticsInner = (props: GoogleAnalyticsProps) => {
  * Mount once inside a TanStack Router root. Search/hash-only changes do not trigger page views.
  * The component renders nothing during SSR and reuses an existing gtag loader script.
  *
+ * @param props - See {@link GoogleAnalyticsProps}. `deferred` defaults to `true`.
+ * @returns A client-only element that renders nothing visible.
+ *
  * @example
  * ```tsx
  * <GoogleAnalytics measurementId="G-XXXXXXXXXX" deferred={false} />
