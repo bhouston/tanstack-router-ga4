@@ -20,12 +20,19 @@
   border-radius: 4px;
 }
 /* GitHub mark: Primer Octicons (MIT); license in static/img/github.LICENSE.txt. */
-.navbar-github-icon {
+.navbar-github-icon,
+.navbar-npm-icon {
   display: block;
   width: 1.4rem;
   height: 1.4rem;
   background-color: currentColor;
+}
+.navbar-github-icon {
   mask: url('../../static/img/github.svg') center / contain no-repeat;
+}
+/* npm mark: Simple Icons (CC0). */
+.navbar-npm-icon {
+  mask: url('../../static/img/npm.svg') center / contain no-repeat;
 }
 .home-hero {
   display: grid;
