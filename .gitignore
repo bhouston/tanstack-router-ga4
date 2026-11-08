@@ -30,3 +30,8 @@ build
 .docusaurus
 packages/docs/docs/api
 
+
+# Agent tooling
+.claude/
+.codex/
+.cursor/
