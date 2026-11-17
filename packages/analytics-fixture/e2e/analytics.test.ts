@@ -278,6 +278,15 @@ test.describe('Google Analytics E2E', () => {
     const trackButton = page.getByRole('button', { name: /Generate lead/i });
     await trackButton.waitFor({ state: 'visible', timeout: 15000 });
     await expect.poll(() => getEventCount(page, 'page_view')).toBe(initialPageViews + 1);
+    const pageViews = (await getNormalizedDataLayer(page)).filter(
+      (entry) => entry[0] === 'event' && entry[1] === 'page_view',
+    );
+    expect(pageViews.at(-1)?.[2]).toEqual(
+      expect.objectContaining({
+        page_path: '/tests/lead-gen',
+        page_location: `${BASE_URL}/tests/lead-gen`,
+      }),
+    );
     await trackButton.click();
     await page.waitForTimeout(1000);
 

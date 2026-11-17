@@ -5,8 +5,9 @@ import * as getGtagModule from '../lib/getGtag.js';
 
 // Mock useLocation and ClientOnly so we can test script injection and page_view without full router
 const mockGtag = vi.fn();
+const mockLocation = vi.hoisted(() => ({ pathname: '/', href: '/' }));
 vi.mock('@tanstack/react-router', () => ({
-  useLocation: () => ({ pathname: '/' }),
+  useLocation: () => mockLocation,
   ClientOnly: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
@@ -17,6 +18,9 @@ describe('GoogleAnalytics', () => {
 
   beforeEach(() => {
     mockGtag.mockClear();
+    mockLocation.pathname = '/';
+    mockLocation.href = '/';
+    window.history.replaceState(null, '', '/');
     document.head.innerHTML = '';
     const win = globalThis.window as unknown as Window & {
       gtag?: typeof mockGtag;
@@ -104,6 +108,53 @@ describe('GoogleAnalytics', () => {
         }),
       );
     });
+  });
+
+  it('reports the router destination even while the browser URL is stale', () => {
+    window.history.replaceState(null, '', '/login');
+    mockLocation.pathname = '/login';
+    mockLocation.href = '/login';
+    const { rerender } = render(<GoogleAnalytics measurementId="G-DEMO" deferred={false} />);
+    mockGtag.mockClear();
+
+    mockLocation.pathname = '/signup';
+    mockLocation.href = '/signup?next=%2Faccount#email';
+    rerender(<GoogleAnalytics measurementId="G-DEMO" deferred={false} />);
+
+    expect(window.location.pathname).toBe('/login');
+    expect(mockGtag).toHaveBeenCalledExactlyOnceWith(
+      'event',
+      'page_view',
+      expect.objectContaining({
+        page_path: '/signup',
+        page_location: `${window.location.origin}/signup?next=%2Faccount#email`,
+      }),
+    );
+  });
+
+  it('does not send extra page views for search, hash, or unrelated rerenders', () => {
+    const { rerender } = render(<GoogleAnalytics measurementId="G-DEMO" deferred={false} />);
+    mockGtag.mockClear();
+
+    for (const href of ['/?q=test', '/?q=test#section', '/?q=test#section']) {
+      mockLocation.href = href;
+      rerender(<GoogleAnalytics measurementId="G-DEMO" deferred={false} />);
+    }
+
+    expect(mockGtag).not.toHaveBeenCalled();
+  });
+
+  it('sends a page view when the measurement ID changes or is re-enabled', () => {
+    const { rerender } = render(<GoogleAnalytics measurementId="G-DEMO" deferred={false} />);
+    mockGtag.mockClear();
+
+    rerender(<GoogleAnalytics measurementId="G-OTHER" deferred={false} />);
+    expect(mockGtag.mock.calls.filter((call) => call[0] === 'event')).toHaveLength(1);
+
+    rerender(<GoogleAnalytics measurementId="" deferred={false} />);
+    mockGtag.mockClear();
+    rerender(<GoogleAnalytics measurementId="G-OTHER" deferred={false} />);
+    expect(mockGtag.mock.calls.filter((call) => call[0] === 'event')).toHaveLength(1);
   });
 
   it('creates and appends script with correct measurement ID', async () => {

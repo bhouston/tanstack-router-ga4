@@ -16,7 +16,7 @@ description: Understand page-view triggers, deferred loading, server rendering, 
 | Document title changes without navigation | Does not send a new view                 |
 | Empty measurement ID                      | Skips initialization and automatic views |
 
-Each automatic event includes `page_path` from the router, `page_location` from `window.location.href`, `page_title` from `document.title`, and `page_referrer` from `document.referrer` when present. The browser referrer is not rewritten to the previous client-side route.
+Each automatic event includes `page_path` from the router, `page_location` from the router’s full destination URL resolved against the browser origin, `page_title` from `document.title`, and `page_referrer` from `document.referrer` when present. The browser referrer is not rewritten to the previous client-side route.
 
 Mount one component in a persistent root layout. Other tags or GA4 enhanced-measurement settings may also send navigation events; check your stream configuration if you see duplicates. A component remount or development effect replay can send another view.
 

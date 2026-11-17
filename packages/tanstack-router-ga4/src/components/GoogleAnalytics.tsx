@@ -1,5 +1,5 @@
 import { ClientOnly, useLocation } from '@tanstack/react-router';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics.js';
 import { useIdleReady } from '../hooks/useIdleReady.js';
 import { getGtag } from '../lib/getGtag.js';
@@ -20,6 +20,7 @@ export type GoogleAnalyticsProps = {
 const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: GoogleAnalyticsProps) => {
   const location = useLocation();
   const { event } = useGoogleAnalytics();
+  const lastPageView = useRef<{ pathname: string; measurementId: string } | null>(null);
 
   // Initialize Google Analytics once: inject gtag script and set up dataLayer
   useEffect(() => {
@@ -49,17 +50,24 @@ const GoogleAnalyticsInner = ({ config, consentDefaults, measurementId }: Google
     });
   }, [config, consentDefaults, measurementId]);
 
-  // Track page views on route changes
+  // Track pathname changes while retaining the full destination URL in each event.
   useEffect(() => {
-    if (!measurementId) return;
+    if (!measurementId) {
+      lastPageView.current = null;
+      return;
+    }
+    if (lastPageView.current?.pathname === location.pathname && lastPageView.current.measurementId === measurementId)
+      return;
+    lastPageView.current = { pathname: location.pathname, measurementId };
 
     event('page_view', {
       page_path: location.pathname,
-      page_location: window.location.href,
+      // The browser URL can still refer to the previous route during navigation.
+      page_location: new URL(location.href, window.location.origin).href,
       page_title: document.title,
       page_referrer: document.referrer || undefined,
     });
-  }, [event, location.pathname, measurementId]);
+  }, [event, location.href, location.pathname, measurementId]);
 
   return null;
 };
